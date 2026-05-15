@@ -1,47 +1,40 @@
 import { BlurView } from "expo-blur";
-import { isLiquidGlassAvailable } from "expo-glass-effect";
 import { Tabs } from "expo-router";
-import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
-import { SymbolView } from "expo-symbols";
-import { Feather } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
-import { Platform, StyleSheet, View, useColorScheme } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useColors } from "@/hooks/useColors";
 
-function NativeTabLayout() {
-  return (
-    <NativeTabs>
-      <NativeTabs.Trigger name="index">
-        <Icon sf={{ default: "house", selected: "house.fill" }} />
-        <Label>Ana Sayfa</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="scan">
-        <Icon sf={{ default: "doc.viewfinder", selected: "doc.viewfinder.fill" }} />
-        <Label>Tara</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="dosyalar">
-        <Icon sf={{ default: "folder", selected: "folder.fill" }} />
-        <Label>Dosyalar</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="ara">
-        <Icon sf={{ default: "magnifyingglass", selected: "magnifyingglass" }} />
-        <Label>Ara</Label>
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="ayarlar">
-        <Icon sf={{ default: "gearshape", selected: "gearshape.fill" }} />
-        <Label>Ayarlar</Label>
-      </NativeTabs.Trigger>
-    </NativeTabs>
-  );
+type MCIconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+type IOIconName = React.ComponentProps<typeof Ionicons>["name"];
+
+function TabIcon({
+  focused,
+  color,
+  size,
+  activeIcon,
+  inactiveIcon,
+  library,
+}: {
+  focused: boolean;
+  color: string;
+  size: number;
+  activeIcon: MCIconName | IOIconName;
+  inactiveIcon: MCIconName | IOIconName;
+  library: "mc" | "io";
+}) {
+  const iconName = focused ? activeIcon : inactiveIcon;
+  if (library === "io") {
+    return <Ionicons name={iconName as IOIconName} size={size} color={color} />;
+  }
+  return <MaterialCommunityIcons name={iconName as MCIconName} size={size} color={color} />;
 }
 
-function ClassicTabLayout() {
+export default function TabLayout() {
   const colors = useColors();
-  const colorScheme = useColorScheme();
   const safeAreaInsets = useSafeAreaInsets();
-  const isDark = colorScheme === "dark";
   const isIOS = Platform.OS === "ios";
   const isWeb = Platform.OS === "web";
 
@@ -74,7 +67,7 @@ function ClassicTabLayout() {
           isIOS ? (
             <BlurView
               intensity={100}
-              tint={isDark ? "dark" : "light"}
+              tint="light"
               style={StyleSheet.absoluteFill}
             />
           ) : isWeb ? (
@@ -88,12 +81,16 @@ function ClassicTabLayout() {
         name="index"
         options={{
           title: "Ana Sayfa",
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="house" tintColor={color} size={24} />
-            ) : (
-              <Feather name="home" size={22} color={color} />
-            ),
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={24}
+              library="mc"
+              activeIcon="home"
+              inactiveIcon="home-outline"
+            />
+          ),
         }}
       />
       <Tabs.Screen
@@ -101,57 +98,66 @@ function ClassicTabLayout() {
         options={{
           title: "Tara",
           tabBarStyle: { display: "none" },
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="doc.viewfinder" tintColor={color} size={24} />
-            ) : (
-              <Feather name="camera" size={22} color={color} />
-            ),
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={24}
+              library="mc"
+              activeIcon="line-scan"
+              inactiveIcon="line-scan"
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="dosyalar"
         options={{
           title: "Dosyalar",
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="folder" tintColor={color} size={24} />
-            ) : (
-              <Feather name="folder" size={22} color={color} />
-            ),
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={24}
+              library="mc"
+              activeIcon="folder"
+              inactiveIcon="folder-outline"
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="ara"
         options={{
           title: "Ara",
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="magnifyingglass" tintColor={color} size={24} />
-            ) : (
-              <Feather name="search" size={22} color={color} />
-            ),
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={24}
+              library="io"
+              activeIcon="search"
+              inactiveIcon="search-outline"
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="ayarlar"
         options={{
           title: "Ayarlar",
-          tabBarIcon: ({ color }) =>
-            isIOS ? (
-              <SymbolView name="gearshape" tintColor={color} size={24} />
-            ) : (
-              <Feather name="settings" size={22} color={color} />
-            ),
+          tabBarIcon: ({ focused, color }) => (
+            <TabIcon
+              focused={focused}
+              color={color}
+              size={24}
+              library="io"
+              activeIcon="settings"
+              inactiveIcon="settings-outline"
+            />
+          ),
         }}
       />
     </Tabs>
   );
-}
-
-export default function TabLayout() {
-  if (isLiquidGlassAvailable()) {
-    return <NativeTabLayout />;
-  }
-  return <ClassicTabLayout />;
 }

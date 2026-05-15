@@ -72,6 +72,9 @@ Scanly, kullanıcıların belgelerini kamera ile taramasını, kenar algılamas�
 - `pnpm --filter @workspace/scanly run dev` çalıştırılırken `PORT` ve `BASE_PATH` env var'ları workflow tarafından sağlanır
 - Feather icon isimleri doğrulanmalı — "receipt" ve "graduation-cap" geçersiz, alternatifler: "dollar-sign", "book-open"
 - AsyncStorage web'de çalışır ancak tarayıcıyı yenilediğinizde silinir (dev modunda)
+- **SymbolView (expo-symbols) ve NativeTabs Icon Expo Go'da Çince/garip karakter görünür — kullanma**
+- Tab ikonları: MaterialCommunityIcons (home, line-scan, folder, folder-outline) + Ionicons (search, settings) — Feather KULLANMA tab bar'da
+- expo-glass-effect ve expo-symbols paketleri kurulu ama import edilmemeli
 
 ## Pointers
 
