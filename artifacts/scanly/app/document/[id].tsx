@@ -47,7 +47,7 @@ export default function DocumentDetailScreen() {
           <View style={styles.iconBtn} />
         </View>
         <View style={styles.notFound}>
-          <Feather name="file-x" size={40} color={C.mutedForeground} />
+          <Feather name="file" size={40} color={C.mutedForeground} />
           <Text style={styles.notFoundText}>Belge bulunamadı</Text>
         </View>
       </View>
@@ -251,12 +251,21 @@ export default function DocumentDetailScreen() {
 
             <Pressable
               style={({ pressed }) => [styles.actionBtn, { opacity: pressed ? 0.75 : 1 }]}
-              onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                if (Platform.OS !== 'web') {
+                  Alert.alert(
+                    'Metin Tanıma (OCR)',
+                    'Bu özellik yakında kullanılabilir olacak. Belgenizdeki metinler otomatik olarak tanınacak.',
+                    [{ text: 'Tamam' }]
+                  );
+                }
+              }}
             >
               <View style={styles.actionBtnIcon}>
-                <Feather name="zap" size={20} color={C.primary} />
+                <Feather name="type" size={20} color={C.primary} />
               </View>
-              <Text style={styles.actionBtnLabel}>İyileştir</Text>
+              <Text style={styles.actionBtnLabel}>Metni Tanı</Text>
             </Pressable>
           </View>
         </View>

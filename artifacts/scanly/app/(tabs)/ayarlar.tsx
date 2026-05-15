@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Alert,
   Platform,
@@ -14,6 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import colors from '@/constants/colors';
+import { useSettings } from '@/context/SettingsContext';
 
 const C = colors.light;
 
@@ -50,9 +51,7 @@ function SettingRow({ icon, iconBg, iconColor, label, value, toggle, toggleValue
 
 export default function AyarlarScreen() {
   const insets = useSafeAreaInsets();
-  const [notifications, setNotifications] = useState(true);
-  const [autoEnhance, setAutoEnhance] = useState(true);
-  const [cloudSync, setCloudSync] = useState(false);
+  const { settings, updateSetting } = useSettings();
 
   const isWeb = Platform.OS === 'web';
   const topPad = isWeb ? 67 : insets.top;
@@ -96,8 +95,8 @@ export default function AyarlarScreen() {
             iconColor={C.primary}
             label="Otomatik İyileştirme"
             toggle
-            toggleValue={autoEnhance}
-            onToggle={val => { setAutoEnhance(val); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+            toggleValue={settings.autoEnhance}
+            onToggle={val => { updateSetting('autoEnhance', val); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
           />
           <View style={styles.divider} />
           <SettingRow
@@ -127,8 +126,8 @@ export default function AyarlarScreen() {
             iconColor="#575e70"
             label="Bulut Senkronizasyonu"
             toggle
-            toggleValue={cloudSync}
-            onToggle={val => { setCloudSync(val); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+            toggleValue={false}
+            onToggle={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); Alert.alert('Yakında', 'Bulut senkronizasyonu yakında kullanılabilir olacak.', [{ text: 'Tamam' }]); }}
           />
           <View style={styles.divider} />
           <SettingRow
@@ -158,8 +157,8 @@ export default function AyarlarScreen() {
             iconColor="#555c6a"
             label="Bildirimler"
             toggle
-            toggleValue={notifications}
-            onToggle={val => { setNotifications(val); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+            toggleValue={settings.notifications}
+            onToggle={val => { updateSetting('notifications', val); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
           />
         </View>
 

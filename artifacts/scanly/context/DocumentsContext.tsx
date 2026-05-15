@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Document, Folder, MOCK_DOCUMENTS, MOCK_FOLDERS } from '@/constants/mockData';
 
@@ -8,6 +8,7 @@ interface DocumentsContextValue {
   folders: Folder[];
   addDocument: (doc: Document) => void;
   removeDocument: (id: string) => void;
+  updateDocument: (id: string, changes: Partial<Document>) => void;
   getDocumentById: (id: string) => Document | undefined;
   getDocumentsByFolder: (folderId: string) => Document[];
   searchDocuments: (query: string) => Document[];
@@ -19,7 +20,14 @@ const STORAGE_KEY = '@scanly_documents';
 
 export function DocumentsProvider({ children }: { children: React.ReactNode }) {
   const [documents, setDocuments] = useState<Document[]>(MOCK_DOCUMENTS);
-  const [folders] = useState<Folder[]>(MOCK_FOLDERS);
+  const [baseFolders] = useState<Folder[]>(MOCK_FOLDERS);
+
+  const folders = useMemo<Folder[]>(() => {
+    return baseFolders.map((f) => ({
+      ...f,
+      count: documents.filter((d) => d.folderId === f.id).length,
+    }));
+  }, [baseFolders, documents]);
 
   useEffect(() => {
     const load = async () => {
@@ -56,6 +64,14 @@ export function DocumentsProvider({ children }: { children: React.ReactNode }) {
     });
   }, [persist]);
 
+  const updateDocument = useCallback((id: string, changes: Partial<Document>) => {
+    setDocuments(prev => {
+      const next = prev.map(d => d.id === id ? { ...d, ...changes } : d);
+      persist(next);
+      return next;
+    });
+  }, [persist]);
+
   const getDocumentById = useCallback((id: string) => {
     return documents.find(d => d.id === id);
   }, [documents]);
@@ -79,6 +95,7 @@ export function DocumentsProvider({ children }: { children: React.ReactNode }) {
       folders,
       addDocument,
       removeDocument,
+      updateDocument,
       getDocumentById,
       getDocumentsByFolder,
       searchDocuments,
