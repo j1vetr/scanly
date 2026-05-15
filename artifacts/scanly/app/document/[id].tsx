@@ -254,11 +254,7 @@ export default function DocumentDetailScreen() {
               onPress={() => {
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                 if (Platform.OS !== 'web') {
-                  Alert.alert(
-                    'Metin Tanıma (OCR)',
-                    'Bu özellik yakında kullanılabilir olacak. Belgenizdeki metinler otomatik olarak tanınacak.',
-                    [{ text: 'Tamam' }]
-                  );
+                  Alert.alert('OCR', 'OCR özelliği yakında eklenecek.', [{ text: 'Tamam' }]);
                 }
               }}
             >

@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { Document, Folder, MOCK_DOCUMENTS, MOCK_FOLDERS } from '@/constants/mockData';
+import { STORAGE_KEYS } from '@/services/storageService';
 
 interface DocumentsContextValue {
   documents: Document[];
@@ -16,7 +17,7 @@ interface DocumentsContextValue {
 
 const DocumentsContext = createContext<DocumentsContextValue | null>(null);
 
-const STORAGE_KEY = '@scanly_documents';
+const STORAGE_KEY = STORAGE_KEYS.DOCUMENTS;
 
 export function DocumentsProvider({ children }: { children: React.ReactNode }) {
   const [documents, setDocuments] = useState<Document[]>(MOCK_DOCUMENTS);
