@@ -14,9 +14,16 @@
       "backgroundColor": "#f8f9fa"
     },
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Belge taramak için kameraya erişim gereklidir.",
+        "NSMicrophoneUsageDescription": "Kamera kullanımı için mikrofon izni gereklidir.",
+        "NSPhotoLibraryUsageDescription": "Galeriden belge seçmek için izin gereklidir."
+      }
     },
-    "android": {},
+    "android": {
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+    },
     "web": {
       "favicon": "./assets/images/icon.png"
     },
@@ -28,7 +35,10 @@
         }
       ],
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-camera",
+      "expo-image-picker",
+      "expo-file-system"
     ],
     "experiments": {
       "typedRoutes": true,

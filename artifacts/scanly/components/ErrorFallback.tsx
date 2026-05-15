@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import { reloadAppAsync } from "expo";
 import React, { useState } from "react";
 import {
   Modal,
@@ -24,15 +23,6 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
   const insets = useSafeAreaInsets();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const handleRestart = async () => {
-    try {
-      await reloadAppAsync();
-    } catch (restartError) {
-      console.error("Failed to restart app:", restartError);
-      resetError();
-    }
-  };
 
   const formatErrorDetails = (): string => {
     let details = `Error: ${error.message}\n\n`;
@@ -70,15 +60,15 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
 
       <View style={styles.content}>
         <Text style={[styles.title, { color: colors.foreground }]}>
-          Something went wrong
+          Bir hata oluştu
         </Text>
 
         <Text style={[styles.message, { color: colors.mutedForeground }]}>
-          Please reload the app to continue.
+          Devam etmek için uygulamayı yeniden başlatın.
         </Text>
 
         <Pressable
-          onPress={handleRestart}
+          onPress={resetError}
           style={({ pressed }) => [
             styles.button,
             {
@@ -94,7 +84,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
               { color: colors.primaryForeground },
             ]}
           >
-            Try Again
+            Tekrar Dene
           </Text>
         </Pressable>
       </View>
@@ -120,7 +110,7 @@ export function ErrorFallback({ error, resetError }: ErrorFallbackProps) {
                 ]}
               >
                 <Text style={[styles.modalTitle, { color: colors.foreground }]}>
-                  Error Details
+                  Hata Detayları
                 </Text>
                 <Pressable
                   onPress={() => setIsModalVisible(false)}
@@ -215,10 +205,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     minWidth: 200,
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
@@ -258,12 +245,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  modalScrollView: {
-    flex: 1,
-  },
-  modalScrollContent: {
-    padding: 16,
-  },
+  modalScrollView: { flex: 1 },
+  modalScrollContent: { padding: 16 },
   errorContainer: {
     width: "100%",
     borderRadius: 8,

@@ -1,8 +1,12 @@
 import { Feather } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { CameraView, CameraType, useCameraPermissions, FlashMode } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
-import React, { useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import { router } from 'expo-router';
+import React, { useRef, useState } from 'react';
 import {
+  ActivityIndicator,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -17,44 +21,185 @@ const C = colors.light;
 
 export default function CameraScreen() {
   const insets = useSafeAreaInsets();
-  const { resetScan } = useScan();
-  const [flashOn, setFlashOn] = useState(false);
+  const { setCapturedImageUri, resetScan } = useScan();
+  const [permission, requestPermission] = useCameraPermissions();
+  const [flashMode, setFlashMode] = useState<FlashMode>('off');
+  const [facing] = useState<CameraType>('back');
   const [mode, setMode] = useState<'OTOMATİK' | 'MANUEL'>('OTOMATİK');
+  const [isCapturing, setIsCapturing] = useState(false);
+  const cameraRef = useRef<CameraView>(null);
 
-  const handleCapture = () => {
+  const handleCapture = async () => {
+    if (isCapturing) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    router.push('/scanner/crop');
+    setIsCapturing(true);
+    try {
+      if (Platform.OS === 'web' || !cameraRef.current) {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: 'images',
+          quality: 0.9,
+          allowsEditing: false,
+        });
+        if (!result.canceled && result.assets[0]) {
+          setCapturedImageUri(result.assets[0].uri);
+          router.push('/scanner/crop');
+        }
+      } else {
+        const photo = await cameraRef.current.takePictureAsync({
+          quality: 0.9,
+          base64: false,
+          skipProcessing: false,
+        });
+        if (photo?.uri) {
+          setCapturedImageUri(photo.uri);
+          router.push('/scanner/crop');
+        }
+      }
+    } catch (err) {
+      console.error('Fotoğraf çekme hatası:', err);
+    } finally {
+      setIsCapturing(false);
+    }
+  };
+
+  const handleGallery = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: 'images',
+      quality: 0.9,
+      allowsEditing: false,
+    });
+    if (!result.canceled && result.assets[0]) {
+      setCapturedImageUri(result.assets[0].uri);
+      router.push('/scanner/crop');
+    }
   };
 
   const toggleFlash = () => {
-    setFlashOn(prev => !prev);
+    setFlashMode(f => (f === 'off' ? 'on' : 'off'));
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.cameraFeed}>
-        <View style={styles.cameraSimulation}>
+  if (Platform.OS !== 'web' && !permission) {
+    return (
+      <View style={styles.permContainer}>
+        <ActivityIndicator color={C.primary} />
+      </View>
+    );
+  }
+
+  if (Platform.OS !== 'web' && !permission?.granted) {
+    return (
+      <View style={[styles.permContainer, { paddingTop: insets.top + 20 }]}>
+        <View style={styles.permCard}>
+          <View style={styles.permIconWrap}>
+            <Feather name="camera" size={40} color={C.primary} />
+          </View>
+          <Text style={styles.permTitle}>Kamera İzni Gerekli</Text>
+          <Text style={styles.permDesc}>
+            Belge taramak için kameraya erişim izni gereklidir.
+          </Text>
+          <Pressable
+            style={({ pressed }) => [styles.permBtn, { opacity: pressed ? 0.88 : 1 }]}
+            onPress={requestPermission}
+          >
+            <Text style={styles.permBtnText}>İzin Ver</Text>
+          </Pressable>
+          <Pressable style={styles.permGalleryBtn} onPress={handleGallery}>
+            <Feather name="image" size={16} color={C.primary} />
+            <Text style={styles.permGalleryText}>Galeriden Seç</Text>
+          </Pressable>
+        </View>
+        <Pressable
+          style={[styles.permClose, { top: insets.top + 8 }]}
+          onPress={() => { resetScan(); router.back(); }}
+        >
+          <Feather name="x" size={22} color={C.onSurface} />
+        </Pressable>
+      </View>
+    );
+  }
+
+  if (Platform.OS === 'web') {
+    return (
+      <View style={styles.container}>
+        <View style={styles.webSimulation}>
           <View style={styles.cameraGrid}>
             {Array.from({ length: 9 }).map((_, i) => (
               <View key={i} style={styles.cameraGridCell} />
             ))}
           </View>
         </View>
+        <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
+          <View style={styles.topControls}>
+            <Pressable style={styles.iconBtn} onPress={() => { resetScan(); router.back(); }}>
+              <Feather name="x" size={22} color="#ffffff" />
+            </Pressable>
+            <View style={styles.modeToggle}>
+              {(['OTOMATİK', 'MANUEL'] as const).map(m => (
+                <Pressable
+                  key={m}
+                  style={[styles.modeBtn, mode === m && styles.modeBtnActive]}
+                  onPress={() => { setMode(m); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+                >
+                  <Text style={[styles.modeBtnText, mode === m && styles.modeBtnTextActive]}>{m}</Text>
+                </Pressable>
+              ))}
+            </View>
+            <Pressable style={styles.iconBtn} onPress={toggleFlash}>
+              <Feather name={flashMode === 'on' ? 'zap' : 'zap-off'} size={22} color={flashMode === 'on' ? '#68dba9' : '#ffffff'} />
+            </Pressable>
+          </View>
+          <View style={styles.centerFrame}>
+            <View style={styles.instructionPill}>
+              <Feather name="file-text" size={14} color="#68dba9" />
+              <Text style={styles.instructionText}>Galeriden Belge Seçin</Text>
+            </View>
+            <View style={styles.docFrame}>
+              <View style={[styles.corner, styles.cornerTL]} />
+              <View style={[styles.corner, styles.cornerTR]} />
+              <View style={[styles.corner, styles.cornerBL]} />
+              <View style={[styles.corner, styles.cornerBR]} />
+              <View style={styles.frameOverlay} />
+            </View>
+          </View>
+          <View style={[styles.bottomControls, { paddingBottom: insets.bottom + 16 }]}>
+            <Pressable style={styles.galleryBtn} onPress={handleGallery}>
+              <Feather name="image" size={24} color="#ffffff" />
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [styles.captureBtn, { transform: [{ scale: pressed ? 0.93 : 1 }] }]}
+              onPress={handleCapture}
+              disabled={isCapturing}
+            >
+              <View style={styles.captureOuter}>
+                {isCapturing
+                  ? <ActivityIndicator color="#ffffff" />
+                  : <View style={styles.captureInner} />
+                }
+              </View>
+            </Pressable>
+            <View style={styles.doneBtn} />
+          </View>
+        </View>
       </View>
+    );
+  }
 
+  return (
+    <View style={styles.container}>
+      <CameraView
+        ref={cameraRef}
+        style={StyleSheet.absoluteFill}
+        facing={facing}
+        flash={flashMode}
+        autofocus="on"
+      />
       <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
         <View style={styles.topControls}>
-          <Pressable
-            style={styles.iconBtn}
-            onPress={() => {
-              resetScan();
-              router.back();
-            }}
-          >
+          <Pressable style={styles.iconBtn} onPress={() => { resetScan(); router.back(); }}>
             <Feather name="x" size={22} color="#ffffff" />
           </Pressable>
-
           <View style={styles.modeToggle}>
             {(['OTOMATİK', 'MANUEL'] as const).map(m => (
               <Pressable
@@ -66,9 +211,8 @@ export default function CameraScreen() {
               </Pressable>
             ))}
           </View>
-
           <Pressable style={styles.iconBtn} onPress={toggleFlash}>
-            <Feather name={flashOn ? 'zap' : 'zap-off'} size={22} color={flashOn ? '#68dba9' : '#ffffff'} />
+            <Feather name={flashMode === 'on' ? 'zap' : 'zap-off'} size={22} color={flashMode === 'on' ? '#68dba9' : '#ffffff'} />
           </Pressable>
         </View>
 
@@ -87,19 +231,21 @@ export default function CameraScreen() {
         </View>
 
         <View style={[styles.bottomControls, { paddingBottom: insets.bottom + 16 }]}>
-          <Pressable style={styles.galleryBtn}>
+          <Pressable style={styles.galleryBtn} onPress={handleGallery}>
             <Feather name="image" size={24} color="#ffffff" />
           </Pressable>
-
           <Pressable
-            style={({ pressed }) => [styles.captureBtn, { transform: [{ scale: pressed ? 0.93 : 1 }] }]}
+            style={({ pressed }) => [styles.captureBtn, { transform: [{ scale: isCapturing ? 0.9 : pressed ? 0.93 : 1 }] }]}
             onPress={handleCapture}
+            disabled={isCapturing}
           >
             <View style={styles.captureOuter}>
-              <View style={styles.captureInner} />
+              {isCapturing
+                ? <ActivityIndicator color="#ffffff" size="large" />
+                : <View style={styles.captureInner} />
+              }
             </View>
           </Pressable>
-
           <Pressable
             style={styles.doneBtn}
             onPress={() => {
@@ -117,8 +263,17 @@ export default function CameraScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#000000' },
-  cameraFeed: { ...StyleSheet.absoluteFillObject, backgroundColor: '#1a1a1a' },
-  cameraSimulation: { flex: 1, backgroundColor: '#2a2a2a', opacity: 0.8 },
+  permContainer: { flex: 1, backgroundColor: C.background, alignItems: 'center', justifyContent: 'center', padding: 24 },
+  permCard: { backgroundColor: '#ffffff', borderRadius: 24, padding: 32, alignItems: 'center', gap: 16, width: '100%', maxWidth: 360, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.1, shadowRadius: 20, elevation: 8 },
+  permIconWrap: { width: 80, height: 80, borderRadius: 40, backgroundColor: `${C.primary}15`, alignItems: 'center', justifyContent: 'center' },
+  permTitle: { fontSize: 20, fontWeight: '700', color: C.onSurface, fontFamily: 'Inter_700Bold', textAlign: 'center' },
+  permDesc: { fontSize: 14, color: C.secondary, fontFamily: 'Inter_400Regular', textAlign: 'center', lineHeight: 20 },
+  permBtn: { backgroundColor: C.primary, borderRadius: 14, paddingVertical: 14, paddingHorizontal: 32, width: '100%', alignItems: 'center' },
+  permBtnText: { fontSize: 16, fontWeight: '600', color: '#ffffff', fontFamily: 'Inter_600SemiBold' },
+  permGalleryBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingVertical: 8 },
+  permGalleryText: { fontSize: 14, color: C.primary, fontFamily: 'Inter_500Medium' },
+  permClose: { position: 'absolute', right: 20, width: 42, height: 42, borderRadius: 21, backgroundColor: C.surfaceContainerLowest, alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 2 },
+  webSimulation: { ...StyleSheet.absoluteFillObject, backgroundColor: '#2a2a2a' },
   cameraGrid: { flex: 1, flexDirection: 'row', flexWrap: 'wrap' },
   cameraGridCell: { width: '33.33%', aspectRatio: 1, borderWidth: 0.3, borderColor: 'rgba(255,255,255,0.06)' },
   overlay: { ...StyleSheet.absoluteFillObject, justifyContent: 'space-between' },
