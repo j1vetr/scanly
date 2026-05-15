@@ -162,6 +162,21 @@ export default function AyarlarScreen() {
           />
         </View>
 
+        <Text style={styles.groupLabel}>GÖRÜNÜM</Text>
+        <View style={styles.group}>
+          <SettingRow
+            icon="moon"
+            iconBg="#dce2f3"
+            iconColor="#555c6a"
+            label="Tema"
+            value={settings.theme === 'dark' ? 'Koyu' : 'Açık'}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              updateSetting('theme', settings.theme === 'dark' ? 'light' : 'dark');
+            }}
+          />
+        </View>
+
         <Text style={styles.groupLabel}>BİLDİRİMLER</Text>
         <View style={styles.group}>
           <SettingRow
