@@ -161,7 +161,15 @@ export async function savePdfToDocuments(
   fileName: string
 ): Promise<string> {
   const dir = await ensureScanlyDir();
-  const destUri = dir + fileName;
+  const base = fileName.replace(/\.pdf$/i, '');
+  let candidate = `${base}.pdf`;
+  let destUri = dir + candidate;
+  const existing = await LegacyFS.getInfoAsync(destUri);
+  if (existing.exists) {
+    const ts = Date.now();
+    candidate = `${base}_${ts}.pdf`;
+    destUri = dir + candidate;
+  }
   await LegacyFS.copyAsync({ from: tempPdfUri, to: destUri });
   return destUri;
 }
