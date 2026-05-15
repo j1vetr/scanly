@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "64zIZ37ulOrbJm-NaA1xW"
+uri = "file://artifacts/scanly/assets/images/icon.png"
+type = "image"
+title = "generated_image"

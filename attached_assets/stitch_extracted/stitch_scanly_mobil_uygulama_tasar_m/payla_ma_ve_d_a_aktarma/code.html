@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Belgeyi Paylaş - Scanly</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#141b2b",
+                        "on-primary-container": "#f5fff7",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "primary-container": "#00855d",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fefcff",
+                        "primary-fixed-dim": "#68dba9",
+                        "outline": "#6d7a72",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#151c27",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#bccac0",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "primary": "#006948",
+                        "on-secondary-container": "#5c6274",
+                        "inverse-primary": "#68dba9",
+                        "on-primary-fixed": "#002114",
+                        "on-primary-fixed-variant": "#005137",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-container": "#6e7583",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-fixed-variant": "#404754",
+                        "tertiary": "#555c6a",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "tertiary-fixed": "#dce2f3",
+                        "tertiary-fixed-dim": "#c0c7d6",
+                        "secondary-container": "#d9dff5",
+                        "surface-tint": "#006c4a",
+                        "secondary": "#575e70",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#404758"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "grid-margin": "20px",
+                        "grid-gutter": "16px",
+                        "stack-md": "16px",
+                        "section-padding": "32px",
+                        "safe": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "button-text": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "button-text": ["16px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black/40 min-h-screen flex items-end justify-center sm:items-center relative font-body-md text-on-surface">
+<!-- Bottom Sheet Container -->
+<div class="bg-surface-container-lowest w-full sm:w-[400px] rounded-t-3xl sm:rounded-2xl flex flex-col shadow-[0_-4px_24px_0_rgba(87,94,112,0.15)] pb-safe relative z-10 transition-transform duration-300 transform translate-y-0">
+<!-- Drag Handle (Mobile) -->
+<div class="w-full flex justify-center pt-3 pb-1 sm:hidden">
+<div class="w-12 h-1 bg-surface-variant rounded-full"></div>
+</div>
+<!-- Header -->
+<div class="px-grid-margin pt-stack-md pb-stack-sm flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Belgeyi Paylaş</h2>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-low hover:bg-surface-variant">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<!-- Document Preview Context (Optional/Nice to have for clarity) -->
+<div class="px-grid-margin py-stack-sm mb-stack-sm">
+<div class="flex items-center p-3 bg-surface-container-low rounded-xl border border-surface-variant">
+<div class="w-10 h-10 bg-primary-container/20 rounded-lg flex items-center justify-center text-primary mr-3">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="font-button-text text-button-text text-on-surface truncate">Sözleşme_Taslağı_v2</p>
+<p class="font-label-md text-label-md text-on-surface-variant">3 Sayfa • 1.2 MB</p>
+</div>
+</div>
+</div>
+<!-- Share Options Section -->
+<div class="px-grid-margin pb-stack-lg">
+<p class="font-label-md text-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider">Format</p>
+<div class="grid grid-cols-1 gap-2">
+<!-- Option: PDF -->
+<button class="flex items-center p-3 w-full bg-surface-container-lowest hover:bg-surface-container-low border border-surface-variant rounded-xl transition-colors group text-left">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary mr-3 group-hover:text-primary group-hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</div>
+<div class="flex-1">
+<span class="font-button-text text-button-text text-on-surface block">PDF olarak Paylaş</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Orijinal kalite, tüm cihazlar</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Option: Image -->
+<button class="flex items-center p-3 w-full bg-surface-container-lowest hover:bg-surface-container-low border border-surface-variant rounded-xl transition-colors group text-left">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary mr-3 group-hover:text-primary group-hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined" data-icon="image">image</span>
+</div>
+<div class="flex-1">
+<span class="font-button-text text-button-text text-on-surface block">Görüntü olarak Paylaş</span>
+<span class="font-label-md text-label-md text-on-surface-variant">JPG formatında dışa aktar</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Option: Text (OCR) -->
+<button class="flex items-center p-3 w-full bg-surface-container-lowest hover:bg-surface-container-low border border-surface-variant rounded-xl transition-colors group text-left">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-secondary mr-3 group-hover:text-primary group-hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined" data-icon="translate">translate</span>
+</div>
+<div class="flex-1">
+<span class="font-button-text text-button-text text-on-surface block">Metin (OCR) olarak Paylaş</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Sadece metin içeriği kopyala</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="w-full h-px bg-surface-variant mb-stack-lg"></div>
+<!-- Direct Share Targets -->
+<div class="px-grid-margin pb-stack-lg">
+<p class="font-label-md text-label-md text-on-surface-variant mb-stack-md uppercase tracking-wider">Hızlı Paylaş</p>
+<div class="grid grid-cols-4 gap-grid-gutter">
+<!-- Target: WhatsApp (Generic Chat Icon for design system consistency) -->
+<button class="flex flex-col items-center justify-center group">
+<div class="w-14 h-14 rounded-2xl bg-[#25D366]/10 text-[#25D366] flex items-center justify-center mb-2 group-hover:bg-[#25D366]/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="chat" style="font-variation-settings: 'FILL' 1;">chat</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface transition-colors text-center w-full truncate">WhatsApp</span>
+</button>
+<!-- Target: Email -->
+<button class="flex flex-col items-center justify-center group">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-high text-on-surface flex items-center justify-center mb-2 group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="mail" style="font-variation-settings: 'FILL' 1;">mail</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface transition-colors text-center w-full truncate">E-posta</span>
+</button>
+<!-- Target: Save to Files -->
+<button class="flex flex-col items-center justify-center group">
+<div class="w-14 h-14 rounded-2xl bg-surface-container-high text-on-surface flex items-center justify-center mb-2 group-hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="folder_copy" style="font-variation-settings: 'FILL' 1;">folder_copy</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface transition-colors text-center w-full truncate">Dosyalar</span>
+</button>
+<!-- Target: AirDrop (Generic share/nearby icon) -->
+<button class="flex flex-col items-center justify-center group">
+<div class="w-14 h-14 rounded-2xl bg-[#007AFF]/10 text-[#007AFF] flex items-center justify-center mb-2 group-hover:bg-[#007AFF]/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="cell_tower" style="font-variation-settings: 'FILL' 1;">cell_tower</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface transition-colors text-center w-full truncate">AirDrop</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

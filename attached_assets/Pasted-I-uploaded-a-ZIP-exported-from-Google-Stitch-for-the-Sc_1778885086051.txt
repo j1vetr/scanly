@@ -1,0 +1,111 @@
+I uploaded a ZIP exported from Google Stitch for the Scanly mobile app design.
+
+Important:
+This ZIP is not a React Native project. It contains HTML/Tailwind code, screen.png files and a DESIGN.md design system.
+
+Use it only as a visual and design reference.
+
+Build a new React Native Expo app from scratch based on this ZIP.
+
+Do not build a web app.
+Do not use HTML, CSS, Tailwind CDN, DOM elements, div, span, h1, p, button or img tags.
+Do not copy the Stitch HTML directly.
+
+Use React Native / Expo components:
+- View
+- Text
+- Pressable
+- ScrollView
+- Image
+- FlatList
+- StyleSheet or NativeWind
+
+Use the screen.png files as the primary visual reference.
+Use scanly/DESIGN.md as the design system reference.
+Use the code.html files only to understand layout, colors, spacing, typography and component structure.
+
+Build the app with:
+- Expo
+- React Native
+- TypeScript
+- React Navigation
+- Mock data only
+
+Language requirement:
+The entire app interface must be in Turkish.
+All visible user-facing texts, buttons, labels, tabs, titles, empty states, settings, alerts and mock document names must be Turkish.
+Do not use English UI text inside the app.
+The code, component names and file names can be English, but the app content must be Turkish.
+
+Turkish UI examples:
+- Home: Ana Sayfa
+- Scan: Tara
+- Files: Dosyalar
+- Search: Ara
+- Settings: Ayarlar
+- Scan Document: Belge Tara
+- Recent Scans: Son Taramalar
+- Folders: Klasörler
+- Export: Dışa Aktar
+- Share: Paylaş
+- Save as PDF: PDF Olarak Kaydet
+- Enhance: İyileştir
+- Crop: Kırp
+- Retake: Yeniden Çek
+- Continue: Devam Et
+- Done: Tamam
+- Document Details: Belge Detayları
+
+No login.
+No register.
+No payment.
+No subscription.
+No Pro screen.
+No backend.
+No real camera yet.
+No real OCR yet.
+No real PDF generation yet.
+
+Required screens:
+- Splash / app start
+- Onboarding 1
+- Onboarding 2
+- Onboarding 3
+- Home filled state
+- Home empty state
+- Camera scanner mock screen
+- Edge detection / crop screen
+- Enhancement and filters screen
+- PDF preview screen
+- Document details screen
+- Search screen
+- Share and export screen
+- Settings screen
+
+Bottom navigation:
+- Ana Sayfa
+- Tara
+- Dosyalar
+- Ara
+- Ayarlar
+
+Important:
+The Stitch export may include profile/user related UI. Remove profile/account logic for now and replace Profile tab with Settings.
+
+Scanner flow:
+Ana Sayfa → Tara → Kırp → İyileştir → PDF Önizleme → Kaydet / Dışa Aktar
+
+Design requirements:
+Recreate the Stitch design as closely as possible:
+- premium minimalist mobile UI
+- emerald green primary color
+- soft white/gray background
+- rounded cards
+- soft shadows
+- clean typography
+- realistic document cards
+- polished bottom navigation
+- App Store quality visual finish
+
+First complete only the UI, navigation and mock user flow.
+After the UI is approved, we will integrate real camera, OCR and PDF generation.

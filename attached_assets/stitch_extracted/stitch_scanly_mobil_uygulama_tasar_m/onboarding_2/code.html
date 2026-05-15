@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scanly - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#141b2b",
+                        "on-primary-container": "#f5fff7",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "primary-container": "#00855d",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fefcff",
+                        "primary-fixed-dim": "#68dba9",
+                        "outline": "#6d7a72",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#151c27",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#bccac0",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "primary": "#006948",
+                        "on-secondary-container": "#5c6274",
+                        "inverse-primary": "#68dba9",
+                        "on-primary-fixed": "#002114",
+                        "on-primary-fixed-variant": "#005137",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-container": "#6e7583",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-fixed-variant": "#404754",
+                        "tertiary": "#555c6a",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "tertiary-fixed": "#dce2f3",
+                        "tertiary-fixed-dim": "#c0c7d6",
+                        "secondary-container": "#d9dff5",
+                        "surface-tint": "#006c4a",
+                        "secondary": "#575e70",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#404758"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "grid-margin": "20px",
+                        "grid-gutter": "16px",
+                        "stack-md": "16px",
+                        "section-padding": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "button-text": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "button-text": ["16px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen flex flex-col justify-between items-center text-on-background antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top area (spacer for safe zone) -->
+<div class="w-full h-safe-top pt-stack-md px-grid-margin flex justify-end">
+<button class="font-button-text text-button-text text-primary hover:opacity-80 transition-opacity">Atla</button>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center w-full px-grid-margin max-w-md mx-auto">
+<!-- Illustration -->
+<div class="w-full max-w-[280px] aspect-square mb-section-padding relative flex items-center justify-center">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-container/20 to-surface-container-highest/20 rounded-[32px] transform rotate-3"></div>
+<div class="absolute inset-0 bg-surface rounded-[32px] shadow-[0_4px_24px_0_rgba(87,94,112,0.05)] border border-surface-container-highest overflow-hidden flex items-center justify-center">
+<img alt="Illustration of paper converting to PDF" class="w-3/4 h-3/4 object-contain opacity-90 drop-shadow-sm mix-blend-multiply" data-alt="A minimalist, high-end 3D illustration depicting a crisp, physical white paper document smoothly morphing into a stylized digital PDF icon. The aesthetic is clean and modern, representing a premium productivity app in a light mode setting. Soft, diffused lighting creates ambient low-contrast shadows on an off-white background, with subtle emerald green highlights emphasizing the transformation process. The composition is airy, uncluttered, and highly professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE-89yEmb3ORcS5hBxCakdbqGfopefPnZOOIdIEp6zIksKfM7xhCqYzL0WGqGGuQbrzSV0OX5wN1s7Pr5d4rPcmJ9-1iKvM52oInkHA0kWR3msYIu7TP0iCJ9_y32IkN-hBe1OtR83iDP7drAMVJDVq3CrQjwYg2r6dq8G6LD8YaM1SMR1bwdne2c-BEsBMSDry5tiHDIbERN2oYRMGJBqxxeq25gC3jlpOyrbLn0Dv1Sg5JrU2WFRBN3b1cIrb2asYQgYXifimRmu"/>
+</div>
+</div>
+<!-- Text Content -->
+<div class="text-center flex flex-col gap-stack-sm w-full">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-on-surface">
+                PDF'e Dönüştürün
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-[320px] mx-auto">
+                Taramalarınızı kolayca profesyonel PDF dosyalarına çevirin ve yönetin.
+            </p>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="w-full px-grid-margin pb-section-padding pt-stack-lg max-w-md mx-auto flex flex-col items-center gap-stack-lg bg-background">
+<!-- Pagination Indicators -->
+<div class="flex items-center justify-center gap-2">
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+<div class="w-8 h-2 rounded-full bg-primary transition-all duration-300"></div>
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full py-4 bg-primary text-on-primary font-button-text text-button-text rounded-xl shadow-[0_4px_12px_0_rgba(0,105,72,0.15)] flex items-center justify-center hover:bg-surface-tint transition-colors active:scale-[0.98] duration-150">
+            Devam Et
+        </button>
+</div>
+</body></html>

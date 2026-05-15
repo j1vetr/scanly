@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Tara - Scanly</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#141b2b",
+                        "on-primary-container": "#f5fff7",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "primary-container": "#00855d",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fefcff",
+                        "primary-fixed-dim": "#68dba9",
+                        "outline": "#6d7a72",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#151c27",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#bccac0",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "primary": "#006948",
+                        "on-secondary-container": "#5c6274",
+                        "inverse-primary": "#68dba9",
+                        "on-primary-fixed": "#002114",
+                        "on-primary-fixed-variant": "#005137",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-container": "#6e7583",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-fixed-variant": "#404754",
+                        "tertiary": "#555c6a",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "tertiary-fixed": "#dce2f3",
+                        "tertiary-fixed-dim": "#c0c7d6",
+                        "secondary-container": "#d9dff5",
+                        "surface-tint": "#006c4a",
+                        "secondary": "#575e70",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#404758"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "grid-margin": "20px",
+                        "grid-gutter": "16px",
+                        "stack-md": "16px",
+                        "section-padding": "32px",
+                        "safe-bottom": "env(safe-area-inset-bottom, 32px)",
+                        "safe-top": "env(safe-area-inset-top, 24px)"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "button-text": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Base styles for material symbols */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Specific overlay animation for scanning feel */
+        @keyframes pulse-frame {
+            0% { box-shadow: 0 0 0 0 rgba(104, 219, 169, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(104, 219, 169, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(104, 219, 169, 0); }
+        }
+        .scan-frame-active {
+            animation: pulse-frame 2s infinite;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-black text-white h-screen w-screen overflow-hidden relative font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- 
+      Note on Navigation Suppression:
+      This is a focused, transactional scanning task. As per the "Shell Visibility & Relevance" rule, 
+      the standard TopAppBar and BottomNavBar are suppressed to prioritize the full-screen camera canvas.
+    -->
+<!-- Simulated Camera Feed Background -->
+<div class="absolute inset-0 z-0 bg-zinc-900">
+<div class="absolute inset-0 bg-cover bg-center opacity-60" data-alt="A top-down view looking through a smartphone camera viewfinder at a printed business document lying flat on a modern, dark wooden desk. The lighting is slightly dim, typical of an indoor office setting, simulating a live camera feed ready to scan a document." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD9YChuTm9wFIW8dhfrB3c8Wd13xUEIgFQRbIMS1EnP0SmIFvGd-leErDIkagP5WBoSKmCoFUEjWwIoTBdHNObHH6wvvForRn3LLEWzXhbbQkonMdiDiQXPj5dWIMUu6eTgvMgd2_Lm3KyNQiR0KDPZy1FEpXbBlDrz1UfMH01Ty15aYTP4bYq5huUupAONZETJtptSv8lNe2j_zEvwg8IsSXCw6BXtYcqumhWT47F2OgywUi5OWPbDjliKYWwg7QNLxUc-TxsNFGGD');">
+</div>
+<!-- Slight vignette for depth -->
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-black/80"></div>
+</div>
+<!-- UI Overlay Layer -->
+<div class="absolute inset-0 z-10 flex flex-col justify-between pt-safe-top pb-safe-bottom">
+<!-- Top Controls -->
+<div class="flex justify-between items-center px-grid-margin pt-stack-md pb-stack-sm">
+<!-- Close Action (Returns to previous screen) -->
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white hover:bg-black/60 transition-colors">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+<!-- Auto/Manual Toggle -->
+<div class="flex items-center bg-black/40 backdrop-blur-md rounded-full p-1 border border-white/10">
+<button class="px-4 py-1.5 rounded-full bg-white text-black font-label-md text-label-md transition-all shadow-sm">
+                    OTOMATİK
+                </button>
+<button class="px-4 py-1.5 rounded-full text-white/70 font-label-md text-label-md hover:text-white transition-all">
+                    MANUEL
+                </button>
+</div>
+<!-- Flash Toggle -->
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-md text-white hover:bg-black/60 transition-colors">
+<span class="material-symbols-outlined text-[24px]">flash_auto</span>
+</button>
+</div>
+<!-- Center Document Frame & Instructions -->
+<div class="flex-1 flex flex-col items-center justify-center px-8 relative">
+<!-- Instructions Pill -->
+<div class="absolute top-8 z-20 px-6 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[18px]">document_scanner</span>
+<span class="font-body-md text-body-md text-white tracking-wide shadow-sm">Belgeyi Çerçeveye Yerleştirin</span>
+</div>
+<!-- Document Edge Detection Frame (Simulated) -->
+<!-- Using primary-fixed-dim for high visibility against dark backgrounds -->
+<div class="w-full max-w-[320px] aspect-[3/4] relative scan-frame-active rounded-lg transition-all duration-300">
+<!-- Corner Brackets (Stylized for realism) -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary-fixed-dim rounded-tl-lg"></div>
+<div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary-fixed-dim rounded-tr-lg"></div>
+<div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary-fixed-dim rounded-bl-lg"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary-fixed-dim rounded-br-lg"></div>
+<!-- Semi-transparent overlay to indicate detection area -->
+<div class="absolute inset-0 bg-primary-fixed-dim/10 rounded-lg"></div>
+</div>
+<!-- Leveler Line (Subtle realistic detail) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 flex justify-center items-center gap-4 opacity-50">
+<div class="h-[1px] w-full bg-white"></div>
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim"></div>
+<div class="h-[1px] w-full bg-white"></div>
+</div>
+</div>
+<!-- Bottom Controls -->
+<div class="bg-gradient-to-t from-black/90 to-transparent pt-stack-lg pb-8 px-grid-margin">
+<div class="flex justify-between items-center max-w-sm mx-auto">
+<!-- Gallery Import -->
+<button class="w-14 h-14 flex flex-col items-center justify-center gap-1 text-white/80 hover:text-white transition-colors">
+<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center backdrop-blur-sm border border-white/5">
+<span class="material-symbols-outlined text-[24px]">photo_library</span>
+</div>
+</button>
+<!-- Capture Button -->
+<button class="relative group flex items-center justify-center focus:outline-none">
+<!-- Outer Ring -->
+<div class="w-[76px] h-[76px] rounded-full border-[4px] border-white/80 group-active:scale-95 transition-transform duration-150 ease-out"></div>
+<!-- Inner Circle -->
+<div class="absolute w-[60px] h-[60px] rounded-full bg-white group-active:bg-surface-container-low transition-colors duration-150 ease-out shadow-lg"></div>
+</button>
+<!-- Done/Complete Action -->
+<button class="w-14 h-14 flex flex-col items-center justify-center gap-1 text-primary-fixed-dim hover:text-primary-fixed transition-colors">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center backdrop-blur-sm border border-primary/30">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+</body></html>

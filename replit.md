@@ -1,45 +1,80 @@
-# [Project name]
+# Scanly
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Premium belge tarama uygulaması — Türkçe arayüzlü, tasarımı Google Stitch ile oluşturulmuş React Native Expo mobil uygulaması.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- `pnpm --filter @workspace/scanly run dev` — Expo geliştirme sunucusunu başlatır (port 25567)
+- `pnpm run typecheck` — tüm paketlerde tip denetimi
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Expo SDK 54 (Router 6, React Native, TypeScript)
+- Expo Router — file-based navigation
+- AsyncStorage — belge listesi ve onboarding durumu kalıcılığı
+- Feather Icons (`@expo/vector-icons`) + SF Symbols (iOS)
+- Inter font (`@expo-google-fonts/inter`)
+- Mock data only — kamera/OCR/PDF yok, backend yok, giriş yok
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+```
+artifacts/scanly/
+  app/
+    _layout.tsx          — root layout (providers + stack screens)
+    index.tsx            — onboarding yönlendirmesi
+    onboarding.tsx       — 3 slaytlı karşılama ekranı
+    (tabs)/
+      _layout.tsx        — 5 sekme (NativeTabs veya ClassicTabLayout)
+      index.tsx          — Ana Sayfa
+      scan.tsx           — Tara (tam ekran kamera mock)
+      dosyalar.tsx       — Dosyalar (klasör filtreli liste)
+      ara.tsx            — Arama ekranı
+      ayarlar.tsx        — Ayarlar
+    scanner/
+      camera.tsx         — Stack kamera ekranı (Ana Sayfa'dan açılır)
+      crop.tsx           — Kırpma + döndürme ekranı
+      enhance.tsx        — Filtreler ekranı
+      preview.tsx        — PDF önizleme + kaydetme
+      export.tsx         — Paylaşma bottom sheet (modal)
+    document/[id].tsx    — Belge detayları
+  components/
+    DocumentCard.tsx     — Grid belgesi kartı
+    FolderCard.tsx       — Klasör kartı
+  constants/
+    colors.ts            — Scanly marka renkleri (emerald yeşil #006948)
+    mockData.ts          — Türkçe mock belgeler ve klasörler
+  context/
+    DocumentsContext.tsx — Belge/klasör state + AsyncStorage
+    ScanContext.tsx      — Tarama akışı state
+```
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Onboarding durumu AsyncStorage'da `@scanly_onboarding` anahtarıyla saklanır
+- `app/(tabs)/scan.tsx` — sekme içi kamera ekranı, sekme çubuğunu gizler (`tabBarStyle: { display: 'none' }`)
+- `app/scanner/camera.tsx` — stack navigasyon kamera ekranı (Ana Sayfa'dan erişilir)
+- NativeTabs (iOS 26 liquid glass) + ClassicTabLayout (diğer platformlar) otomatik seçim
+- 5 sekme: Ana Sayfa / Tara / Dosyalar / Ara / Ayarlar — tüm etiketler Türkçe
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Scanly, kullanıcıların belgelerini kamera ile taramasını, kenar algılaması ile kırpmasını, filtreler uygulamasını, PDF önizlemesi yapmasını ve paylaşmasını sağlar. Klasörler, arama, belge detayları ve ayarlar dahildir. Tüm veriler mock veridir.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Tüm UI metinleri Türkçe
+- Tasarım sistemi: Google Stitch çıktısı (emerald yeşil #006948 birincil renk)
+- Backend yok, giriş yok, gerçek kamera/OCR/PDF yok
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- `pnpm --filter @workspace/scanly run dev` çalıştırılırken `PORT` ve `BASE_PATH` env var'ları workflow tarafından sağlanır
+- Feather icon isimleri doğrulanmalı — "receipt" ve "graduation-cap" geçersiz, alternatifler: "dollar-sign", "book-open"
+- AsyncStorage web'de çalışır ancak tarayıcıyı yenilediğinizde silinir (dev modunda)
 
 ## Pointers
 
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- Tasarım referansları: `attached_assets/stitch_extracted/stitch_scanly_mobil_uygulama_tasar_m/`
+- Renk paleti source of truth: `artifacts/scanly/constants/colors.ts`
+- Pnpm workspace yapısı için `.local/skills/pnpm-workspace` skill'ine bakın

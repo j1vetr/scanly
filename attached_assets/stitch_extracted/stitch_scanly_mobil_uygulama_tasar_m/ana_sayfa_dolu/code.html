@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scanly - Ana Sayfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#141b2b",
+                        "on-primary-container": "#f5fff7",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "primary-container": "#00855d",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fefcff",
+                        "primary-fixed-dim": "#68dba9",
+                        "outline": "#6d7a72",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#151c27",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#bccac0",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "primary": "#006948",
+                        "on-secondary-container": "#5c6274",
+                        "inverse-primary": "#68dba9",
+                        "on-primary-fixed": "#002114",
+                        "on-primary-fixed-variant": "#005137",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-container": "#6e7583",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-fixed-variant": "#404754",
+                        "tertiary": "#555c6a",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "tertiary-fixed": "#dce2f3",
+                        "tertiary-fixed-dim": "#c0c7d6",
+                        "secondary-container": "#d9dff5",
+                        "surface-tint": "#006c4a",
+                        "secondary": "#575e70",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#404758"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem",
+                        "3xl": "2rem"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "grid-margin": "20px",
+                        "grid-gutter": "16px",
+                        "stack-md": "16px",
+                        "section-padding": "32px",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "button-text": ["Inter", "sans-serif"],
+                        "display-lg-mobile": ["Inter", "sans-serif"],
+                        "headline-sm": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "button-text": ["16px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for horizontal lists */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-[80px]">
+<!-- TopAppBar -->
+<header class="docked full-width top-0 bg-background flex justify-between items-center px-grid-margin py-stack-md w-full sticky z-40">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container flex items-center justify-center">
+<img alt="Kullanıcı Profili" class="w-full h-full object-cover" data-alt="A professional headshot of a young man with dark hair, slightly smiling, wearing a clean light-colored shirt. The background is a soft, blurred studio setting. The lighting is bright and modern, matching a clean white UI aesthetic. The mood is approachable and trustworthy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx3FtsGsLfWaBzymr-anJ27qO-WpxGcStuxvifbZwfh-curY6GREjuZKka3dMODK9ohLxB9gAyh1nR9NzdfkK0456L9jEPnw-VlyMAxbSjdEm01evIdoVpspG0ebjnGz6YT7MDXMJQevU8vQSGKcTwSZkCvRTISwBYsowepHtIGFavFSFEcO8hUkUfpeRCGM3J2pp-FNgzqtLfdnvbT9b3aZODsLtdSc8lkyvLOgeokeveoO8OpV63PrlC8mha6K_PBZr-lkRch-fi"/>
+</div>
+<div>
+<p class="font-body-md text-body-md text-secondary">Merhaba,</p>
+<h1 class="font-headline-sm text-headline-sm text-on-background">Ahmet</h1>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full bg-surface-container-low flex items-center justify-center text-primary hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-grid-margin py-stack-md flex flex-col gap-section-padding">
+<!-- Main CTA Section - Glassmorphism Bento Style -->
+<section class="relative bg-primary text-on-primary rounded-3xl p-6 overflow-hidden shadow-[0_8px_24px_rgba(0,105,72,0.15)] flex flex-col items-start justify-between min-h-[160px]">
+<!-- Decorative Background Element -->
+<div class="absolute -right-8 -top-8 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="relative z-10 w-full flex justify-between items-start">
+<div>
+<h2 class="font-headline-md text-headline-md mb-1">Yeni Belge</h2>
+<p class="font-body-md text-body-md text-primary-fixed opacity-90 max-w-[200px]">Yüksek kalitede tarama yapmak için kamerayı kullanın.</p>
+</div>
+<div class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="document_scanner">document_scanner</span>
+</div>
+</div>
+<button class="relative z-10 mt-6 bg-white text-primary font-button-text text-button-text px-6 py-3 rounded-xl w-full flex items-center justify-center gap-2 hover:bg-surface-bright transition-colors shadow-sm">
+<span class="material-symbols-outlined" data-icon="add_a_photo">add_a_photo</span>
+                Belge Tara
+            </button>
+</section>
+<!-- Section 1: Son Taramalar (Recent Scans) -->
+<section class="flex flex-col gap-stack-md">
+<div class="flex justify-between items-end">
+<h3 class="font-headline-sm text-headline-sm text-on-background">Son Taramalar</h3>
+<a class="font-body-md text-body-md text-primary font-medium hover:opacity-80" href="#">Tümü</a>
+</div>
+<div class="grid grid-cols-2 gap-grid-gutter">
+<!-- Document Card 1 -->
+<div class="bg-surface rounded-2xl p-3 shadow-[0_4px_12px_rgba(87,94,112,0.05)] border border-outline-variant/30 flex flex-col gap-3">
+<div class="w-full aspect-[3/4] bg-surface-container-low rounded-xl overflow-hidden relative border border-outline-variant/20">
+<img alt="Sözleşme Taslağı" class="w-full h-full object-cover" data-alt="A clean, high-contrast flat lay of a printed legal contract resting on a bright white desk. The document has crisp black text and some formal formatting. The lighting is even and diffused, suitable for a professional document scanning app preview. The overall tone is crisp, corporate, and minimal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARln2Ra_u5xP93w_GPIr15Thc0HY3iwLFGaHdK2Qd19mNkjOHsP3mPgvrWCeXdoh6N7Jf2V_xjTf3hJR8w6LF0r6Jg8eQeTh74CtgJKOasVwqVYhRsfayJTnxCfzrCNumRhZWvSjoNCodcnE__RxwSVSdp4ZyZ9W-HbMuAM0QnS89uOqmbE6u_FGTJkQezLlsxpKfYynWn_GP2v3g9lLQ8wYKqTDcbQfyYSMe_UReA5ojUA28FqrNLJTJNOdZ4iMkxWaM9GuF-rjAh"/>
+<div class="absolute bottom-2 right-2 bg-black/40 backdrop-blur-sm rounded-md px-1.5 py-0.5 flex items-center">
+<span class="material-symbols-outlined text-white text-[12px]" data-icon="description">description</span>
+</div>
+</div>
+<div>
+<h4 class="font-button-text text-button-text text-on-surface truncate text-sm">Sözleşme Taslağı</h4>
+<p class="font-body-md text-label-md text-secondary mt-0.5">Bugün, 14:30</p>
+</div>
+</div>
+<!-- Document Card 2 -->
+<div class="bg-surface rounded-2xl p-3 shadow-[0_4px_12px_rgba(87,94,112,0.05)] border border-outline-variant/30 flex flex-col gap-3">
+<div class="w-full aspect-[3/4] bg-surface-container-low rounded-xl overflow-hidden relative border border-outline-variant/20">
+<img alt="Vergi Faturası" class="w-full h-full object-cover" data-alt="A close-up shot of a standard retail receipt or invoice lying on a light gray marble surface. The printed text is clearly visible, with numbers and itemized lists. The lighting is soft and natural, emphasizing clarity and organization within a modern workspace setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1z9b76zU1aY0P1hTojWyuf502zZarwUwfpD5u0-Svw5Y6tXemx9CkKg01Ddi47K32eipZFzRratxXsZKfyfHn-XoJd3GwGwVAzJ0LzCALfDOdCmQO9jc233U9GAl-PMTpprfiWZLXLtc5w9rbtjwWC32VNHPFtLwVAW-EcDjPRP_Zvdge8p38e0aA96NheIqze7jIbOARYUSpZnVQnUoORGpFA17WVxHZGk4UgE8GDfnFnKUmpKrPq8oIcBhNe0p773CkP4UIGiyV"/>
+<div class="absolute bottom-2 right-2 bg-black/40 backdrop-blur-sm rounded-md px-1.5 py-0.5 flex items-center">
+<span class="material-symbols-outlined text-white text-[12px]" data-icon="receipt">receipt</span>
+</div>
+</div>
+<div>
+<h4 class="font-button-text text-button-text text-on-surface truncate text-sm">Vergi Faturası</h4>
+<p class="font-body-md text-label-md text-secondary mt-0.5">Dün, 09:15</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Klasörler (Folders) - Horizontal Scroll -->
+<section class="flex flex-col gap-stack-md -mx-grid-margin px-grid-margin">
+<div class="flex justify-between items-end">
+<h3 class="font-headline-sm text-headline-sm text-on-background">Klasörler</h3>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-grid-gutter pb-4 pr-grid-margin">
+<!-- Folder Card: Faturalar -->
+<div class="min-w-[140px] bg-surface rounded-2xl p-4 shadow-[0_4px_12px_rgba(87,94,112,0.05)] border border-outline-variant/30 flex flex-col gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined fill" data-icon="folder">folder</span>
+</div>
+<div>
+<h4 class="font-button-text text-button-text text-on-surface">Faturalar</h4>
+<p class="font-body-md text-label-md text-secondary mt-0.5">12 Belge</p>
+</div>
+</div>
+<!-- Folder Card: Okul -->
+<div class="min-w-[140px] bg-surface rounded-2xl p-4 shadow-[0_4px_12px_rgba(87,94,112,0.05)] border border-outline-variant/30 flex flex-col gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 text-tertiary flex items-center justify-center">
+<span class="material-symbols-outlined fill" data-icon="school">school</span>
+</div>
+<div>
+<h4 class="font-button-text text-button-text text-on-surface">Okul</h4>
+<p class="font-body-md text-label-md text-secondary mt-0.5">45 Belge</p>
+</div>
+</div>
+<!-- Folder Card: İş -->
+<div class="min-w-[140px] bg-surface rounded-2xl p-4 shadow-[0_4px_12px_rgba(87,94,112,0.05)] border border-outline-variant/30 flex flex-col gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined fill" data-icon="work">work</span>
+</div>
+<div>
+<h4 class="font-button-text text-button-text text-on-surface">İş</h4>
+<p class="font-body-md text-label-md text-secondary mt-0.5">8 Belge</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-safe bg-surface shadow-[0_-4px_12px_0_rgba(87,94,112,0.1)] rounded-t-xl h-[72px]">
+<!-- Active Tab: Ana Sayfa -->
+<a class="flex flex-col items-center justify-center text-primary font-bold w-16 h-full gap-1 transform scale-90 duration-150" href="#">
+<div class="px-4 py-1 rounded-full bg-primary-container/20">
+<span class="material-symbols-outlined fill" data-icon="home">home</span>
+</div>
+<span class="font-label-md text-label-md">Ana Sayfa</span>
+</a>
+<!-- Inactive Tab: Tara -->
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors w-16 h-full gap-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="document_scanner">document_scanner</span>
+<span class="font-label-md text-label-md">Tara</span>
+</a>
+<!-- Inactive Tab: Dosyalar -->
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors w-16 h-full gap-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="folder">folder</span>
+<span class="font-label-md text-label-md">Dosyalar</span>
+</a>
+<!-- Inactive Tab: Ara -->
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors w-16 h-full gap-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-md text-label-md">Ara</span>
+</a>
+<!-- Inactive Tab: Profil -->
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors w-16 h-full gap-1 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profil</span>
+</a>
+</nav>
+</body></html>

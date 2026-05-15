@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scanly - Ana Sayfa</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#141b2b",
+                    "on-primary-container": "#f5fff7",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "inverse-surface": "#2e3132",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface": "#191c1d",
+                    "primary-container": "#00855d",
+                    "surface-container-low": "#f3f4f5",
+                    "secondary-fixed": "#dce2f7",
+                    "on-tertiary-container": "#fefcff",
+                    "primary-fixed-dim": "#68dba9",
+                    "outline": "#6d7a72",
+                    "surface-dim": "#d9dadb",
+                    "on-tertiary-fixed": "#151c27",
+                    "surface-variant": "#e1e3e4",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#f0f1f2",
+                    "outline-variant": "#bccac0",
+                    "on-background": "#191c1d",
+                    "surface": "#f8f9fa",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#85f8c4",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-primary": "#ffffff",
+                    "primary": "#006948",
+                    "on-secondary-container": "#5c6274",
+                    "inverse-primary": "#68dba9",
+                    "on-primary-fixed": "#002114",
+                    "on-primary-fixed-variant": "#005137",
+                    "surface-container-high": "#e7e8e9",
+                    "background": "#f8f9fa",
+                    "surface-bright": "#f8f9fa",
+                    "tertiary-container": "#6e7583",
+                    "on-surface-variant": "#3d4a42",
+                    "on-tertiary-fixed-variant": "#404754",
+                    "tertiary": "#555c6a",
+                    "surface-container": "#edeeef",
+                    "secondary-fixed-dim": "#c0c6db",
+                    "tertiary-fixed": "#dce2f3",
+                    "tertiary-fixed-dim": "#c0c7d6",
+                    "secondary-container": "#d9dff5",
+                    "surface-tint": "#006c4a",
+                    "secondary": "#575e70",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#404758"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base-unit": "4px",
+                    "stack-sm": "8px",
+                    "stack-lg": "24px",
+                    "grid-margin": "20px",
+                    "grid-gutter": "16px",
+                    "stack-md": "16px",
+                    "section-padding": "32px",
+                    "safe-bottom": "80px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter", "sans-serif"],
+                    "body-md": ["Inter", "sans-serif"],
+                    "button-text": ["Inter", "sans-serif"],
+                    "display-lg-mobile": ["Inter", "sans-serif"],
+                    "headline-sm": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "label-md": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "button-text": ["16px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "display-lg-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md antialiased pb-safe-bottom md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-background flex justify-between items-center px-grid-margin py-stack-md w-full docked top-0 z-40 sticky">
+<div class="flex items-center gap-stack-sm hover:opacity-80 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-primary text-3xl">account_circle</span>
+</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary tracking-tight">Scanly</h1>
+<div class="flex items-center hover:opacity-80 transition-opacity cursor-pointer text-primary">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+</div>
+</header>
+<!-- Main Empty State Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center px-grid-margin pb-section-padding pt-stack-lg">
+<!-- Illustration -->
+<div class="w-64 h-64 mb-stack-lg flex items-center justify-center">
+<img alt="Illustration of an empty document tray" class="w-full h-full object-contain drop-shadow-sm opacity-90 mix-blend-multiply" data-alt="A clean, minimalist 3D illustration of an empty desk tray organizer in a bright, airy setting. The style is modern corporate, utilizing a soft white and light gray palette (#F8F9FA) with very subtle, diffuse shadows that create a sense of depth without harshness. A single, floating emerald green (#006948) sparkling star accent floats above the tray, suggesting a state of readiness. The lighting is high-key and studio-quality, emphasizing a professional, trustworthy, and efficient atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgClxGd7u1lD923VggmzB486sDfSYshwIYeTfP0GRy6w67A2KYwEfJEMoZUw2_LdzjliBisnQdcgAGF1POSakJAGgAQBkn7EMXvc0O6ggm2Hi-9TEdpPmUpD0i-FgOSLStiYGKYI0sK7t-4uYT44WkONoUX3yRIaMw2v_WH_StxtIsEuyDAtI1mWIZuI243iOaUZjAuhUnQj1J5Ky7BrFP64psZdOt9t80FPbJ_GwkrxYuSU6K4uMghv_sebIJ0Xkusi1i67o6FCTr"/>
+</div>
+<!-- Typography Context -->
+<div class="text-center max-w-[280px] mb-section-padding">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-stack-sm">
+                Henüz taranmış bir belge yok.
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                İlk belgenizi taramak için aşağıdaki butona dokunun.
+            </p>
+</div>
+<!-- Primary Action -->
+<button class="bg-primary text-on-primary font-button-text text-button-text px-section-padding py-stack-md rounded-xl flex items-center gap-stack-sm shadow-sm hover:bg-primary-container hover:text-on-primary-container active:scale-95 transition-all duration-150 w-full max-w-[300px] justify-center">
+<span class="material-symbols-outlined">add_a_photo</span>
+            Hemen Tara
+        </button>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-2 pb-6 bg-surface shadow-[0_-4px_12px_0_rgba(87,94,112,0.1)] rounded-t-xl md:hidden">
+<!-- Active: Ana Sayfa -->
+<button class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 duration-150 w-16">
+<div class="px-5 py-1 bg-secondary-container rounded-full mb-1 flex items-center justify-center">
+<span class="material-symbols-outlined fill text-on-secondary-container">home</span>
+</div>
+<span class="font-label-md text-label-md">Ana Sayfa</span>
+</button>
+<!-- Inactive: Tara -->
+<button class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors rounded-lg py-1 w-16">
+<span class="material-symbols-outlined mb-1">document_scanner</span>
+<span class="font-label-md text-label-md">Tara</span>
+</button>
+<!-- Inactive: Dosyalar -->
+<button class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors rounded-lg py-1 w-16">
+<span class="material-symbols-outlined mb-1">folder</span>
+<span class="font-label-md text-label-md">Dosyalar</span>
+</button>
+<!-- Inactive: Ara -->
+<button class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors rounded-lg py-1 w-16">
+<span class="material-symbols-outlined mb-1">search</span>
+<span class="font-label-md text-label-md">Ara</span>
+</button>
+<!-- Inactive: Profil -->
+<button class="flex flex-col items-center justify-center text-secondary opacity-60 hover:bg-surface-container-low transition-colors rounded-lg py-1 w-16">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-label-md text-label-md">Profil</span>
+</button>
+</nav>
+</body></html>

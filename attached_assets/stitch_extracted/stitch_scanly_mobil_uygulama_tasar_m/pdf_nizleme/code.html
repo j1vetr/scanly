@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PDF Önizleme</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#141b2b",
+                        "on-primary-container": "#f5fff7",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "primary-container": "#00855d",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fefcff",
+                        "primary-fixed-dim": "#68dba9",
+                        "outline": "#6d7a72",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#151c27",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#bccac0",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "primary": "#006948",
+                        "on-secondary-container": "#5c6274",
+                        "inverse-primary": "#68dba9",
+                        "on-primary-fixed": "#002114",
+                        "on-primary-fixed-variant": "#005137",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-container": "#6e7583",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-fixed-variant": "#404754",
+                        "tertiary": "#555c6a",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "tertiary-fixed": "#dce2f3",
+                        "tertiary-fixed-dim": "#c0c7d6",
+                        "secondary-container": "#d9dff5",
+                        "surface-tint": "#006c4a",
+                        "secondary": "#575e70",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#404758"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "base-unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "grid-margin": "20px",
+                        "grid-gutter": "16px",
+                        "stack-md": "16px",
+                        "section-padding": "32px",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "button-text": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "button-text": ["16px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md">
+<!-- TopAppBar (Custom for PDF Preview, not standard top nav) -->
+<header class="flex justify-between items-center px-grid-margin py-stack-md w-full bg-background sticky top-0 z-10">
+<div class="flex items-center gap-stack-md">
+<button class="p-2 -ml-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-on-surface">PDF Önizleme</h1>
+</div>
+<button class="p-2 -mr-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow px-grid-margin pb-32 pt-stack-sm overflow-y-auto">
+<!-- Bento Grid for Pages -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-grid-gutter">
+<!-- Page 1 -->
+<div class="relative group rounded-2xl bg-surface-container-lowest p-2 shadow-[0_4px_12px_rgba(87,94,112,0.1)] border border-outline-variant/30 flex flex-col gap-2">
+<div class="absolute top-4 right-4 z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container-lowest border-2 border-outline-variant flex items-center justify-center text-transparent hover:border-primary">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<div class="relative aspect-[1/1.4] rounded-xl overflow-hidden bg-surface-container-low flex items-center justify-center">
+<img alt="Document Page 1" class="object-cover w-full h-full opacity-90" data-alt="A close-up shot of a crisp, white document page filled with formal text and tables, typical of a professional contract or financial report. The lighting is bright, even, and highly professional, creating a clean 'light-mode' aesthetic. Soft shadows hint at the document resting on a pristine, minimalist surface. Subtle emerald green accents are faintly visible in the document header, tying into a corporate branding style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAne50xd-pR01actMKIwuZ3z9CmfWvBrk_CCcoMPqckIenjV08tHZreedFCn_Krg9kFAFHf21XUqDmajMa-2swKw-oMFn_VNuGpkC3php_lPBkTFIu4UZE3IAiqgfe-D6Opjv1SwpWtImehNB5CMebFYFEEUuXZwZ35_BpCSDqvxunKfbgMC6x8pjAZmLhuZVmbUqZ_ybb70pmc0KlEdqep1CJ6YnmTYFGHxwOX6oDH1cVVf7TInjB12hyaXXrk-k1meisWsOSAn3-A"/>
+</div>
+<div class="text-center font-label-md text-label-md text-secondary">Sayfa 1</div>
+</div>
+<!-- Page 2 -->
+<div class="relative group rounded-2xl bg-surface-container-lowest p-2 shadow-[0_4px_12px_rgba(87,94,112,0.1)] border border-outline-variant/30 flex flex-col gap-2">
+<div class="absolute top-4 right-4 z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container-lowest border-2 border-outline-variant flex items-center justify-center text-transparent hover:border-primary">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+</div>
+<div class="relative aspect-[1/1.4] rounded-xl overflow-hidden bg-surface-container-low flex items-center justify-center">
+<img alt="Document Page 2" class="object-cover w-full h-full opacity-90" data-alt="A detailed view of a second document page, showing intricate charts and graphs alongside dense paragraphs of text. The aesthetic matches a high-end business proposal. The environment is flooded with soft, high-key white light, eliminating harsh shadows and emphasizing clarity. The visual style is modern minimalist, relying heavily on stark whites and subtle grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCI0QDb2jUfpoUFDYpOFbzv7jCvShaGp83RKMOLj0c8zrew2vMfYd4vYfunFD2wNoWPq_8U9AVMOZtgKzCTUDg3inVUhZ0i6qOEYas3IrzaNQBCO9mstGM9BdyxdqKeo99mGU-QCMm1G01kJi3eb_mUzt5WEMEd5oOxsCkhbVklV6nkIuvANzH5T9jrkF8wFnsNDfVP_nOTbTTG-mmvCYdrSHG4hroMp0fzdcUsP6U8O5_7jaq-jfoGptF8HQDp-jw5OQHHXPpv9gXC"/>
+</div>
+<div class="text-center font-label-md text-label-md text-secondary">Sayfa 2</div>
+</div>
+<!-- Page 3 -->
+<div class="relative group rounded-2xl bg-surface-container-lowest p-2 shadow-[0_4px_12px_rgba(87,94,112,0.1)] border border-primary ring-1 ring-primary flex flex-col gap-2">
+<div class="absolute top-4 right-4 z-10">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<div class="relative aspect-[1/1.4] rounded-xl overflow-hidden bg-surface-container-low flex items-center justify-center">
+<img alt="Document Page 3" class="object-cover w-full h-full opacity-90" data-alt="A third document page featuring an appendix or concluding signatures, photographed from a slightly overhead, flat-lay perspective. The document is perfectly aligned, resting on a barely perceptible pale gray background. The lighting is diffused and luminous, consistent with a premium productivity tool interface. The crispness of the text conveys trustworthiness and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG9WVn8e69VOChKYcFPoVdT-g0qqIJQwSxfd_M2RbydhemxDVaWOLbqG8nGuUuTjdIg8oP3U14yg6_7zYRh3RSWxNpQiZowZXTerF6NKWvhVEHjhe83dPYlUH65QDqq3vLbIcBLC5kLAXDJhvOEwI4JDQCwrwOyY2QjV2hk35q94qfz0vDFXvRLuvTRccbnAo6G4CW51hzbGYt8u561WXNVU7Lbtfkbk0EmNOKGoUOO9QW9k2unNH-nwFshgxMB6e_b2kZIp3H8Lom"/>
+</div>
+<div class="text-center font-label-md text-label-md text-primary font-bold">Sayfa 3</div>
+</div>
+<!-- Add New Page Card -->
+<button class="relative group rounded-2xl bg-surface-container-low p-2 border-2 border-dashed border-outline-variant/50 hover:border-primary hover:bg-surface-container transition-all flex flex-col gap-2 items-center justify-center min-h-[200px]">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm mb-2">
+<span class="material-symbols-outlined text-[24px]">add</span>
+</div>
+<span class="font-button-text text-button-text text-primary">Yeni Sayfa</span>
+</button>
+</div>
+</main>
+<!-- Bottom Actions Container (Floating above safe area) -->
+<div class="fixed bottom-0 left-0 w-full z-50 px-grid-margin pb-safe pt-4 bg-gradient-to-t from-background via-background to-transparent pointer-events-none">
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0_-4px_24px_0_rgba(87,94,112,0.15)] border border-outline-variant/20 p-2 mb-grid-margin pointer-events-auto flex justify-between items-center max-w-md mx-auto">
+<button class="flex flex-col items-center justify-center p-2 min-w-[72px] text-on-surface-variant hover:text-primary transition-colors group">
+<div class="w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-primary-container/10 mb-1">
+<span class="material-symbols-outlined">add_photo_alternate</span>
+</div>
+<span class="font-label-md text-label-md">Sayfa Ekle</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 min-w-[72px] text-on-surface-variant hover:text-primary transition-colors group">
+<div class="w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-primary-container/10 mb-1">
+<span class="material-symbols-outlined">reorder</span>
+</div>
+<span class="font-label-md text-label-md">Sırala</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 min-w-[72px] text-primary transition-colors group">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm mb-1">
+<span class="material-symbols-outlined">ios_share</span>
+</div>
+<span class="font-label-md text-label-md font-bold">Dışa Aktar</span>
+</button>
+<button class="flex flex-col items-center justify-center p-2 min-w-[72px] text-on-surface-variant hover:text-primary transition-colors group">
+<div class="w-10 h-10 rounded-full flex items-center justify-center group-hover:bg-primary-container/10 mb-1">
+<span class="material-symbols-outlined">share</span>
+</div>
+<span class="font-label-md text-label-md">Paylaş</span>
+</button>
+</div>
+</div>
+</body></html>

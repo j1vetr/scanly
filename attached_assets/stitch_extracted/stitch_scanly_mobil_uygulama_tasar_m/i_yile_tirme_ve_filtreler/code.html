@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Belgeyi Düzenle</title>
+<!-- Google Fonts: Inter & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed": "#141b2b",
+                        "on-primary-container": "#f5fff7",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "primary-container": "#00855d",
+                        "surface-container-low": "#f3f4f5",
+                        "secondary-fixed": "#dce2f7",
+                        "on-tertiary-container": "#fefcff",
+                        "primary-fixed-dim": "#68dba9",
+                        "outline": "#6d7a72",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#151c27",
+                        "surface-variant": "#e1e3e4",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "outline-variant": "#bccac0",
+                        "on-background": "#191c1d",
+                        "surface": "#f8f9fa",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary": "#ffffff",
+                        "primary": "#006948",
+                        "on-secondary-container": "#5c6274",
+                        "inverse-primary": "#68dba9",
+                        "on-primary-fixed": "#002114",
+                        "on-primary-fixed-variant": "#005137",
+                        "surface-container-high": "#e7e8e9",
+                        "background": "#f8f9fa",
+                        "surface-bright": "#f8f9fa",
+                        "tertiary-container": "#6e7583",
+                        "on-surface-variant": "#3d4a42",
+                        "on-tertiary-fixed-variant": "#404754",
+                        "tertiary": "#555c6a",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "tertiary-fixed": "#dce2f3",
+                        "tertiary-fixed-dim": "#c0c7d6",
+                        "secondary-container": "#d9dff5",
+                        "surface-tint": "#006c4a",
+                        "secondary": "#575e70",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#404758"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "base-unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "24px",
+                        "grid-margin": "20px",
+                        "grid-gutter": "16px",
+                        "stack-md": "16px",
+                        "section-padding": "32px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "button-text": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+                        "button-text": ["16px", { lineHeight: "20px", fontWeight: "600" }],
+                        "display-lg-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "headline-sm": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.01em", fontWeight: "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md h-screen flex flex-col overflow-hidden antialiased selection:bg-primary/20">
+<!-- Top Navigation (Task-focused, so no global nav) -->
+<header class="flex justify-between items-center px-grid-margin py-stack-md shrink-0 bg-background/80 backdrop-blur-md z-20">
+<button aria-label="Geri" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface shadow-sm border border-outline-variant/30 text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-on-background tracking-tight">Filtreler</h1>
+<button aria-label="Kırp" class="w-10 h-10 flex items-center justify-center rounded-full bg-surface shadow-sm border border-outline-variant/30 text-on-surface hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">crop</span>
+</button>
+</header>
+<!-- Main Canvas: Document Preview -->
+<main class="flex-1 px-grid-margin pb-stack-md min-h-0 relative flex flex-col justify-center">
+<!-- Document Container with Ambient Shadow -->
+<div class="h-full w-full max-h-[530px] bg-surface rounded-[24px] shadow-[0_8px_32px_0_rgba(87,94,112,0.08)] overflow-hidden flex items-center justify-center p-4 border border-outline-variant/20 relative mx-auto max-w-md">
+<!-- The Scanned Document Image -->
+<img alt="Scanned Document Preview" class="max-h-full max-w-full object-contain shadow-sm border border-surface-variant transition-all duration-300 contrast-125 brightness-105" data-alt="A top-down close-up view of a professional, printed Turkish business invoice resting on a clean, light grey surface. The document features crisp black typography, clear tabular data, and a subtle corporate logo at the top left. The lighting is bright, even, and studio-quality, casting a very soft, minimal shadow beneath the paper, emphasizing a modern, high-contrast, minimalist aesthetic typical of a premium scanning application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGH5hAA9rk5yIChi__T2p5wx3quYxDhFIKOlD8F4MU00k2Rbzk5S7FsT5bgSdLlKSna1sTx4HE-dzRZlfkztRBRGOdgoz93EVe_hKoovSC56FGz5FHo_vreNDWssYzGzhU-XP0U1xCvpsCeK5JHD6my0W0tCSINGPbQpiBdiZvnAXNDThfCRHV61Er3JjRD-3__M5jBmAslOc5ZSnfrB-zGYSS2MTLSUo8vC97n95LKylc3HZycMJgDSxrrjfd3HbSIA4cDOLTDeVV"/>
+<!-- Scanning HUD overlay (subtle) -->
+<div class="absolute inset-0 pointer-events-none rounded-[24px] border-[1px] border-primary/10"></div>
+</div>
+</main>
+<!-- Bottom Action Panel (Filters & Save) -->
+<section class="bg-surface rounded-t-[32px] px-grid-margin pt-stack-lg pb-safe shadow-[0_-8px_24px_0_rgba(87,94,112,0.06)] shrink-0 z-10 border-t border-outline-variant/10 flex flex-col gap-stack-lg">
+<!-- Horizontal Scrollable Filter Menu -->
+<div class="flex overflow-x-auto gap-grid-gutter no-scrollbar snap-x snap-mandatory pb-2">
+<!-- Filter: Orijinal (Inactive) -->
+<button class="flex flex-col items-center gap-stack-sm snap-start shrink-0 group">
+<div class="w-[72px] h-[90px] rounded-[16px] overflow-hidden border border-outline-variant/40 p-[3px] group-active:scale-95 transition-transform">
+<div class="w-full h-full bg-surface-container-low rounded-[12px] bg-cover bg-center" data-alt="A miniature thumbnail preview showing a slightly raw, unedited version of a business invoice, simulating the 'Original' filter state with neutral, flat lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDiGPMaJRdtPnrctibLoDqQjemovFDNqpd_rn7flrfKd8xdTO3_eEJtEPQVB2D2Rof_OJYIYAdBQCR0o0q0MEwNqp0w4PKdD8Ns2oumFYfnXpanR9pEAt3KID4BrksG8TDE52h9UzNtsTGRNwyBCyc8vaeNFWIpN_ilQ_tJNqoqCOdqPSVc2tYcZ8-ywTbRA1YIHRPKC1iq8Y_j6blKDjgPIfIWEHAIue5xQ0JggB51DWhEsZFmFFzniQr_DlgDuJTHykNbdXvngcHh');"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Orijinal</span>
+</button>
+<!-- Filter: Temiz (Active) -->
+<button class="flex flex-col items-center gap-stack-sm snap-start shrink-0 group">
+<div class="w-[72px] h-[90px] rounded-[16px] overflow-hidden border-[2.5px] border-primary p-[2px] shadow-sm shadow-primary/20 group-active:scale-95 transition-transform">
+<div class="w-full h-full bg-surface-container-low rounded-[10px] bg-cover bg-center contrast-125 brightness-105" data-alt="A miniature thumbnail preview showing a highly enhanced, high-contrast version of a business invoice, simulating the 'Clean' filter state with stark whites and deep blacks." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBGRJcwtebM19gH0-_y_rlG-vXoJDnWRDD_O5VzHoRh93Dp0ue6VwviG_BbEmZEw5gJa6DTHfwAALcBdodleRBJkCOz50PmJOqiDmCi_Z1HQl96lPzpwuwTvQVXNApIhSnbfdojXW5hU_YegwuHIlw4FD8-LXAlxNU4_aTISLnm2q9wErg8c_1q8TWPOtP_zk6AkK4UPP6wvJl1-hSBNVPGkVlGRUEUlDNKAUjoskAcBM8MgEKsmFvlKfRazr18NW8EaI83pCNzdC4p');"></div>
+</div>
+<span class="font-label-md text-label-md text-primary font-bold">Temiz</span>
+</button>
+<!-- Filter: Parlak (Inactive) -->
+<button class="flex flex-col items-center gap-stack-sm snap-start shrink-0 group">
+<div class="w-[72px] h-[90px] rounded-[16px] overflow-hidden border border-outline-variant/40 p-[3px] group-active:scale-95 transition-transform">
+<div class="w-full h-full bg-surface-container-low rounded-[12px] bg-cover bg-center brightness-125" data-alt="A miniature thumbnail preview showing an over-illuminated version of a business invoice, simulating the 'Bright' filter state." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDDyTjA-Rm9iBidYu6Y85RV5D6YPSb6CPq7Lv3_cjDDVmMg10kEFyzvlrUJ0cw2SSHA5MJXjys1LAsSyORa_hVexFZ9xsf2_RbEXACRaX3-9iCBE9-eA_NyiKBlJF3qtZ1hAB1zv51jUR8FP3tYVNdcOlPp3PcKLKk1TxKye4KGmWR30BoQh94Z916LJC46a-WKZfB8wG_SVuKwEN7l6J6wk2LFAajiN2ekxpkOe_RbBHfGKPsJfzbEGFdjY9Xq3UXRwtDYULIfk6yt');"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Parlak</span>
+</button>
+<!-- Filter: Gri Tonlama (Inactive) -->
+<button class="flex flex-col items-center gap-stack-sm snap-start shrink-0 group">
+<div class="w-[72px] h-[90px] rounded-[16px] overflow-hidden border border-outline-variant/40 p-[3px] group-active:scale-95 transition-transform">
+<div class="w-full h-full bg-surface-container-low rounded-[12px] bg-cover bg-center grayscale" data-alt="A miniature thumbnail preview showing a purely grayscale, desaturated version of a business invoice, simulating the 'Grayscale' filter state." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDSbRdK0TWADY6VuxvqQw3eHCxrUPriqIkSKOq17HfXVysHc5dWIZ8NznKz3WK8WCbfCr0kLk9_mzdmsZAZoM-Wenq7uLnka9GSduyJR1jeed0Z4EYWeXYziSBeIghAYO5oyCDCuRuDmlNJRFahYo2UMMpeu7huP8uE-IROGm8MwGXD1ZEi88AQakshZohkhkSKX1KJFWIhkdx3Czkd6slCvzRT_G_jZVnWM5nlqJW0PohPIlHjglW_HQVDngXvyhTTjX4c3I24jpnI');"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Gri Tonlama</span>
+</button>
+<!-- Filter: Siyah & Beyaz (Inactive) -->
+<button class="flex flex-col items-center gap-stack-sm snap-start shrink-0 group">
+<div class="w-[72px] h-[90px] rounded-[16px] overflow-hidden border border-outline-variant/40 p-[3px] group-active:scale-95 transition-transform">
+<div class="w-full h-full bg-surface-container-low rounded-[12px] bg-cover bg-center grayscale contrast-150" data-alt="A miniature thumbnail preview showing a stark, two-tone black and white version of a business invoice, simulating the 'Black &amp; White' filter state with no midtones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAjekoEAVSWtWyq2Qb2y4ed_7JPZ4m_I1TEQiXcSaUBY9A426mQ9BWQa7OZq-x0LPtFR9esfbDMtjIxY1LHnyhGBWKASEsj8FcJAx3VXWavBvBRNkqPSIbtkKCkTdG58YoGZeoxEs1WOQzuysUOG4SOyzWilv3BrqWVOEJJZTxXtpLy9Vq00Mnt0HWt2dNOXfX-KyCa-UBXzKVKkR_Wm_dCD-6OYeHjDNZ2DbQIP_bnXi-5_54DBEblTuQJ5LV9JHlylhtnGVwXUcMh');"></div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant whitespace-nowrap">Siyah &amp; Beyaz</span>
+</button>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full bg-primary text-on-primary font-button-text text-button-text py-[18px] rounded-[16px] flex items-center justify-center gap-3 shadow-lg shadow-primary/20 hover:bg-primary-fixed-variant active:scale-[0.98] transition-all mb-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+            PDF Olarak Kaydet
+        </button>
+</section>
+</body></html>
