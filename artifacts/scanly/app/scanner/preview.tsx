@@ -282,12 +282,23 @@ export default function PreviewScreen() {
 
         <View style={styles.actionRow}>
           <Pressable
+            style={({ pressed }) => [styles.addPageBtn, { opacity: pressed ? 0.85 : 1 }]}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              setGeneratedPdfUri(null);
+              router.push('/scanner/camera');
+            }}
+            disabled={isSaving}
+          >
+            <Feather name="plus" size={18} color={C.primary} />
+            <Text style={styles.addPageBtnText}>Sayfa Ekle</Text>
+          </Pressable>
+          <Pressable
             style={({ pressed }) => [styles.shareBtn, { opacity: (pressed || isSharing) ? 0.85 : 1 }]}
             onPress={handleShare}
             disabled={isSharing || isSaving}
           >
-            {isSharing ? <ActivityIndicator color={C.primary} size="small" /> : <Feather name="share-2" size={20} color={C.primary} />}
-            <Text style={styles.shareBtnText}>Paylaş</Text>
+            {isSharing ? <ActivityIndicator color={C.primary} size="small" /> : <Feather name="share-2" size={18} color={C.primary} />}
           </Pressable>
           <Pressable
             style={({ pressed }) => [styles.saveBtn, { opacity: (pressed || isSaving || isGenerating) ? 0.88 : 1, transform: [{ scale: pressed ? 0.97 : 1 }] }]}
@@ -378,8 +389,10 @@ const styles = StyleSheet.create({
   infoRow: { flexDirection: 'row', gap: 8 },
   infoBadge: { flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: C.surfaceContainerLow, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
   infoBadgeText: { fontSize: 12, color: C.secondary, fontFamily: 'Inter_400Regular' },
-  actionRow: { flexDirection: 'row', gap: 12 },
-  shareBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderRadius: 14, paddingVertical: 14, borderWidth: 1.5, borderColor: C.primary, backgroundColor: 'transparent' },
+  actionRow: { flexDirection: 'row', gap: 10 },
+  addPageBtn: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 5, borderRadius: 14, paddingVertical: 14, borderWidth: 1.5, borderColor: C.primary, backgroundColor: 'transparent' },
+  addPageBtnText: { fontSize: 13, fontWeight: '600', color: C.primary, fontFamily: 'Inter_600SemiBold' },
+  shareBtn: { width: 52, alignItems: 'center', justifyContent: 'center', borderRadius: 14, paddingVertical: 14, borderWidth: 1.5, borderColor: C.outlineVariant, backgroundColor: 'transparent' },
   shareBtnText: { fontSize: 15, fontWeight: '600', color: C.primary, fontFamily: 'Inter_600SemiBold' },
   saveBtn: { flex: 2, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, borderRadius: 14, paddingVertical: 14, backgroundColor: C.primary, shadowColor: C.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 10, elevation: 4 },
   saveBtnText: { fontSize: 15, fontWeight: '600', color: '#ffffff', fontFamily: 'Inter_600SemiBold' },

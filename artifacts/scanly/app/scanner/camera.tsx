@@ -21,13 +21,15 @@ const C = colors.light;
 
 export default function CameraScreen() {
   const insets = useSafeAreaInsets();
-  const { setCapturedImageUri, resetScan } = useScan();
+  const { setCapturedImageUri, addCapturedImage, capturedImages, resetScan } = useScan();
   const [permission, requestPermission] = useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>('off');
   const [facing] = useState<CameraType>('back');
   const [mode, setMode] = useState<'OTOMATİK' | 'MANUEL'>('OTOMATİK');
   const [isCapturing, setIsCapturing] = useState(false);
   const cameraRef = useRef<CameraView>(null);
+
+  const isMultiPage = capturedImages.length > 0;
 
   const handleCapture = async () => {
     if (isCapturing) return;
@@ -41,8 +43,13 @@ export default function CameraScreen() {
           allowsEditing: false,
         });
         if (!result.canceled && result.assets[0]) {
-          setCapturedImageUri(result.assets[0].uri);
-          router.push('/scanner/crop');
+          if (isMultiPage) {
+            addCapturedImage(result.assets[0].uri);
+            router.replace('/scanner/preview');
+          } else {
+            setCapturedImageUri(result.assets[0].uri);
+            router.push('/scanner/crop');
+          }
         }
       } else {
         const photo = await cameraRef.current.takePictureAsync({
@@ -51,8 +58,13 @@ export default function CameraScreen() {
           skipProcessing: false,
         });
         if (photo?.uri) {
-          setCapturedImageUri(photo.uri);
-          router.push('/scanner/crop');
+          if (isMultiPage) {
+            addCapturedImage(photo.uri);
+            router.replace('/scanner/preview');
+          } else {
+            setCapturedImageUri(photo.uri);
+            router.push('/scanner/crop');
+          }
         }
       }
     } catch (err) {
@@ -70,8 +82,13 @@ export default function CameraScreen() {
       allowsEditing: false,
     });
     if (!result.canceled && result.assets[0]) {
-      setCapturedImageUri(result.assets[0].uri);
-      router.push('/scanner/crop');
+      if (isMultiPage) {
+        addCapturedImage(result.assets[0].uri);
+        router.replace('/scanner/preview');
+      } else {
+        setCapturedImageUri(result.assets[0].uri);
+        router.push('/scanner/crop');
+      }
     }
   };
 
@@ -132,8 +149,10 @@ export default function CameraScreen() {
         </View>
         <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
           <View style={styles.topControls}>
-            <Pressable style={styles.iconBtn} onPress={() => { resetScan(); router.back(); }}>
-              <Feather name="x" size={22} color="#ffffff" />
+            <Pressable style={styles.iconBtn} onPress={() => {
+              if (isMultiPage) { router.back(); } else { resetScan(); router.back(); }
+            }}>
+              <Feather name={isMultiPage ? 'arrow-left' : 'x'} size={22} color="#ffffff" />
             </Pressable>
             <View style={styles.modeToggle}>
               {(['OTOMATİK', 'MANUEL'] as const).map(m => (
@@ -150,10 +169,16 @@ export default function CameraScreen() {
               <Feather name={flashMode === 'on' ? 'zap' : 'zap-off'} size={22} color={flashMode === 'on' ? '#68dba9' : '#ffffff'} />
             </Pressable>
           </View>
+          {isMultiPage && (
+            <View style={styles.pageCountBadge}>
+              <Feather name="layers" size={13} color="#ffffff" />
+              <Text style={styles.pageCountText}>{capturedImages.length} sayfa</Text>
+            </View>
+          )}
           <View style={styles.centerFrame}>
             <View style={styles.instructionPill}>
               <Feather name="file-text" size={14} color="#68dba9" />
-              <Text style={styles.instructionText}>Galeriden Belge Seçin</Text>
+              <Text style={styles.instructionText}>{isMultiPage ? `Sayfa ${capturedImages.length + 1} — Galeriden Seçin` : 'Galeriden Belge Seçin'}</Text>
             </View>
             <View style={styles.docFrame}>
               <View style={[styles.corner, styles.cornerTL]} />
@@ -197,8 +222,10 @@ export default function CameraScreen() {
       />
       <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
         <View style={styles.topControls}>
-          <Pressable style={styles.iconBtn} onPress={() => { resetScan(); router.back(); }}>
-            <Feather name="x" size={22} color="#ffffff" />
+          <Pressable style={styles.iconBtn} onPress={() => {
+            if (isMultiPage) { router.back(); } else { resetScan(); router.back(); }
+          }}>
+            <Feather name={isMultiPage ? 'arrow-left' : 'x'} size={22} color="#ffffff" />
           </Pressable>
           <View style={styles.modeToggle}>
             {(['OTOMATİK', 'MANUEL'] as const).map(m => (
@@ -215,11 +242,17 @@ export default function CameraScreen() {
             <Feather name={flashMode === 'on' ? 'zap' : 'zap-off'} size={22} color={flashMode === 'on' ? '#68dba9' : '#ffffff'} />
           </Pressable>
         </View>
+        {isMultiPage && (
+          <View style={styles.pageCountBadge}>
+            <Feather name="layers" size={13} color="#ffffff" />
+            <Text style={styles.pageCountText}>{capturedImages.length} sayfa</Text>
+          </View>
+        )}
 
         <View style={styles.centerFrame}>
           <View style={styles.instructionPill}>
             <Feather name="file-text" size={14} color="#68dba9" />
-            <Text style={styles.instructionText}>Belgeyi Çerçeveye Yerleştirin</Text>
+            <Text style={styles.instructionText}>{isMultiPage ? `Sayfa ${capturedImages.length + 1} — Belgeyi Çerçeveye Yerleştirin` : 'Belgeyi Çerçeveye Yerleştirin'}</Text>
           </View>
           <View style={styles.docFrame}>
             <View style={[styles.corner, styles.cornerTL]} />
@@ -295,6 +328,8 @@ const styles = StyleSheet.create({
   cornerBR: { bottom: 0, right: 0, borderLeftWidth: 0, borderTopWidth: 0, borderBottomRightRadius: 6 },
   frameOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(104,219,169,0.06)', borderRadius: 4 },
   bottomControls: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 48, paddingTop: 24, backgroundColor: 'rgba(0,0,0,0.6)' },
+  pageCountBadge: { flexDirection: 'row', alignItems: 'center', gap: 5, alignSelf: 'center', backgroundColor: 'rgba(0,105,72,0.7)', borderRadius: 20, paddingHorizontal: 12, paddingVertical: 4, marginTop: 6 },
+  pageCountText: { fontSize: 12, color: '#ffffff', fontWeight: '600' },
   galleryBtn: { width: 52, height: 52, borderRadius: 26, backgroundColor: 'rgba(255,255,255,0.12)', alignItems: 'center', justifyContent: 'center' },
   captureBtn: { alignItems: 'center', justifyContent: 'center' },
   captureOuter: { width: 76, height: 76, borderRadius: 38, borderWidth: 4, borderColor: 'rgba(255,255,255,0.8)', alignItems: 'center', justifyContent: 'center' },

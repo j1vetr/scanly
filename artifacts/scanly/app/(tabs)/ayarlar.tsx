@@ -113,13 +113,26 @@ export default function AyarlarScreen() {
             iconBg={`${C.primary}18`}
             iconColor={C.primary}
             label="Varsayılan Format"
-            value="PDF"
-            onPress={() => handlePress('Format')}
+            value={settings.defaultFormat}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              updateSetting('defaultFormat', settings.defaultFormat === 'PDF' ? 'JPG' : 'PDF');
+            }}
           />
         </View>
 
         <Text style={styles.groupLabel}>DEPOLAMA</Text>
         <View style={styles.group}>
+          <SettingRow
+            icon="save"
+            iconBg="#d9dff5"
+            iconColor="#575e70"
+            label="Cihaza Kaydet"
+            toggle
+            toggleValue={settings.saveToDevice}
+            onToggle={val => { updateSetting('saveToDevice', val); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+          />
+          <View style={styles.divider} />
           <SettingRow
             icon="cloud"
             iconBg="#d9dff5"

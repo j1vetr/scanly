@@ -4,13 +4,19 @@ import { Platform } from 'react-native';
 
 import { FilterType } from '@/context/ScanContext';
 
+const DEFAULT_TITLE_REGEX = /^Belge Tarama \d{2}\.\d{2}\.\d{4}$/;
+
+export function isDefaultTitle(title: string): boolean {
+  return !title || title === 'Yeni Belge' || DEFAULT_TITLE_REGEX.test(title);
+}
+
 export function generateFileName(title?: string): string {
   const today = new Date();
   const y = today.getFullYear();
   const m = String(today.getMonth() + 1).padStart(2, '0');
   const d = String(today.getDate()).padStart(2, '0');
   const dateStr = `${y}-${m}-${d}`;
-  if (title && title !== 'Yeni Belge') {
+  if (title && !isDefaultTitle(title)) {
     const safeName = title.replace(/[^\w\u00C0-\u024F\s]/g, '_').replace(/\s+/g, '_');
     return `${safeName}_${dateStr}.pdf`;
   }

@@ -37,7 +37,10 @@ export function ScanProvider({ children }: { children: React.ReactNode }) {
   const handleSetCapturedImageUri = useCallback((uri: string | null) => {
     setCapturedImageUri(uri);
     if (uri) {
-      setCapturedImages((prev) => (prev.length === 0 ? [uri] : prev));
+      setCapturedImages((prev) => {
+        if (prev.length === 0) return [uri];
+        return [uri, ...prev.slice(1)];
+      });
     }
   }, []);
 
