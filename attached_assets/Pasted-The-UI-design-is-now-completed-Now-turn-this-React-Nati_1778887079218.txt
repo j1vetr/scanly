@@ -1,0 +1,136 @@
+The UI design is now completed.
+
+Now turn this React Native Expo UI into a working MVP mobile app.
+
+Important:
+Keep the existing design exactly as it is.
+Do not redesign the UI.
+Do not change the colors, spacing, typography, cards, navigation or screen layouts.
+Only add real app functionality step by step.
+
+App language:
+The entire visible app interface must remain Turkish.
+
+MVP functionality to implement now:
+
+1. Real Camera Integration
+- Integrate Expo Camera or the best compatible camera package for this project.
+- The “Tara” screen should open the real camera.
+- Add camera permission handling in Turkish.
+- Keep the existing premium camera UI overlay.
+- Keep flash toggle.
+- Keep gallery import button.
+- Keep Auto / Manuel mode UI.
+- When the user taps the scan button, capture the photo and navigate to the crop screen.
+
+2. Gallery Import
+- Allow the user to select an image from the device gallery.
+- After selecting an image, navigate to the crop screen.
+
+3. Crop / Edge Detection Screen
+- For now, show the captured image on the crop screen.
+- Keep the current crop UI with corner points.
+- If real edge detection is difficult, keep manual crop UI as a placeholder.
+- Add buttons:
+  - Yeniden Çek
+  - Kırp
+  - Devam Et
+
+4. Image Enhancement Filters
+- Apply basic visual filters to the captured image if possible.
+- Required filters:
+  - Orijinal
+  - Temiz
+  - Parlak
+  - Gri Tonlama
+  - Siyah Beyaz
+- If real filters are complex, implement simple preview-level filters first and keep the flow working.
+- User should be able to choose a filter and continue.
+
+5. PDF Preview
+- Show the scanned image as a PDF page preview.
+- Support multiple pages in state.
+- Add buttons:
+  - Sayfa Ekle
+  - Sırala
+  - PDF Kaydet
+  - Paylaş
+
+6. PDF Generation
+- Generate a real PDF file from the scanned image or images.
+- Use a compatible Expo/React Native PDF generation package.
+- The generated PDF should include all scanned pages.
+- Save/export the PDF with a Turkish default file name like:
+  Belge_Tarama_2026-05-16.pdf
+
+7. Share / Export
+- Implement device share sheet.
+- User should be able to share the generated PDF via WhatsApp, email or other apps.
+- Keep all share/export labels in Turkish.
+
+8. Local Document Storage
+- Save scanned document metadata locally.
+- Use AsyncStorage or a simple local storage solution.
+- Store:
+  - document id
+  - title
+  - created date
+  - page count
+  - image uri / pdf uri if available
+  - folder name
+- Show saved documents on the Home screen under “Son Taramalar”.
+- Show documents in the Dosyalar screen.
+- Search screen should search local document titles.
+
+9. Folder Management
+- Add simple local folders:
+  - Faturalar
+  - İş
+  - Eğitim
+  - Kimlik & Evrak
+- Allow assigning a scanned document to a folder.
+- No backend, no cloud sync.
+
+10. Settings
+- Make settings functional locally:
+  - Otomatik kırpma
+  - Cihaza kaydet
+  - Varsayılan format: PDF / JPG
+  - Tema: Açık / Koyu if possible
+- Store settings locally.
+
+Do not implement yet:
+- Login
+- Register
+- Subscription
+- Payment
+- Cloud backup
+- User profile
+- Server backend
+- Real OCR if it causes complexity
+
+OCR:
+Add OCR only as a placeholder button for now:
+“Metni Tanı”
+When tapped, show a Turkish message:
+“OCR özelliği yakında eklenecek.”
+
+Technical requirements:
+- Keep code clean and modular.
+- Use TypeScript.
+- Create services if needed:
+  - cameraService
+  - pdfService
+  - storageService
+  - shareService
+- Add proper error handling in Turkish.
+- Add loading states where needed.
+- Do not break existing navigation.
+- Test the full flow:
+
+Ana Sayfa → Tara → Fotoğraf Çek → Kırp → İyileştir → PDF Önizleme → PDF Kaydet → Paylaş → Ana Sayfa’da belgeyi göster
+
+Very important:
+Do not rebuild the project from scratch unless necessary.
+Do not remove the existing Stitch-based premium UI.
+Only connect the screens to real functionality.
