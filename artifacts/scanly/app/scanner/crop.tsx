@@ -20,10 +20,15 @@ import colors from '@/constants/colors';
 import { useScan } from '@/context/ScanContext';
 
 const C = colors.light;
-const HANDLE = 22;
-const MIN_FRAC = 0.12;
+const MIN_FRAC = 0.08;
+const CORNER_TAP = 52;
+const EDGE_TAP = 44;
+const DEFAULT_BOX = { left: 0.05, top: 0.05, right: 0.95, bottom: 0.95 };
 
 type CropBox = { left: number; top: number; right: number; bottom: number };
+type HandleType = 'TL' | 'TR' | 'BL' | 'BR' | 'T' | 'B' | 'L' | 'R';
+
+const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 function getImageSize(uri: string): Promise<{ width: number; height: number }> {
   return new Promise((resolve, reject) => {
@@ -35,58 +40,34 @@ export default function CropScreen() {
   const insets = useSafeAreaInsets();
   const { capturedImageUri, setCapturedImageUri } = useScan();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [wrapLayout, setWrapLayout] = useState({ width: 0, height: 0 });
+  const wrapLayoutRef = useRef({ width: 0, height: 0 });
 
-  const containerRef = useRef({ width: 0, height: 0 });
-  const cropBoxRef = useRef<CropBox>({ left: 0.04, top: 0.04, right: 0.96, bottom: 0.96 });
-  const [cropBox, setCropBox] = useState<CropBox>({ left: 0.04, top: 0.04, right: 0.96, bottom: 0.96 });
+  const cropBoxRef = useRef<CropBox>({ ...DEFAULT_BOX });
+  const [cropBox, setCropBox] = useState<CropBox>({ ...DEFAULT_BOX });
 
   const updateBox = useCallback((next: CropBox) => {
     cropBoxRef.current = next;
     setCropBox({ ...next });
   }, []);
 
-  const makePan = useCallback((corner: 'TL' | 'TR' | 'BL' | 'BR') => {
-    return PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: () => {
-        Haptics.selectionAsync();
-      },
-      onPanResponderMove: (_e, gs) => {
-        const { width, height } = containerRef.current;
-        if (!width || !height) return;
-        const dx = gs.dx / width;
-        const dy = gs.dy / height;
-        const p = cropBoxRef.current;
-        let next = { ...p };
-        switch (corner) {
-          case 'TL':
-            next.left = Math.max(0, Math.min(p.right - MIN_FRAC, p.left + dx));
-            next.top = Math.max(0, Math.min(p.bottom - MIN_FRAC, p.top + dy));
-            break;
-          case 'TR':
-            next.right = Math.max(p.left + MIN_FRAC, Math.min(1, p.right + dx));
-            next.top = Math.max(0, Math.min(p.bottom - MIN_FRAC, p.top + dy));
-            break;
-          case 'BL':
-            next.left = Math.max(0, Math.min(p.right - MIN_FRAC, p.left + dx));
-            next.bottom = Math.max(p.top + MIN_FRAC, Math.min(1, p.bottom + dy));
-            break;
-          case 'BR':
-            next.right = Math.max(p.left + MIN_FRAC, Math.min(1, p.right + dx));
-            next.bottom = Math.max(p.top + MIN_FRAC, Math.min(1, p.bottom + dy));
-            break;
-        }
-        cropBoxRef.current = next;
-        setCropBox({ ...next });
-      },
-    });
-  }, []);
+  const tlRef = useRef<CropBox>({ ...DEFAULT_BOX });
+  const trRef = useRef<CropBox>({ ...DEFAULT_BOX });
+  const blRef = useRef<CropBox>({ ...DEFAULT_BOX });
+  const brRef = useRef<CropBox>({ ...DEFAULT_BOX });
+  const tRef  = useRef<CropBox>({ ...DEFAULT_BOX });
+  const bRef  = useRef<CropBox>({ ...DEFAULT_BOX });
+  const lRef  = useRef<CropBox>({ ...DEFAULT_BOX });
+  const rRef  = useRef<CropBox>({ ...DEFAULT_BOX });
 
-  const tlPan = useRef(makePan('TL')).current;
-  const trPan = useRef(makePan('TR')).current;
-  const blPan = useRef(makePan('BL')).current;
-  const brPan = useRef(makePan('BR')).current;
+  const tlPan = useRef(makePanResponder('TL', tlRef, cropBoxRef, wrapLayoutRef, updateBox)).current;
+  const trPan = useRef(makePanResponder('TR', trRef, cropBoxRef, wrapLayoutRef, updateBox)).current;
+  const blPan = useRef(makePanResponder('BL', blRef, cropBoxRef, wrapLayoutRef, updateBox)).current;
+  const brPan = useRef(makePanResponder('BR', brRef, cropBoxRef, wrapLayoutRef, updateBox)).current;
+  const tPan  = useRef(makePanResponder('T',  tRef,  cropBoxRef, wrapLayoutRef, updateBox)).current;
+  const bPan  = useRef(makePanResponder('B',  bRef,  cropBoxRef, wrapLayoutRef, updateBox)).current;
+  const lPan  = useRef(makePanResponder('L',  lRef,  cropBoxRef, wrapLayoutRef, updateBox)).current;
+  const rPan  = useRef(makePanResponder('R',  rRef,  cropBoxRef, wrapLayoutRef, updateBox)).current;
 
   const rotateImage = async (degrees: number) => {
     if (!capturedImageUri) return;
@@ -105,10 +86,7 @@ export default function CropScreen() {
 
   const handleContinue = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (!capturedImageUri) {
-      router.push('/scanner/enhance');
-      return;
-    }
+    if (!capturedImageUri) { router.push('/scanner/enhance'); return; }
     setIsProcessing(true);
     try {
       const { width: imgW, height: imgH } = await getImageSize(capturedImageUri);
@@ -120,7 +98,7 @@ export default function CropScreen() {
       const result = await manipulateAsync(
         capturedImageUri,
         [{ crop: { originX, originY, width: cropWidth, height: cropHeight } }],
-        { compress: 0.9, format: SaveFormat.JPEG }
+        { compress: 0.92, format: SaveFormat.JPEG }
       );
       setCapturedImageUri(result.uri);
       router.push('/scanner/enhance');
@@ -132,102 +110,128 @@ export default function CropScreen() {
   };
 
   const { left, top, right, bottom } = cropBox;
+  const W = wrapLayout.width;
+  const H = wrapLayout.height;
+  const bxL = left * W;
+  const bxT = top * H;
+  const bxW = (right - left) * W;
+  const bxH = (bottom - top) * H;
+  const midX = bxL + bxW / 2;
+  const midY = bxT + bxH / 2;
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.topBar}>
-        <Pressable style={styles.iconBtn} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }}>
+        <Pressable
+          style={styles.iconBtn}
+          onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }}
+        >
           <Feather name="arrow-left" size={20} color={C.onSurface} />
         </Pressable>
-        <Text style={styles.title}>Kırp</Text>
-        <Pressable style={styles.iconBtn} onPress={handleContinue} disabled={isProcessing}>
+        <Text style={styles.title}>Kırp & Düzenle</Text>
+        <Pressable style={styles.nextBtn} onPress={handleContinue} disabled={isProcessing}>
           <Text style={styles.nextText}>İleri</Text>
+          <Feather name="arrow-right" size={16} color={C.primary} />
         </Pressable>
       </View>
 
-      <View
-        style={styles.canvasArea}
-        onLayout={e => {
-          containerRef.current = {
-            width: e.nativeEvent.layout.width,
-            height: e.nativeEvent.layout.height,
-          };
-        }}
-      >
+      <View style={styles.canvasArea}>
         {capturedImageUri ? (
-          <View style={styles.imageWrapper}>
-            <Image
-              source={{ uri: capturedImageUri }}
-              style={styles.capturedImage}
-              contentFit="contain"
-            />
+          <View
+            style={styles.imageWrapper}
+            onLayout={e => {
+              const { width, height } = e.nativeEvent.layout;
+              wrapLayoutRef.current = { width, height };
+              setWrapLayout({ width, height });
+            }}
+          >
+            <Image source={{ uri: capturedImageUri }} style={styles.capturedImage} contentFit="contain" />
 
-            <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
-              <View
-                style={[
-                  styles.cropOverlay,
-                  {
-                    left: `${left * 100}%`,
-                    top: `${top * 100}%`,
-                    right: `${(1 - right) * 100}%`,
-                    bottom: `${(1 - bottom) * 100}%`,
-                  } as any,
-                ]}
-              >
-                <View style={[styles.cropCorner, styles.cornerTL]} />
-                <View style={[styles.cropCorner, styles.cornerTR]} />
-                <View style={[styles.cropCorner, styles.cornerBL]} />
-                <View style={[styles.cropCorner, styles.cornerBR]} />
+            {W > 0 && (
+              <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+                {/* Dim areas */}
+                <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: bxT, backgroundColor: 'rgba(0,0,0,0.52)' }} pointerEvents="none" />
+                <View style={{ position: 'absolute', top: bxT + bxH, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.52)' }} pointerEvents="none" />
+                <View style={{ position: 'absolute', top: bxT, left: 0, width: bxL, height: bxH, backgroundColor: 'rgba(0,0,0,0.52)' }} pointerEvents="none" />
+                <View style={{ position: 'absolute', top: bxT, left: bxL + bxW, width: W - bxL - bxW, height: bxH, backgroundColor: 'rgba(0,0,0,0.52)' }} pointerEvents="none" />
 
+                {/* Crop box */}
                 <View
-                  style={[styles.handle, styles.handleTL]}
+                  style={{
+                    position: 'absolute',
+                    left: bxL, top: bxT,
+                    width: bxW, height: bxH,
+                    borderWidth: 1.5,
+                    borderColor: 'rgba(255,255,255,0.9)',
+                  }}
+                  pointerEvents="none"
+                >
+                  {/* Rule-of-thirds grid */}
+                  <View style={[styles.gridLineH, { top: bxH / 3 }]} />
+                  <View style={[styles.gridLineH, { top: (bxH * 2) / 3 }]} />
+                  <View style={[styles.gridLineV, { left: bxW / 3 }]} />
+                  <View style={[styles.gridLineV, { left: (bxW * 2) / 3 }]} />
+                </View>
+
+                {/* Corner decorations */}
+                <View style={[styles.cropCorner, styles.cropCornerTL, { left: bxL - 2, top: bxT - 2 }]} pointerEvents="none" />
+                <View style={[styles.cropCorner, styles.cropCornerTR, { left: bxL + bxW - 18, top: bxT - 2 }]} pointerEvents="none" />
+                <View style={[styles.cropCorner, styles.cropCornerBL, { left: bxL - 2, top: bxT + bxH - 18 }]} pointerEvents="none" />
+                <View style={[styles.cropCorner, styles.cropCornerBR, { left: bxL + bxW - 18, top: bxT + bxH - 18 }]} pointerEvents="none" />
+
+                {/* Edge mid handles */}
+                <View
+                  style={[styles.edgeHandle, { left: midX - EDGE_TAP / 2, top: bxT - EDGE_TAP / 2 }]}
+                  {...tPan.panHandlers}
+                >
+                  <View style={styles.edgeDot} />
+                </View>
+                <View
+                  style={[styles.edgeHandle, { left: midX - EDGE_TAP / 2, top: bxT + bxH - EDGE_TAP / 2 }]}
+                  {...bPan.panHandlers}
+                >
+                  <View style={styles.edgeDot} />
+                </View>
+                <View
+                  style={[styles.edgeHandle, { left: bxL - EDGE_TAP / 2, top: midY - EDGE_TAP / 2 }]}
+                  {...lPan.panHandlers}
+                >
+                  <View style={styles.edgeDot} />
+                </View>
+                <View
+                  style={[styles.edgeHandle, { left: bxL + bxW - EDGE_TAP / 2, top: midY - EDGE_TAP / 2 }]}
+                  {...rPan.panHandlers}
+                >
+                  <View style={styles.edgeDot} />
+                </View>
+
+                {/* Corner handles */}
+                <View
+                  style={[styles.cornerHandle, { left: bxL - CORNER_TAP / 2, top: bxT - CORNER_TAP / 2 }]}
                   {...tlPan.panHandlers}
                 >
-                  <View style={styles.handleDot} />
+                  <View style={[styles.cornerDot, styles.cornerDotTL]} />
                 </View>
                 <View
-                  style={[styles.handle, styles.handleTR]}
+                  style={[styles.cornerHandle, { left: bxL + bxW - CORNER_TAP / 2, top: bxT - CORNER_TAP / 2 }]}
                   {...trPan.panHandlers}
                 >
-                  <View style={styles.handleDot} />
+                  <View style={[styles.cornerDot, styles.cornerDotTR]} />
                 </View>
                 <View
-                  style={[styles.handle, styles.handleBL]}
+                  style={[styles.cornerHandle, { left: bxL - CORNER_TAP / 2, top: bxT + bxH - CORNER_TAP / 2 }]}
                   {...blPan.panHandlers}
                 >
-                  <View style={styles.handleDot} />
+                  <View style={[styles.cornerDot, styles.cornerDotBL]} />
                 </View>
                 <View
-                  style={[styles.handle, styles.handleBR]}
+                  style={[styles.cornerHandle, { left: bxL + bxW - CORNER_TAP / 2, top: bxT + bxH - CORNER_TAP / 2 }]}
                   {...brPan.panHandlers}
                 >
-                  <View style={styles.handleDot} />
+                  <View style={[styles.cornerDot, styles.cornerDotBR]} />
                 </View>
               </View>
-
-              <View style={[styles.dimTop, { height: `${top * 100}%` }]} />
-              <View style={[styles.dimBottom, { height: `${(1 - bottom) * 100}%` }]} />
-              <View
-                style={[
-                  styles.dimLeft,
-                  {
-                    top: `${top * 100}%`,
-                    bottom: `${(1 - bottom) * 100}%`,
-                    width: `${left * 100}%`,
-                  } as any,
-                ]}
-              />
-              <View
-                style={[
-                  styles.dimRight,
-                  {
-                    top: `${top * 100}%`,
-                    bottom: `${(1 - bottom) * 100}%`,
-                    width: `${(1 - right) * 100}%`,
-                  } as any,
-                ]}
-              />
-            </View>
+            )}
 
             {isProcessing && (
               <View style={styles.processingOverlay}>
@@ -244,88 +248,218 @@ export default function CropScreen() {
         )}
       </View>
 
-      <View style={[styles.bottomPanel, { paddingBottom: insets.bottom + 16 }]}>
+      <View style={[styles.bottomPanel, { paddingBottom: insets.bottom + 12 }]}>
         <View style={styles.tools}>
-          <Pressable style={styles.toolBtn} onPress={() => rotateImage(-90)} disabled={isProcessing}>
-            <Feather name="rotate-ccw" size={22} color={isProcessing ? C.outline : C.onSurface} />
-            <Text style={styles.toolLabel}>Sola</Text>
-          </Pressable>
-          <Pressable style={styles.toolBtn} onPress={() => rotateImage(90)} disabled={isProcessing}>
-            <Feather name="rotate-cw" size={22} color={isProcessing ? C.outline : C.onSurface} />
-            <Text style={styles.toolLabel}>Sağa</Text>
+          <Pressable
+            style={({ pressed }) => [styles.toolBtn, pressed && styles.toolBtnPressed]}
+            onPress={() => rotateImage(-90)}
+            disabled={isProcessing}
+          >
+            <Feather name="rotate-ccw" size={20} color={isProcessing ? C.outline : C.onSurface} />
+            <Text style={styles.toolLabel}>Sola Döndür</Text>
           </Pressable>
           <Pressable
-            style={styles.toolBtn}
+            style={({ pressed }) => [styles.toolBtn, pressed && styles.toolBtnPressed]}
+            onPress={() => rotateImage(90)}
+            disabled={isProcessing}
+          >
+            <Feather name="rotate-cw" size={20} color={isProcessing ? C.outline : C.onSurface} />
+            <Text style={styles.toolLabel}>Sağa Döndür</Text>
+          </Pressable>
+          <Pressable
+            style={({ pressed }) => [styles.toolBtn, pressed && styles.toolBtnPressed]}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              updateBox({ left: 0.01, top: 0.01, right: 0.99, bottom: 0.99 });
+              updateBox({ left: 0.02, top: 0.02, right: 0.98, bottom: 0.98 });
             }}
           >
-            <Feather name="maximize" size={22} color={C.onSurface} />
-            <Text style={styles.toolLabel}>Tam</Text>
+            <Feather name="maximize-2" size={20} color={C.onSurface} />
+            <Text style={styles.toolLabel}>Tümünü Seç</Text>
           </Pressable>
-          <Pressable style={styles.toolBtn} onPress={() => router.back()}>
-            <Feather name="camera" size={22} color={C.secondary} />
-            <Text style={styles.toolLabel}>Yeniden Çek</Text>
+          <Pressable
+            style={({ pressed }) => [styles.toolBtn, pressed && styles.toolBtnPressed]}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              updateBox({ ...DEFAULT_BOX });
+            }}
+          >
+            <Feather name="crop" size={20} color={C.primary} />
+            <Text style={[styles.toolLabel, { color: C.primary }]}>Sıfırla</Text>
           </Pressable>
         </View>
-        <Pressable
-          style={({ pressed }) => [styles.continueBtn, { opacity: (pressed || isProcessing) ? 0.88 : 1, transform: [{ scale: pressed ? 0.97 : 1 }] }]}
-          onPress={handleContinue}
-          disabled={isProcessing}
-        >
-          {isProcessing ? (
-            <ActivityIndicator color="#ffffff" />
-          ) : (
-            <>
-              <Text style={styles.continueBtnText}>Devam Et</Text>
-              <Feather name="arrow-right" size={18} color="#ffffff" />
-            </>
-          )}
-        </Pressable>
+        <View style={styles.actionRow}>
+          <Pressable
+            style={({ pressed }) => [styles.retakeBtn, { opacity: pressed ? 0.75 : 1 }]}
+            onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); router.back(); }}
+          >
+            <Feather name="camera" size={18} color={C.secondary} />
+            <Text style={styles.retakeBtnText}>Yeniden Çek</Text>
+          </Pressable>
+          <Pressable
+            style={({ pressed }) => [
+              styles.continueBtn,
+              { opacity: (pressed || isProcessing) ? 0.88 : 1, transform: [{ scale: pressed ? 0.97 : 1 }] },
+            ]}
+            onPress={handleContinue}
+            disabled={isProcessing}
+          >
+            {isProcessing
+              ? <ActivityIndicator color="#ffffff" />
+              : <>
+                  <Text style={styles.continueBtnText}>Devam Et</Text>
+                  <Feather name="arrow-right" size={18} color="#ffffff" />
+                </>
+            }
+          </Pressable>
+        </View>
       </View>
     </View>
   );
 }
 
+function makePanResponder(
+  type: HandleType,
+  startBoxRef: React.MutableRefObject<CropBox>,
+  cropBoxRef: React.MutableRefObject<CropBox>,
+  wrapLayoutRef: React.MutableRefObject<{ width: number; height: number }>,
+  updateBox: (b: CropBox) => void,
+) {
+  return PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderGrant: () => {
+      startBoxRef.current = { ...cropBoxRef.current };
+      Haptics.selectionAsync();
+    },
+    onPanResponderMove: (_e, gs) => {
+      const { width, height } = wrapLayoutRef.current;
+      if (!width || !height) return;
+      const dx = gs.dx / width;
+      const dy = gs.dy / height;
+      const s = startBoxRef.current;
+      const next: CropBox = { ...s };
+      switch (type) {
+        case 'TL':
+          next.left = clamp(s.left + dx, 0, s.right - MIN_FRAC);
+          next.top  = clamp(s.top  + dy, 0, s.bottom - MIN_FRAC);
+          break;
+        case 'TR':
+          next.right = clamp(s.right + dx, s.left + MIN_FRAC, 1);
+          next.top   = clamp(s.top  + dy, 0, s.bottom - MIN_FRAC);
+          break;
+        case 'BL':
+          next.left   = clamp(s.left + dx, 0, s.right - MIN_FRAC);
+          next.bottom = clamp(s.bottom + dy, s.top + MIN_FRAC, 1);
+          break;
+        case 'BR':
+          next.right  = clamp(s.right + dx, s.left + MIN_FRAC, 1);
+          next.bottom = clamp(s.bottom + dy, s.top + MIN_FRAC, 1);
+          break;
+        case 'T': next.top    = clamp(s.top  + dy, 0, s.bottom - MIN_FRAC); break;
+        case 'B': next.bottom = clamp(s.bottom + dy, s.top + MIN_FRAC, 1);  break;
+        case 'L': next.left   = clamp(s.left + dx, 0, s.right - MIN_FRAC);  break;
+        case 'R': next.right  = clamp(s.right + dx, s.left + MIN_FRAC, 1);  break;
+      }
+      updateBox(next);
+    },
+    onPanResponderRelease: () => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    },
+  });
+}
+
+const CORNER_VIS = 20;
+
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: C.background },
-  topBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 12 },
-  iconBtn: { width: 42, height: 42, borderRadius: 21, backgroundColor: C.surfaceContainerLowest, alignItems: 'center', justifyContent: 'center', shadowColor: C.secondary, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 6, elevation: 2, borderWidth: 1, borderColor: `${C.outlineVariant}50` },
-  title: { fontSize: 18, fontWeight: '600', color: C.onSurface, fontFamily: 'Inter_600SemiBold' },
-  nextText: { fontSize: 16, fontWeight: '600', color: C.primary, fontFamily: 'Inter_600SemiBold', paddingHorizontal: 4 },
-  canvasArea: { flex: 1, alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  imageWrapper: { width: '90%', height: '90%', position: 'relative' },
-  capturedImage: { width: '100%', height: '100%' },
-  cropOverlay: {
-    position: 'absolute',
-    borderWidth: 2,
-    borderColor: C.primary,
-    borderStyle: 'solid',
+  container: { flex: 1, backgroundColor: '#111111' },
+  topBar: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 16, paddingVertical: 10, backgroundColor: '#111111',
   },
-  cropCorner: { position: 'absolute', width: 20, height: 20, borderColor: C.primary, borderWidth: 3 },
-  cornerTL: { top: -2, left: -2, borderRightWidth: 0, borderBottomWidth: 0, borderTopLeftRadius: 3 },
-  cornerTR: { top: -2, right: -2, borderLeftWidth: 0, borderBottomWidth: 0, borderTopRightRadius: 3 },
-  cornerBL: { bottom: -2, left: -2, borderRightWidth: 0, borderTopWidth: 0, borderBottomLeftRadius: 3 },
-  cornerBR: { bottom: -2, right: -2, borderLeftWidth: 0, borderTopWidth: 0, borderBottomRightRadius: 3 },
-  handle: { position: 'absolute', width: HANDLE + 12, height: HANDLE + 12, alignItems: 'center', justifyContent: 'center' },
-  handleTL: { top: -(HANDLE / 2 + 6), left: -(HANDLE / 2 + 6) },
-  handleTR: { top: -(HANDLE / 2 + 6), right: -(HANDLE / 2 + 6) },
-  handleBL: { bottom: -(HANDLE / 2 + 6), left: -(HANDLE / 2 + 6) },
-  handleBR: { bottom: -(HANDLE / 2 + 6), right: -(HANDLE / 2 + 6) },
-  handleDot: { width: HANDLE, height: HANDLE, borderRadius: HANDLE / 2, backgroundColor: C.primary, shadowColor: C.primary, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.5, shadowRadius: 4, elevation: 4 },
-  dimTop: { position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: 'rgba(0,0,0,0.45)' },
-  dimBottom: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(0,0,0,0.45)' },
-  dimLeft: { position: 'absolute', left: 0, backgroundColor: 'rgba(0,0,0,0.45)' },
-  dimRight: { position: 'absolute', right: 0, backgroundColor: 'rgba(0,0,0,0.45)' },
-  processingOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.55)', alignItems: 'center', justifyContent: 'center', gap: 12 },
+  iconBtn: {
+    width: 42, height: 42, borderRadius: 21,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    alignItems: 'center', justifyContent: 'center',
+  },
+  title: { fontSize: 17, fontWeight: '600', color: '#ffffff', fontFamily: 'Inter_600SemiBold' },
+  nextBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, backgroundColor: `${C.primary}18` },
+  nextText: { fontSize: 15, fontWeight: '600', color: C.primary, fontFamily: 'Inter_600SemiBold' },
+
+  canvasArea: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#111111' },
+  imageWrapper: { width: '94%', height: '94%', position: 'relative' },
+  capturedImage: { width: '100%', height: '100%' },
+
+  gridLineH: { position: 'absolute', left: 0, right: 0, height: 1, backgroundColor: 'rgba(255,255,255,0.18)' },
+  gridLineV: { position: 'absolute', top: 0, bottom: 0, width: 1, backgroundColor: 'rgba(255,255,255,0.18)' },
+
+  cropCorner: { position: 'absolute', width: CORNER_VIS, height: CORNER_VIS, borderColor: C.primary, borderWidth: 3 },
+  cropCornerTL: { borderRightWidth: 0, borderBottomWidth: 0, borderTopLeftRadius: 3 },
+  cropCornerTR: { borderLeftWidth: 0, borderBottomWidth: 0, borderTopRightRadius: 3 },
+  cropCornerBL: { borderRightWidth: 0, borderTopWidth: 0, borderBottomLeftRadius: 3 },
+  cropCornerBR: { borderLeftWidth: 0, borderTopWidth: 0, borderBottomRightRadius: 3 },
+
+  cornerHandle: {
+    position: 'absolute',
+    width: CORNER_TAP, height: CORNER_TAP,
+    alignItems: 'center', justifyContent: 'center',
+    zIndex: 10,
+  },
+  cornerDot: {
+    width: 16, height: 16,
+    backgroundColor: C.primary,
+    shadowColor: C.primary, shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 6, elevation: 6,
+  },
+  cornerDotTL: { borderTopLeftRadius: 4, borderTopRightRadius: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 10 },
+  cornerDotTR: { borderTopLeftRadius: 0, borderTopRightRadius: 4, borderBottomLeftRadius: 10, borderBottomRightRadius: 0 },
+  cornerDotBL: { borderTopLeftRadius: 0, borderTopRightRadius: 10, borderBottomLeftRadius: 4, borderBottomRightRadius: 0 },
+  cornerDotBR: { borderTopLeftRadius: 10, borderTopRightRadius: 0, borderBottomLeftRadius: 0, borderBottomRightRadius: 4 },
+
+  edgeHandle: {
+    position: 'absolute',
+    width: EDGE_TAP, height: EDGE_TAP,
+    alignItems: 'center', justifyContent: 'center',
+    zIndex: 9,
+  },
+  edgeDot: {
+    width: 10, height: 10, borderRadius: 5,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.4, shadowRadius: 3, elevation: 3,
+    borderWidth: 1.5, borderColor: C.primary,
+  },
+
+  processingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    alignItems: 'center', justifyContent: 'center', gap: 14,
+  },
   processingText: { color: '#ffffff', fontSize: 14, fontFamily: 'Inter_500Medium' },
   noImagePlaceholder: { alignItems: 'center', gap: 12, opacity: 0.4 },
-  noImageText: { fontSize: 14, color: C.secondary, fontFamily: 'Inter_400Regular' },
-  bottomPanel: { backgroundColor: C.surfaceContainerLowest, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingHorizontal: 20, paddingTop: 20, gap: 16, shadowColor: C.secondary, shadowOffset: { width: 0, height: -6 }, shadowOpacity: 0.06, shadowRadius: 12, elevation: 6, borderTopWidth: 1, borderColor: `${C.outlineVariant}30` },
+  noImageText: { fontSize: 14, color: '#ffffff', fontFamily: 'Inter_400Regular' },
+
+  bottomPanel: {
+    backgroundColor: C.surfaceContainerLowest,
+    borderTopLeftRadius: 24, borderTopRightRadius: 24,
+    paddingHorizontal: 20, paddingTop: 16, gap: 14,
+    shadowColor: '#000', shadowOffset: { width: 0, height: -4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 8,
+    borderTopWidth: 1, borderColor: `${C.outlineVariant}30`,
+  },
   tools: { flexDirection: 'row', justifyContent: 'space-around' },
-  toolBtn: { alignItems: 'center', gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12 },
-  toolLabel: { fontSize: 11, color: C.secondary, fontFamily: 'Inter_400Regular' },
-  continueBtn: { backgroundColor: C.primary, borderRadius: 16, paddingVertical: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, shadowColor: C.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 10, elevation: 4 },
+  toolBtn: { alignItems: 'center', gap: 5, paddingHorizontal: 10, paddingVertical: 8, borderRadius: 12, minWidth: 64 },
+  toolBtnPressed: { backgroundColor: `${C.primary}12` },
+  toolLabel: { fontSize: 10, color: C.secondary, fontFamily: 'Inter_400Regular', textAlign: 'center' },
+
+  actionRow: { flexDirection: 'row', gap: 12 },
+  retakeBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    paddingHorizontal: 16, paddingVertical: 14, borderRadius: 14,
+    borderWidth: 1.5, borderColor: C.outlineVariant, backgroundColor: 'transparent',
+  },
+  retakeBtnText: { fontSize: 14, color: C.secondary, fontFamily: 'Inter_500Medium' },
+  continueBtn: {
+    flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
+    borderRadius: 14, paddingVertical: 15,
+    backgroundColor: C.primary,
+    shadowColor: C.primary, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.28, shadowRadius: 10, elevation: 4,
+  },
   continueBtnText: { fontSize: 16, fontWeight: '600', color: '#ffffff', fontFamily: 'Inter_600SemiBold' },
 });
