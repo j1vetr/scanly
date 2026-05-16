@@ -67,6 +67,7 @@
     "expo-sensors": "^55.0.15",
     "expo-sharing": "^14.0.8",
     "jpeg-js": "^0.4.4",
+    "react-native-fs": "^2.20.0",
     "react-native-nitro-image": "^0.14.0",
     "react-native-nitro-modules": "^0.35.6",
     "react-native-vision-camera": "^5.0.9",

@@ -1,0 +1,36 @@
+React Compiler enabled
+Starting Metro Bundler
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓░░░░░░░░░░░░ 28.1% (193/364)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓░░░░░░░░░ 45.5% (455/690)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 69.4% ( 774/1063)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░ 82.0% (1170/1292)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░ 87.0% (1337/1444)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 89.0% (1446/1543)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 89.2% (1527/1622)
+Android Bundling failed 26398ms node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js (1803 modules)
+Error: Unable to resolve module react-native-fs from /home/expo/workingdir/build/node_modules/.pnpm/@tensorflow+tfjs-react-native@1.0.0_55a3521b43606cd824f8d9ef2784695a/node_modules/@tensorflow/tfjs-react-native/dist/bundle_resource_io.js: react-native-fs could not be found within the project or in these directories:
+  ../../node_modules/.pnpm/@tensorflow+tfjs-react-native@1.0.0_55a3521b43606cd824f8d9ef2784695a/node_modules/@tensorflow/tfjs-react-native/node_modules
+  ../../node_modules/.pnpm/@tensorflow+tfjs-react-native@1.0.0_55a3521b43606cd824f8d9ef2784695a/node_modules
+  ../../node_modules/.pnpm/node_modules
+  ../../node_modules
+  node_modules
+  ../../node_modules
+  77 |         // never hit this code path.
+  78 |         // tslint:disable-next-line: no-require-imports
+> 79 |         const RNFS = require('react-native-fs');
+     |                               ^
+  80 |         const modelJson = this.modelJson;
+  81 |         const modelArtifacts = Object.assign({}, modelJson);
+  82 |         modelArtifacts.weightSpecs = modelJson.weightsManifest[0].weights;
+Import stack:
+ node_modules/.pnpm/@tensorflow+tfjs-react-native@1.0.0_55a3521b43606cd824f8d9ef2784695a/node_modules/@tensorflow/tfjs-react-native/dist/bundle_resource_io.js
+ | import "react-native-fs"
+ node_modules/.pnpm/@tensorflow+tfjs-react-native@1.0.0_55a3521b43606cd824f8d9ef2784695a/node_modules/@tensorflow/tfjs-react-native/dist/index.js
+ | import "./bundle_resource_io"
+ artifacts/scanly/utils/tfDocumentDetector.ts
+ | import "@tensorflow/tfjs-react-native"
+ artifacts/scanly/app/scanner/camera.tsx
+ | import "@/utils/tfDocumentDetector"
+ artifacts/scanly/app (require.context)
+pnpm expo export:embed --eager --platform android --dev false exited with non-zero code: 1
