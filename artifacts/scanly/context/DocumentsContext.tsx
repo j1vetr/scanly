@@ -86,7 +86,8 @@ export function DocumentsProvider({ children }: { children: React.ReactNode }) {
     const lower = query.toLowerCase();
     return documents.filter(d =>
       d.title.toLowerCase().includes(lower) ||
-      d.tag.toLowerCase().includes(lower)
+      d.tag.toLowerCase().includes(lower) ||
+      (d.ocrText?.toLowerCase().includes(lower) ?? false)
     );
   }, [documents]);
 

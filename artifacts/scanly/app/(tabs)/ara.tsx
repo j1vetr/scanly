@@ -19,6 +19,15 @@ import { useDocuments } from '@/context/DocumentsContext';
 
 const C = colors.light;
 
+function getOcrSnippet(ocrText: string, query: string): string {
+  const lower = ocrText.toLowerCase();
+  const idx = lower.indexOf(query.toLowerCase());
+  if (idx === -1) return ocrText.slice(0, 60);
+  const start = Math.max(0, idx - 20);
+  const end = Math.min(ocrText.length, idx + query.length + 40);
+  return ocrText.slice(start, end);
+}
+
 const CATEGORIES = [
   { id: 'pdf', label: 'PDF', icon: 'file-text', bg: '#ffdad6', color: '#ba1a1a' },
   { id: 'image', label: 'Görüntü', bg: '#d9dff5', color: '#575e70', icon: 'image' },
@@ -105,6 +114,11 @@ export default function AraScreen() {
               <View style={styles.resultInfo}>
                 <Text style={styles.resultTitle} numberOfLines={1}>{item.title}</Text>
                 <Text style={styles.resultMeta}>{item.dateLabel} · {item.tag}</Text>
+                {item.ocrText && item.ocrText.toLowerCase().includes(query.toLowerCase()) && (
+                  <Text style={styles.resultOcr} numberOfLines={1}>
+                    "...{getOcrSnippet(item.ocrText, query)}..."
+                  </Text>
+                )}
               </View>
               <Feather name="chevron-right" size={16} color={C.outline} />
             </Pressable>
@@ -349,5 +363,12 @@ const styles = StyleSheet.create({
     color: C.secondary,
     fontFamily: 'Inter_400Regular',
     textAlign: 'center',
+  },
+  resultOcr: {
+    fontSize: 11,
+    color: C.primary,
+    fontFamily: 'Inter_400Regular',
+    fontStyle: 'italic',
+    marginTop: 2,
   },
 });

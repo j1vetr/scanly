@@ -12,6 +12,7 @@ export interface Document {
   localImageUri?: string;
   localPdfUri?: string;
   filterName?: string;
+  ocrText?: string;
 }
 
 export interface Folder {

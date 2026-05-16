@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons';
-import * as FileSystem from 'expo-file-system';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -24,13 +24,21 @@ import { useDocuments } from '@/context/DocumentsContext';
 
 const C = colors.light;
 
+const OCR_API_BASE = process.env.EXPO_PUBLIC_OCR_API_URL
+  ?? (process.env.EXPO_PUBLIC_DOMAIN
+    ? `https://${process.env.EXPO_PUBLIC_DOMAIN}`
+    : '');
+const OCR_API_URL = `${OCR_API_BASE}/api/ocr`;
+
 export default function DocumentDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const { getDocumentById, removeDocument } = useDocuments();
+  const { getDocumentById, removeDocument, updateDocument } = useDocuments();
   const [menuVisible, setMenuVisible] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
   const [isOpeningPdf, setIsOpeningPdf] = useState(false);
+  const [isRunningOcr, setIsRunningOcr] = useState(false);
+  const [ocrExpanded, setOcrExpanded] = useState(true);
 
   const doc = getDocumentById(id ?? '');
   const isWeb = Platform.OS === 'web';
@@ -126,8 +134,78 @@ export default function DocumentDetailScreen() {
     }
   };
 
+  const handleOcr = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+    if (!doc.localImageUri) {
+      Alert.alert(
+        'Görüntü Yok',
+        'Metin tanıma için belgenin görüntü dosyası gereklidir. Belgeyi kamerayla tarayıp kaydedin.',
+        [{ text: 'Tamam' }]
+      );
+      return;
+    }
+
+    if (doc.ocrText) {
+      Alert.alert(
+        'Metni Yenile',
+        'Bu belge için daha önce metin çıkarılmış. Yeniden tanımak ister misiniz?',
+        [
+          { text: 'Vazgeç', style: 'cancel' },
+          { text: 'Yeniden Tanı', onPress: () => runOcr() },
+        ]
+      );
+      return;
+    }
+
+    runOcr();
+  };
+
+  const runOcr = async () => {
+    if (!doc.localImageUri) return;
+    setIsRunningOcr(true);
+    try {
+      const base64 = await FileSystem.readAsStringAsync(doc.localImageUri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const ext = doc.localImageUri.split('.').pop()?.toLowerCase() ?? 'jpg';
+      const mimeType = ext === 'png' ? 'image/png' : 'image/jpeg';
+
+      const response = await fetch(OCR_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64: base64, mimeType }),
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({})) as { error?: string };
+        throw new Error(err.error ?? 'Sunucu hatası');
+      }
+
+      const data = await response.json() as { text: string };
+      const extractedText = data.text?.trim();
+
+      if (!extractedText) {
+        Alert.alert('Metin Bulunamadı', 'Belgede okunabilir metin tespit edilemedi.', [{ text: 'Tamam' }]);
+        return;
+      }
+
+      updateDocument(doc.id, { ocrText: extractedText });
+      setOcrExpanded(true);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (err: unknown) {
+      console.error('OCR hatası:', err);
+      const message = err instanceof Error ? err.message : 'Bilinmeyen hata';
+      Alert.alert('Metin Tanıma Hatası', `Metin çıkarılamadı: ${message}`, [{ text: 'Tamam' }]);
+    } finally {
+      setIsRunningOcr(false);
+    }
+  };
+
   const hasPdf = Boolean(doc.localPdfUri);
   const hasImage = Boolean(doc.localImageUri);
+  const hasOcrText = Boolean(doc.ocrText);
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
@@ -250,18 +328,19 @@ export default function DocumentDetailScreen() {
             </Pressable>
 
             <Pressable
-              style={({ pressed }) => [styles.actionBtn, { opacity: pressed ? 0.75 : 1 }]}
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                if (Platform.OS !== 'web') {
-                  Alert.alert('OCR', 'OCR özelliği yakında eklenecek.', [{ text: 'Tamam' }]);
-                }
-              }}
+              style={({ pressed }) => [styles.actionBtn, { opacity: (pressed || isRunningOcr) ? 0.75 : 1 }]}
+              onPress={handleOcr}
+              disabled={isRunningOcr}
             >
-              <View style={styles.actionBtnIcon}>
-                <Feather name="type" size={20} color={C.primary} />
+              <View style={[styles.actionBtnIcon, hasOcrText && styles.actionBtnActive]}>
+                {isRunningOcr
+                  ? <ActivityIndicator color={C.primary} size="small" />
+                  : <Feather name="type" size={20} color={C.primary} />
+                }
               </View>
-              <Text style={styles.actionBtnLabel}>Metni Tanı</Text>
+              <Text style={styles.actionBtnLabel}>
+                {isRunningOcr ? 'Tanınıyor...' : hasOcrText ? 'Metin Var' : 'Metni Tanı'}
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -295,6 +374,32 @@ export default function DocumentDetailScreen() {
             </View>
           </View>
         </View>
+
+        {hasOcrText && (
+          <>
+            <Pressable
+              style={styles.ocrSectionHeader}
+              onPress={() => { setOcrExpanded(v => !v); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+            >
+              <View style={styles.ocrSectionHeaderLeft}>
+                <View style={styles.ocrBadge}>
+                  <Feather name="type" size={12} color={C.primary} />
+                </View>
+                <Text style={styles.sectionLabel} >ÇIKARILAN METİN</Text>
+              </View>
+              <Feather name={ocrExpanded ? 'chevron-up' : 'chevron-down'} size={16} color={C.outline} />
+            </Pressable>
+            {ocrExpanded && (
+              <View style={styles.ocrCard}>
+                <Text style={styles.ocrText} selectable>{doc.ocrText}</Text>
+                <View style={styles.ocrFooter}>
+                  <Feather name="check-circle" size={13} color={C.primary} />
+                  <Text style={styles.ocrFooterText}>Yapay zeka ile tanındı</Text>
+                </View>
+              </View>
+            )}
+          </>
+        )}
 
         {hasPdf && (
           <>
@@ -358,6 +463,7 @@ const styles = StyleSheet.create({
   actionRow: { flexDirection: 'row', justifyContent: 'space-around' },
   actionBtn: { alignItems: 'center', gap: 8, flex: 1 },
   actionBtnIcon: { width: 48, height: 48, borderRadius: 14, backgroundColor: `${C.primary}12`, alignItems: 'center', justifyContent: 'center' },
+  actionBtnActive: { backgroundColor: `${C.primary}25`, borderWidth: 1.5, borderColor: `${C.primary}40` },
   actionBtnDisabled: { backgroundColor: C.surfaceContainerLow },
   actionBtnLabel: { fontSize: 12, color: C.secondary, fontFamily: 'Inter_400Regular' },
   actionBtnLabelDisabled: { color: C.outline },
@@ -369,6 +475,13 @@ const styles = StyleSheet.create({
   infoDivider: { height: 1, marginLeft: 44, backgroundColor: `${C.outlineVariant}40` },
   infoTag: { backgroundColor: `${C.primary}15`, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
   infoTagText: { fontSize: 13, fontWeight: '500', color: C.primary, fontFamily: 'Inter_500Medium' },
+  ocrSectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8, paddingLeft: 4, paddingRight: 4 },
+  ocrSectionHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  ocrBadge: { width: 20, height: 20, borderRadius: 6, backgroundColor: `${C.primary}18`, alignItems: 'center', justifyContent: 'center' },
+  ocrCard: { backgroundColor: C.surfaceContainerLowest, borderRadius: 18, marginBottom: 24, overflow: 'hidden', borderWidth: 1, borderColor: `${C.primary}30`, shadowColor: C.secondary, shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 1 },
+  ocrText: { fontSize: 14, color: C.onSurface, fontFamily: 'Inter_400Regular', lineHeight: 22, padding: 16 },
+  ocrFooter: { flexDirection: 'row', alignItems: 'center', gap: 6, borderTopWidth: 1, borderTopColor: `${C.primary}20`, paddingHorizontal: 16, paddingVertical: 10, backgroundColor: `${C.primary}08` },
+  ocrFooterText: { fontSize: 12, color: C.primary, fontFamily: 'Inter_400Regular' },
   pdfCard: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: C.surfaceContainerLowest, borderRadius: 16, padding: 14, marginBottom: 24, borderWidth: 1, borderColor: `${C.outlineVariant}50` },
   pdfCardIcon: { width: 44, height: 44, borderRadius: 11, backgroundColor: `${C.primary}12`, alignItems: 'center', justifyContent: 'center' },
   pdfCardInfo: { flex: 1, gap: 3 },
