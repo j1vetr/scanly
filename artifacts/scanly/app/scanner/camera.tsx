@@ -21,11 +21,11 @@ import { useScan } from '@/context/ScanContext';
 
 const C = colors.light;
 
-const SEARCH_MS   = 3000;
-const DETECTED_MS = 5000;
+const SEARCH_MS   = 800;   // fast detection
+const DETECTED_MS = 9000;  // stay detected longer
 // Frame contracts to this scale on detection then settles at SETTLE_SCALE
-const SNAP_SCALE   = 0.86;
-const SETTLE_SCALE = 0.92;
+const SNAP_SCALE   = 0.90;
+const SETTLE_SCALE = 0.97; // also used as crop scale — tight to the frame
 
 // ==========================================================================
 export default function CameraScreen() {
@@ -78,7 +78,7 @@ export default function CameraScreen() {
       [tlAnim, trAnim, blAnim, brAnim].forEach(a => a.stopAnimation());
     };
 
-    const INSET = 20; // px each corner moves inward
+    const INSET = 12; // px each corner moves inward
 
     const runCycle = () => {
       if (cancelled) return;
