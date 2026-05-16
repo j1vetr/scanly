@@ -25,7 +25,7 @@ const SEARCH_MS   = 800;   // fast detection
 const DETECTED_MS = 9000;  // stay detected longer
 // Frame contracts to this scale on detection then settles at SETTLE_SCALE
 const SNAP_SCALE   = 0.90;
-const SETTLE_SCALE = 0.97; // also used as crop scale — tight to the frame
+const SETTLE_SCALE = 0.99; // also used as crop scale — tight to the frame
 
 // ==========================================================================
 export default function CameraScreen() {

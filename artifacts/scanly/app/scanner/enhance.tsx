@@ -131,6 +131,19 @@ export default function EnhanceScreen() {
             <Text style={styles.noImageText}>Görüntü yok</Text>
           </View>
         )}
+
+        {capturedImageUri ? (
+          <Pressable
+            style={({ pressed }) => [styles.cropBtn, { opacity: pressed ? 0.75 : 1 }]}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              router.push('/scanner/crop');
+            }}
+          >
+            <Feather name="crop" size={14} color={C.primary} />
+            <Text style={styles.cropBtnText}>Kırpı Düzenle</Text>
+          </Pressable>
+        ) : null}
       </View>
 
       <View style={[styles.bottomPanel, { paddingBottom: insets.bottom + 16 }]}>
@@ -228,6 +241,8 @@ const styles = StyleSheet.create({
   brightOverlay: { backgroundColor: 'rgba(255,255,255,0.18)' },
   noImagePreview: { alignItems: 'center', gap: 12, opacity: 0.4 },
   noImageText: { fontSize: 14, color: C.secondary, fontFamily: 'Inter_400Regular' },
+  cropBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, borderWidth: 1, borderColor: `${C.primary}60`, borderRadius: 20, paddingHorizontal: 14, paddingVertical: 7, backgroundColor: `${C.primary}0d` },
+  cropBtnText: { fontSize: 13, color: C.primary, fontFamily: 'Inter_500Medium' },
   bottomPanel: { backgroundColor: C.surfaceContainerLowest, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingTop: 20, gap: 16, shadowColor: C.secondary, shadowOffset: { width: 0, height: -6 }, shadowOpacity: 0.06, shadowRadius: 12, elevation: 6, borderTopWidth: 1, borderColor: `${C.outlineVariant}30` },
   filtersRow: { paddingHorizontal: 20, gap: 14, paddingBottom: 4 },
   filterItem: { alignItems: 'center', gap: 8 },
