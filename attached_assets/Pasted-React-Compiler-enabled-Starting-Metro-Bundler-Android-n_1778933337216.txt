@@ -1,0 +1,33 @@
+React Compiler enabled
+Starting Metro Bundler
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓░░░░░░░░░░░░ 28.5% (196/367)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓░░░░░░░░░ 46.4% (473/706)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 70.7% ( 778/1064)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓░░░░ 81.0% (1164/1293)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 88.1% (1344/1435)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 88.1% (1439/1562)
+Android node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 89.7% (1542/1628)
+Android Bundling failed 26536ms node_modules/.pnpm/expo-router@6.0.23_@types+react-dom@19.1.11_@types+react@19.1.17__@types+react@19.1.17__950497bba3dbc1f6b1863109f86ef06a/node_modules/expo-router/entry.js (1781 modules)
+Error: Unable to resolve module react-native-nitro-modules from /home/expo/workingdir/build/node_modules/.pnpm/react-native-vision-camera@5.0.9_react-native@0.81.5_@babel+core@7.29.0_@types+react@19.1.17_react@19.1.0__react@19.1.0/node_modules/react-native-vision-camera/src/utils/FrameConverter.ts: react-native-nitro-modules could not be found within the project or in these directories:
+  ../../node_modules/.pnpm/react-native-vision-camera@5.0.9_react-native@0.81.5_@babel+core@7.29.0_@types+react@19.1.17_react@19.1.0__react@19.1.0/node_modules/react-native-vision-camera/node_modules
+  ../../node_modules/.pnpm/react-native-vision-camera@5.0.9_react-native@0.81.5_@babel+core@7.29.0_@types+react@19.1.17_react@19.1.0__react@19.1.0/node_modules
+  ../../node_modules/.pnpm/node_modules
+  ../../node_modules
+  node_modules
+  ../../node_modules
+  1 | import type { Image } from 'react-native-nitro-image'
+> 2 | import { NitroModules } from 'react-native-nitro-modules'
+    |                               ^
+  3 | import type { Depth } from '../specs/instances/Depth.nitro'
+  4 | import type { Frame } from '../specs/instances/Frame.nitro'
+  5 | import type { FrameConverter } from '../specs/utils/FrameConverter.nitro'
+Import stack:
+ node_modules/.pnpm/react-native-vision-camera@5.0.9_react-native@0.81.5_@babel+core@7.29.0_@types+react@19.1.17_react@19.1.0__react@19.1.0/node_modules/react-native-vision-camera/src/utils/FrameConverter.ts
+ | import "react-native-nitro-modules"
+ node_modules/.pnpm/react-native-vision-camera@5.0.9_react-native@0.81.5_@babel+core@7.29.0_@types+react@19.1.17_react@19.1.0__react@19.1.0/node_modules/react-native-vision-camera/src/index.ts
+ | import "./utils/FrameConverter"
+ artifacts/scanly/app/scanner/camera.tsx
+ | import "react-native-vision-camera"
+ artifacts/scanly/app (require.context)
+pnpm expo export:embed --eager --platform android --dev false exited with non-zero code: 1
