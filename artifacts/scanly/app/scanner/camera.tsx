@@ -2,12 +2,18 @@
  * camera.tsx — Scanly kamera ekranı
  *
  * Phase 1: Çekim sonrası CPU kenar tespiti (jpeg-js + Sobel, ~1-2 s)
- * Phase 2: Snapshot tabanlı gerçek zamanlı belge tespiti (expo-camera, 600 ms)
+ * Phase 2: VisionCamera snapshot tabanlı gerçek zamanlı belge tespiti (600 ms)
  * Phase 3: TF.js GPU tespiti — Phase 1'i iyileştirir (tfDocumentDetector)
  */
 
 import { Feather } from '@expo/vector-icons';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import {
+  Camera,
+  useCameraDevice,
+  useCameraPermission,
+  usePhotoOutput,
+  type CameraRef,
+} from 'react-native-vision-camera';
 import * as Haptics from 'expo-haptics';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
@@ -44,9 +50,12 @@ export default function CameraScreen() {
     resetScan, setDetectedCorners,
   } = useScan();
 
-  // ---- expo-camera ----
-  const [permission, requestPermission] = useCameraPermissions();
-  const cameraRef = useRef<CameraView>(null);
+  // ---- react-native-vision-camera ----
+  const { hasPermission, requestPermission } = useCameraPermission();
+  const device = useCameraDevice('back');
+  const cameraRef = useRef<CameraRef>(null);
+  // Phase 2 (hızlı snapshot) + Phase 1/3 (tam çekim) için tek output
+  const photoOutput = usePhotoOutput({ quality: 0.85, qualityPrioritization: 'speed' });
 
   // ---- UI state ----
   const [flashMode, setFlashMode]     = useState<'on' | 'off'>('off');
@@ -82,7 +91,7 @@ export default function CameraScreen() {
   useEffect(() => { detectedRef.current = detected; }, [detected]);
 
   const isMultiPage  = capturedImages.length > 0;
-  const isAutoNative = mode === 'OTOMATİK' && Platform.OS !== 'web';
+  const isAutoNative = mode === 'OTOMATİK' && Platform.OS !== 'web' && !!device;
 
   // -----------------------------------------------------------------------
   // Akselerometre: hareket + eğim tespiti
@@ -116,30 +125,30 @@ export default function CameraScreen() {
   }, [isAutoNative]);
 
   // -----------------------------------------------------------------------
-  // Phase 2: expo-camera snapshot tabanlı gerçek zamanlı tespit
+  // Phase 2: VisionCamera snapshot tabanlı gerçek zamanlı tespit
   // -----------------------------------------------------------------------
   useEffect(() => {
     if (!isAutoNative || Platform.OS === 'web') return;
-    if (!permission?.granted) return;
+    if (!hasPermission) return;
 
     let active = true;
     let timer:  ReturnType<typeof setTimeout>;
 
     const sample = async () => {
-      if (!active || !cameraRef.current || isCapturing || isAnalyzing) {
+      if (!active || isCapturing || isAnalyzing) {
         if (active) timer = setTimeout(sample, SNAPSHOT_INTERVAL);
         return;
       }
       try {
-        const snap = await cameraRef.current.takePictureAsync({
-          quality: 0.08,
-          skipProcessing: true,
-          exif: false,
-          shutterSound: false,
-        } as Parameters<CameraView['takePictureAsync']>[0]);
+        // capturePhotoToFile — vision-camera v5 snapshot
+        const snap = await photoOutput.capturePhotoToFile(
+          { enableShutterSound: false },
+          {},
+        );
         if (!active) return;
 
-        const corners = await detectDocumentCorners(snap.uri);
+        const uri = 'file://' + snap.filePath;
+        const corners = await detectDocumentCorners(uri);
         if (!active) return;
 
         if (corners) {
@@ -164,7 +173,7 @@ export default function CameraScreen() {
     timer = setTimeout(sample, 1400);
     return () => { active = false; clearTimeout(timer); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAutoNative, isCapturing, isAnalyzing, cycleKey, permission?.granted]);
+  }, [isAutoNative, isCapturing, isAnalyzing, cycleKey, hasPermission]);
 
   // -----------------------------------------------------------------------
   // Simülasyon + animasyon döngüsü (snapshot başarısız olursa fallback)
@@ -384,10 +393,11 @@ export default function CameraScreen() {
           await afterCapture(a.uri, a.width ?? 1920, a.height ?? 2560);
         }
       } else {
-        const photo = await cameraRef.current.takePictureAsync({
-          quality: 0.92, exif: false, shutterSound: false,
-        } as Parameters<CameraView['takePictureAsync']>[0]);
-        await afterCapture(photo.uri, photo.width ?? 1920, photo.height ?? 2560);
+        const photo = await photoOutput.capturePhotoToFile(
+          { flashMode: flashMode, enableShutterSound: false },
+          {},
+        );
+        await afterCapture('file://' + photo.filePath, 1920, 2560);
       }
     } catch (err) {
       console.error('[camera] Çekim hatası:', err);
@@ -696,7 +706,7 @@ export default function CameraScreen() {
   // -----------------------------------------------------------------------
   // İzin ekranı
   // -----------------------------------------------------------------------
-  if (!permission?.granted) {
+  if (!hasPermission) {
     return (
       <View style={[styles.permContainer, { paddingTop: insets.top + 20 }]}>
         <View style={styles.permCard}>
@@ -733,13 +743,17 @@ export default function CameraScreen() {
   // -----------------------------------------------------------------------
   return (
     <View style={styles.container}>
-      <CameraView
-        ref={cameraRef}
-        style={StyleSheet.absoluteFill}
-        facing="back"
-        flash={flashMode}
-        enableTorch={flashMode === 'on'}
-      />
+      {device && (
+        <Camera
+          ref={cameraRef}
+          style={StyleSheet.absoluteFill}
+          device={device}
+          isActive={!isCapturing}
+          outputs={[photoOutput]}
+          torchMode={flashMode}
+          enableNativeZoomGesture
+        />
+      )}
       {renderLiveQuad()}
       <View
         style={[styles.overlay, { paddingTop: insets.top + 8 }]}
