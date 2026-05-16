@@ -5,15 +5,19 @@ import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Sharing from 'expo-sharing';
 import * as WebBrowser from 'expo-web-browser';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  FlatList,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -39,6 +43,10 @@ export default function DocumentDetailScreen() {
   const [isOpeningPdf, setIsOpeningPdf] = useState(false);
   const [isRunningOcr, setIsRunningOcr] = useState(false);
   const [ocrExpanded, setOcrExpanded] = useState(true);
+  const [renameModalVisible, setRenameModalVisible] = useState(false);
+  const [renameValue, setRenameValue] = useState('');
+  const [folderModalVisible, setFolderModalVisible] = useState(false);
+  const renameInputRef = useRef<TextInput>(null);
 
   const doc = getDocumentById(id ?? '');
   const isWeb = Platform.OS === 'web';
@@ -105,6 +113,28 @@ export default function DocumentDetailScreen() {
     } finally {
       setIsOpeningPdf(false);
     }
+  };
+
+  const handleRenameOpen = () => {
+    setMenuVisible(false);
+    setRenameValue(doc?.title ?? '');
+    setRenameModalVisible(true);
+    setTimeout(() => renameInputRef.current?.focus(), 100);
+  };
+
+  const handleRenameConfirm = () => {
+    const trimmed = renameValue.trim();
+    if (!trimmed || !doc) return;
+    updateDocument(doc.id, { title: trimmed });
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setRenameModalVisible(false);
+  };
+
+  const handleFolderChange = (folderId: string) => {
+    if (!doc) return;
+    updateDocument(doc.id, { folderId });
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setFolderModalVisible(false);
   };
 
   const handleDelete = () => {
@@ -227,9 +257,14 @@ export default function DocumentDetailScreen() {
 
       {menuVisible && (
         <View style={styles.dropMenu}>
-          <Pressable style={styles.dropMenuItem} onPress={() => { setMenuVisible(false); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
+          <Pressable style={styles.dropMenuItem} onPress={handleRenameOpen}>
             <Feather name="edit-2" size={16} color={C.onSurface} />
             <Text style={styles.dropMenuText}>Yeniden Adlandır</Text>
+          </Pressable>
+          <View style={styles.dropMenuDivider} />
+          <Pressable style={styles.dropMenuItem} onPress={() => { setMenuVisible(false); setFolderModalVisible(true); }}>
+            <Feather name="folder" size={16} color={C.onSurface} />
+            <Text style={styles.dropMenuText}>Klasör Değiştir</Text>
           </Pressable>
           <View style={styles.dropMenuDivider} />
           <Pressable style={styles.dropMenuItem} onPress={() => { setMenuVisible(false); handleDelete(); }}>
@@ -434,6 +469,81 @@ export default function DocumentDetailScreen() {
           <Text style={styles.deleteBtnText}>Belgeyi Sil</Text>
         </Pressable>
       </ScrollView>
+
+      <Modal
+        visible={renameModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setRenameModalVisible(false)}
+      >
+        <TouchableWithoutFeedback onPress={() => setRenameModalVisible(false)}>
+          <View style={styles.modalOverlay} />
+        </TouchableWithoutFeedback>
+        <View style={styles.renameDialog}>
+          <Text style={styles.renameDialogTitle}>Yeniden Adlandır</Text>
+          <TextInput
+            ref={renameInputRef}
+            style={styles.renameInput}
+            value={renameValue}
+            onChangeText={setRenameValue}
+            placeholder="Belge adı..."
+            placeholderTextColor={C.outline}
+            returnKeyType="done"
+            onSubmitEditing={handleRenameConfirm}
+            selectTextOnFocus
+            autoCorrect={false}
+          />
+          <View style={styles.renameDialogActions}>
+            <Pressable
+              style={({ pressed }) => [styles.renameDialogBtn, styles.renameDialogBtnCancel, { opacity: pressed ? 0.75 : 1 }]}
+              onPress={() => setRenameModalVisible(false)}
+            >
+              <Text style={styles.renameDialogBtnCancelText}>Vazgeç</Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [styles.renameDialogBtn, styles.renameDialogBtnConfirm, { opacity: (pressed || !renameValue.trim()) ? 0.75 : 1 }]}
+              onPress={handleRenameConfirm}
+              disabled={!renameValue.trim()}
+            >
+              <Text style={styles.renameDialogBtnConfirmText}>Kaydet</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={folderModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setFolderModalVisible(false)}
+      >
+        <TouchableWithoutFeedback onPress={() => setFolderModalVisible(false)}>
+          <View style={styles.modalOverlay} />
+        </TouchableWithoutFeedback>
+        <View style={[styles.modalSheet, { paddingBottom: insets.bottom + 16 }]}>
+          <View style={styles.modalHandle} />
+          <Text style={styles.modalTitle}>Klasör Seç</Text>
+          <FlatList
+            data={MOCK_FOLDERS}
+            keyExtractor={(f) => f.id}
+            renderItem={({ item }) => (
+              <Pressable
+                style={({ pressed }) => [styles.folderOption, { opacity: pressed ? 0.8 : 1 }]}
+                onPress={() => handleFolderChange(item.id)}
+              >
+                <View style={[styles.folderOptionIcon, { backgroundColor: item.bgColor }]}>
+                  <Feather name={item.icon as any} size={18} color={item.iconColor} />
+                </View>
+                <Text style={[styles.folderOptionText, item.id === doc.folderId && styles.folderOptionTextActive]}>
+                  {item.name}
+                </Text>
+                {item.id === doc.folderId && <Feather name="check" size={18} color={C.primary} />}
+              </Pressable>
+            )}
+            ItemSeparatorComponent={() => <View style={styles.folderOptionDivider} />}
+          />
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -492,4 +602,22 @@ const styles = StyleSheet.create({
   deleteBtnText: { fontSize: 15, fontWeight: '600', color: C.error, fontFamily: 'Inter_600SemiBold' },
   notFound: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
   notFoundText: { fontSize: 16, color: C.secondary, fontFamily: 'Inter_400Regular' },
+  modalOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.4)' },
+  renameDialog: { position: 'absolute', top: '35%', left: 28, right: 28, backgroundColor: C.surfaceContainerLowest, borderRadius: 20, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.18, shadowRadius: 24, elevation: 12 },
+  renameDialogTitle: { fontSize: 17, fontWeight: '700', color: C.onSurface, fontFamily: 'Inter_700Bold', marginBottom: 16 },
+  renameInput: { backgroundColor: C.surfaceContainerLow, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, fontSize: 16, color: C.onSurface, fontFamily: 'Inter_400Regular', borderWidth: 1, borderColor: `${C.outlineVariant}70`, marginBottom: 16 },
+  renameDialogActions: { flexDirection: 'row', gap: 10 },
+  renameDialogBtn: { flex: 1, borderRadius: 12, paddingVertical: 13, alignItems: 'center', justifyContent: 'center' },
+  renameDialogBtnCancel: { backgroundColor: C.surfaceContainerLow, borderWidth: 1, borderColor: `${C.outlineVariant}60` },
+  renameDialogBtnConfirm: { backgroundColor: C.primary },
+  renameDialogBtnCancelText: { fontSize: 15, fontWeight: '600', color: C.secondary, fontFamily: 'Inter_600SemiBold' },
+  renameDialogBtnConfirmText: { fontSize: 15, fontWeight: '600', color: '#ffffff', fontFamily: 'Inter_600SemiBold' },
+  modalSheet: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: C.surfaceContainerLowest, borderTopLeftRadius: 28, borderTopRightRadius: 28, paddingHorizontal: 20, paddingTop: 12 },
+  modalHandle: { width: 36, height: 4, borderRadius: 2, backgroundColor: C.outlineVariant, alignSelf: 'center', marginBottom: 16 },
+  modalTitle: { fontSize: 17, fontWeight: '700', color: C.onSurface, fontFamily: 'Inter_700Bold', marginBottom: 12 },
+  folderOption: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 14, paddingHorizontal: 4 },
+  folderOptionIcon: { width: 40, height: 40, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  folderOptionText: { flex: 1, fontSize: 15, color: C.onSurface, fontFamily: 'Inter_500Medium' },
+  folderOptionTextActive: { color: C.primary, fontFamily: 'Inter_600SemiBold' },
+  folderOptionDivider: { height: 1, backgroundColor: `${C.outlineVariant}40`, marginLeft: 52 },
 });
