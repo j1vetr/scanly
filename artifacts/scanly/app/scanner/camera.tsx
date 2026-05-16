@@ -28,7 +28,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from '@/constants/colors';
 import { useScan } from '@/context/ScanContext';
 import { detectDocumentCorners, type DocumentCorners } from '@/utils/documentDetector';
-import { detectDocumentCornersWithTF } from '@/utils/tfDocumentDetector';
+import { detectDocumentCornersWithTF, useTFStatus } from '@/utils/tfDocumentDetector';
 
 const C = colors.light;
 
@@ -51,9 +51,11 @@ export default function CameraScreen() {
   // ---- UI state ----
   const [flashMode, setFlashMode]     = useState<'on' | 'off'>('off');
   const [mode, setMode]               = useState<'OTOMATİK' | 'MANUEL'>('OTOMATİK');
-  const [isCapturing, setIsCapturing] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [detected,  setDetected]      = useState(false);
+  const [isCapturing, setIsCapturing]   = useState(false);
+  const [isAnalyzing, setIsAnalyzing]   = useState(false);
+  const [analysisStep, setAnalysisStep] = useState<string>('');
+  const [detected,  setDetected]        = useState(false);
+  const tfStatus = useTFStatus();
   const [isTilted,  setIsTilted]      = useState(false);
   const [cycleKey,  setCycleKey]      = useState(0);
   const [liveCorners, setLiveCorners] = useState<DocumentCorners | null>(null);
@@ -280,21 +282,27 @@ export default function CameraScreen() {
   // -----------------------------------------------------------------------
   const runPostCaptureAnalysis = async (
     uri: string,
-  ): Promise<DocumentCorners | null> => {
-    // Phase 1: hızlı CPU tespiti
+  ): Promise<{ corners: DocumentCorners | null; phase: 1 | 3 }> => {
+    // Phase 1: hızlı CPU Sobel tespiti (~0.5-1 s)
+    setAnalysisStep('Hızlı analiz...');
     const phase1 = await detectDocumentCorners(uri);
     if (phase1) setDetectedCorners(phase1);
 
-    // Phase 3: TF.js GPU tespiti (Phase 1'i iyileştirir)
-    try {
-      const phase3 = await detectDocumentCornersWithTF(uri);
-      if (phase3) {
-        setDetectedCorners(phase3);
-        return phase3;
-      }
-    } catch { /* TF.js hazır değilse Phase 1 sonucunu kullan */ }
+    // Phase 3: TF.js GPU tespiti — Phase 1 sonucunu iyileştirir
+    if (tfStatus === 'ready') {
+      try {
+        setAnalysisStep('GPU ile doğrulanıyor...');
+        const phase3 = await detectDocumentCornersWithTF(uri);
+        if (phase3) {
+          setDetectedCorners(phase3);
+          setAnalysisStep('');
+          return { corners: phase3, phase: 3 };
+        }
+      } catch { /* TF.js hatası → Phase 1 sonucunu koru */ }
+    }
 
-    return phase1;
+    setAnalysisStep('');
+    return { corners: phase1, phase: 1 };
   };
 
   // -----------------------------------------------------------------------
@@ -312,11 +320,13 @@ export default function CameraScreen() {
     if (!corners) {
       setIsAnalyzing(true);
       try {
-        corners = await runPostCaptureAnalysis(uri);
+        const result = await runPostCaptureAnalysis(uri);
+        corners = result.corners;
       } catch (e) {
         console.warn('[camera] Post-capture analysis failed:', e);
       } finally {
         setIsAnalyzing(false);
+        setAnalysisStep('');
       }
     } else {
       // Canlı köşeleri context'e kaydet
@@ -447,42 +457,72 @@ export default function CameraScreen() {
   };
 
   const renderTopBar = () => (
-    <View style={styles.topControls}>
-      <Pressable
-        style={styles.iconBtn}
-        onPress={() => { isMultiPage ? router.back() : (resetScan(), router.back()); }}
-      >
-        <Feather name={isMultiPage ? 'arrow-left' : 'x'} size={22} color="#fff" />
-      </Pressable>
-      <View style={styles.modeToggle}>
-        {(['OTOMATİK', 'MANUEL'] as const).map(m => (
-          <Pressable
-            key={m}
-            style={[styles.modeBtn, mode === m && styles.modeBtnActive]}
-            onPress={() => {
-              setMode(m);
-              setLiveCorners(null);
-              liveDetectedRef.current = false;
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }}
-          >
-            <Text style={[styles.modeBtnText, mode === m && styles.modeBtnTextActive]}>{m}</Text>
-          </Pressable>
-        ))}
+    <View>
+      <View style={styles.topControls}>
+        <Pressable
+          style={styles.iconBtn}
+          onPress={() => { isMultiPage ? router.back() : (resetScan(), router.back()); }}
+        >
+          <Feather name={isMultiPage ? 'arrow-left' : 'x'} size={22} color="#fff" />
+        </Pressable>
+        <View style={styles.modeToggle}>
+          {(['OTOMATİK', 'MANUEL'] as const).map(m => (
+            <Pressable
+              key={m}
+              style={[styles.modeBtn, mode === m && styles.modeBtnActive]}
+              onPress={() => {
+                setMode(m);
+                setLiveCorners(null);
+                liveDetectedRef.current = false;
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              }}
+            >
+              <Text style={[styles.modeBtnText, mode === m && styles.modeBtnTextActive]}>{m}</Text>
+            </Pressable>
+          ))}
+        </View>
+        <Pressable
+          style={styles.iconBtn}
+          onPress={() => {
+            setFlashMode(f => f === 'off' ? 'on' : 'off');
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          }}
+        >
+          <Feather
+            name={flashMode === 'on' ? 'zap' : 'zap-off'}
+            size={22}
+            color={flashMode === 'on' ? '#34d399' : '#fff'}
+          />
+        </Pressable>
       </View>
-      <Pressable
-        style={styles.iconBtn}
-        onPress={() => {
-          setFlashMode(f => f === 'off' ? 'on' : 'off');
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        }}
-      >
-        <Feather
-          name={flashMode === 'on' ? 'zap' : 'zap-off'}
-          size={22}
-          color={flashMode === 'on' ? '#34d399' : '#fff'}
-        />
-      </Pressable>
+      {/* GPU durum rozeti — TF.js hazır olduğunda göster */}
+      {tfStatus !== 'uninitialized' && (
+        <View style={styles.gpuBadgeRow}>
+          <View style={[
+            styles.gpuBadge,
+            tfStatus === 'ready'        && styles.gpuBadgeReady,
+            tfStatus === 'initializing' && styles.gpuBadgeLoading,
+            tfStatus === 'error'        && styles.gpuBadgeError,
+          ]}>
+            {tfStatus === 'initializing'
+              ? <ActivityIndicator size={9} color="rgba(255,255,255,0.7)" style={{ marginRight: 3 }} />
+              : <Feather
+                  name={tfStatus === 'ready' ? 'cpu' : 'alert-circle'}
+                  size={10}
+                  color={tfStatus === 'ready' ? '#34d399' : 'rgba(255,255,255,0.45)'}
+                />
+            }
+            <Text style={[
+              styles.gpuBadgeText,
+              tfStatus === 'ready' && { color: '#34d399' },
+            ]}>
+              {tfStatus === 'ready'        ? 'GPU hazır'
+               : tfStatus === 'initializing' ? 'GPU yükleniyor'
+               : 'GPU hata'}
+            </Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 
@@ -565,7 +605,9 @@ export default function CameraScreen() {
           {isAnalyzing ? (
             <>
               <ActivityIndicator size="small" color="#34d399" />
-              <Text style={[styles.statusText, { color: '#34d399' }]}>Belge analiz ediliyor...</Text>
+              <Text style={[styles.statusText, { color: '#34d399' }]}>
+                {analysisStep || 'Belge analiz ediliyor...'}
+              </Text>
             </>
           ) : isAutoNative ? (
             (detected || liveCorners) && !isTilted ? (
@@ -823,6 +865,29 @@ const styles = StyleSheet.create({
     borderRadius: 20, paddingHorizontal: 12, paddingVertical: 4,
   },
   pageCountText: { fontSize: 12, color: '#fff', fontWeight: '600', fontFamily: 'Inter_600SemiBold' },
+
+  // GPU rozeti
+  gpuBadgeRow: { alignItems: 'center', marginTop: 4 },
+  gpuBadge: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    backgroundColor: 'rgba(0,0,0,0.45)',
+    borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4,
+    borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)',
+  },
+  gpuBadgeReady: {
+    borderColor: 'rgba(52,211,153,0.5)',
+    backgroundColor: 'rgba(0,105,72,0.35)',
+  },
+  gpuBadgeLoading: {
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  gpuBadgeError: {
+    borderColor: 'rgba(239,68,68,0.4)',
+  },
+  gpuBadgeText: {
+    fontSize: 10, fontFamily: 'Inter_500Medium',
+    color: 'rgba(255,255,255,0.5)',
+  },
 
   tiltPill: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
