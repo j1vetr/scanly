@@ -37,13 +37,7 @@
       "expo-web-browser",
       "expo-image-picker",
       "expo-file-system",
-      [
-        "react-native-vision-camera",
-        {
-          "cameraPermissionText": "Belge taramak için kamera izni gereklidir.",
-          "enableMicrophonePermission": false
-        }
-      ]
+      "expo-camera"
     ],
     "experiments": {
       "typedRoutes": true,
