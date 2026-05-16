@@ -94,10 +94,19 @@ function makePR(
 }
 
 // ===========================================================================
+const FINE_ROT_RANGE = 15; // ±15°
+
 export default function CropScreen() {
   const insets = useSafeAreaInsets();
   const { capturedImageUri, setCapturedImageUri } = useScan();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Fine rotation (±15°) — applied before crop on save
+  const [fineRotation, setFineRotation] = useState(0);
+  const fineRotRef   = useRef(0);
+  const rotBaseRef   = useRef(0);
+  const sliderWRef   = useRef(220);
+  const [sliderWidth, setSliderWidth] = useState(220);
 
   // Wrapper layout (imageWrapper, not the outer canvasArea)
   const [wrapLayout, setWrapLayout] = useState({ width: 0, height: 0 });
@@ -159,6 +168,26 @@ export default function CropScreen() {
   const lPan  = useRef(makePR('L',  lS,  boxRef, wrapRef, updateBox)).current;
   const rPan  = useRef(makePR('R',  rS,  boxRef, wrapRef, updateBox)).current;
 
+  // Fine rotation PanResponder
+  const rotPan = useRef(PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder:  () => true,
+    onPanResponderGrant: () => {
+      rotBaseRef.current = fineRotRef.current;
+      Haptics.selectionAsync();
+    },
+    onPanResponderMove: (_e, gs) => {
+      const scale  = (2 * FINE_ROT_RANGE) / sliderWRef.current;
+      const newRot = Math.max(-FINE_ROT_RANGE, Math.min(FINE_ROT_RANGE,
+        rotBaseRef.current + gs.dx * scale,
+      ));
+      const snapped = Math.round(newRot * 2) / 2; // 0.5° steps
+      fineRotRef.current = snapped;
+      setFineRotation(snapped);
+    },
+    onPanResponderRelease: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+  })).current;
+
   // -----------------------------------------------------------------------
   const rotateImage = async (deg: number) => {
     if (!capturedImageUri) return;
@@ -212,8 +241,19 @@ export default function CropScreen() {
       const cropW   = Math.max(10, Math.round((ir - il) * imgW!));
       const cropH   = Math.max(10, Math.round((ib - it) * imgH!));
 
+      // Apply fine rotation first (if non-zero)
+      let processUri = capturedImageUri;
+      if (Math.abs(fineRotRef.current) >= 0.5) {
+        const rotResult = await manipulateAsync(
+          capturedImageUri,
+          [{ rotate: fineRotRef.current }],
+          { compress: 0.95, format: SaveFormat.JPEG },
+        );
+        processUri = rotResult.uri;
+      }
+
       const result = await manipulateAsync(
-        capturedImageUri,
+        processUri,
         [{ crop: { originX, originY, width: cropW, height: cropH } }],
         { compress: 0.92, format: SaveFormat.JPEG }
       );
@@ -366,6 +406,57 @@ export default function CropScreen() {
           </Pressable>
         </View>
 
+        {/* Fine rotation slider */}
+        <View style={styles.rotSection}>
+          <View style={styles.rotHeaderRow}>
+            <Feather name="rotate-ccw" size={14} color={C.secondary} />
+            <Text style={[styles.rotLabel, fineRotation !== 0 && styles.rotLabelActive]}>
+              {fineRotation === 0 ? 'Eğim düzeltme' : `${fineRotation > 0 ? '+' : ''}${fineRotation.toFixed(1)}°`}
+            </Text>
+            {fineRotation !== 0 && (
+              <Pressable
+                onPress={() => { fineRotRef.current = 0; setFineRotation(0); Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+                hitSlop={12}
+              >
+                <Feather name="x-circle" size={14} color={C.primary} />
+              </Pressable>
+            )}
+            <Feather name="rotate-cw" size={14} color={C.secondary} />
+          </View>
+          <View
+            style={styles.rotTrack}
+            onLayout={e => { sliderWRef.current = e.nativeEvent.layout.width; setSliderWidth(e.nativeEvent.layout.width); }}
+            {...rotPan.panHandlers}
+          >
+            {/* Track line */}
+            <View style={styles.rotTrackLine} />
+            {/* Center notch */}
+            <View style={styles.rotCenterNotch} />
+            {/* Tick marks every 5° */}
+            {([-15, -10, -5, 0, 5, 10, 15] as const).map(deg => (
+              <View
+                key={deg}
+                style={[
+                  styles.rotTick,
+                  { left: ((deg + FINE_ROT_RANGE) / (2 * FINE_ROT_RANGE)) * sliderWidth - 0.5 },
+                  deg === 0 && styles.rotTickCenter,
+                ]}
+              />
+            ))}
+            {/* Thumb */}
+            <View style={[
+              styles.rotThumb,
+              { left: ((fineRotation + FINE_ROT_RANGE) / (2 * FINE_ROT_RANGE)) * sliderWidth - 14 },
+              fineRotation !== 0 && styles.rotThumbActive,
+            ]} />
+          </View>
+          <View style={styles.rotRangeRow}>
+            <Text style={styles.rotRangeText}>−15°</Text>
+            <Text style={styles.rotRangeText}>0°</Text>
+            <Text style={styles.rotRangeText}>+15°</Text>
+          </View>
+        </View>
+
         <View style={styles.actionRow}>
           <Pressable
             style={({ pressed }) => [styles.retakeBtn, { opacity: pressed ? 0.75 : 1 }]}
@@ -440,6 +531,22 @@ const styles = StyleSheet.create({
   toolBtn:     { alignItems:'center', gap:5, paddingHorizontal:8, paddingVertical:8, borderRadius:12, minWidth:60 },
   toolBtnP:    { backgroundColor:`${C.primary}12` },
   toolLabel:   { fontSize:10, color:C.secondary, fontFamily:'Inter_400Regular', textAlign:'center' },
+
+  rotSection:     { gap: 6 },
+  rotHeaderRow:   { flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'center' },
+  rotLabel:       { fontSize: 12, color: C.secondary, fontFamily: 'Inter_500Medium', flex: 1, textAlign: 'center' },
+  rotLabelActive: { color: C.primary, fontFamily: 'Inter_600SemiBold' },
+
+  rotTrack:       { height: 36, position: 'relative', justifyContent: 'center' },
+  rotTrackLine:   { position: 'absolute', left: 0, right: 0, height: 2, backgroundColor: `${C.outlineVariant}60`, borderRadius: 1 },
+  rotCenterNotch: { position: 'absolute', left: '50%', width: 2, height: 10, backgroundColor: C.secondary, borderRadius: 1, marginLeft: -1 },
+  rotTick:        { position: 'absolute', width: 1, height: 6, backgroundColor: `${C.secondary}60`, top: 15 },
+  rotTickCenter:  { height: 10, backgroundColor: C.secondary, top: 13 },
+  rotThumb:       { position: 'absolute', width: 28, height: 28, borderRadius: 14, backgroundColor: C.surfaceContainerLow, borderWidth: 2, borderColor: C.outlineVariant, top: 4, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.2, shadowRadius: 4, elevation: 3 },
+  rotThumbActive: { borderColor: C.primary, backgroundColor: `${C.primary}18` },
+
+  rotRangeRow:  { flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 2 },
+  rotRangeText: { fontSize: 9, color: `${C.secondary}80`, fontFamily: 'Inter_400Regular' },
 
   actionRow:    { flexDirection:'row', gap:12 },
   retakeBtn:    { flexDirection:'row', alignItems:'center', gap:8, paddingHorizontal:16, paddingVertical:14, borderRadius:14, borderWidth:1.5, borderColor:C.outlineVariant },
