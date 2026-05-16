@@ -56,12 +56,19 @@
     "zod-validation-error": "^3.4.0"
   },
   "dependencies": {
+    "@tensorflow/tfjs": "^4.22.0",
+    "@tensorflow/tfjs-react-native": "^1.0.0",
+    "@types/jpeg-js": "^0.3.7",
     "expo-camera": "^17.0.10",
     "expo-file-system": "^19.0.22",
+    "expo-gl": "^55.0.14",
     "expo-image-manipulator": "^14.0.8",
     "expo-print": "^15.0.8",
     "expo-sensors": "^55.0.15",
     "expo-sharing": "^14.0.8",
-    "react-native-webview": "^13.15.0"
+    "jpeg-js": "^0.4.4",
+    "react-native-vision-camera": "^5.0.9",
+    "react-native-webview": "^13.15.0",
+    "react-native-worklets-core": "^1.6.3"
   }
 }

@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import { generateDefaultTitle } from '@/services/pdfService';
+import type { DocumentCorners } from '@/utils/documentDetector';
 
 export type FilterType = 'Orijinal' | 'Temiz' | 'Parlak' | 'Gri Tonlama' | 'Siyah & Beyaz';
 
@@ -12,12 +13,15 @@ interface ScanContextValue {
   selectedFilter: FilterType;
   documentTitle: string;
   selectedFolderId: string;
+  // Phase 1/2/3: detected document corners from image analysis
+  detectedCorners: DocumentCorners | null;
   setCapturedImageUri: (uri: string | null) => void;
   setProcessedImageUri: (uri: string | null) => void;
   setPdfUri: (uri: string | null) => void;
   setSelectedFilter: (filter: FilterType) => void;
   setDocumentTitle: (title: string) => void;
   setSelectedFolderId: (id: string) => void;
+  setDetectedCorners: (corners: DocumentCorners | null) => void;
   addCapturedImage: (uri: string) => void;
   removeCapturedImage: (index: number) => void;
   resetScan: () => void;
@@ -33,6 +37,7 @@ export function ScanProvider({ children }: { children: React.ReactNode }) {
   const [selectedFilter, setSelectedFilter] = useState<FilterType>('Temiz');
   const [documentTitle, setDocumentTitle] = useState<string>(generateDefaultTitle());
   const [selectedFolderId, setSelectedFolderId] = useState<string>('f4');
+  const [detectedCorners, setDetectedCorners] = useState<DocumentCorners | null>(null);
 
   const handleSetCapturedImageUri = useCallback((uri: string | null) => {
     setCapturedImageUri(uri);
@@ -63,6 +68,7 @@ export function ScanProvider({ children }: { children: React.ReactNode }) {
     setSelectedFilter('Temiz');
     setDocumentTitle(generateDefaultTitle());
     setSelectedFolderId('f4');
+    setDetectedCorners(null);
   }, []);
 
   return (
@@ -75,12 +81,14 @@ export function ScanProvider({ children }: { children: React.ReactNode }) {
         selectedFilter,
         documentTitle,
         selectedFolderId,
+        detectedCorners,
         setCapturedImageUri: handleSetCapturedImageUri,
         setProcessedImageUri,
         setPdfUri,
         setSelectedFilter,
         setDocumentTitle,
         setSelectedFolderId,
+        setDetectedCorners,
         addCapturedImage,
         removeCapturedImage,
         resetScan,

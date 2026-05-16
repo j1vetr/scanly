@@ -18,6 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import colors from '@/constants/colors';
 import { useScan } from '@/context/ScanContext';
+import { cornersToCropBox } from '@/utils/documentDetector';
 
 const C = colors.light;
 const MIN_FRAC  = 0.05;
@@ -98,7 +99,7 @@ const FINE_ROT_RANGE = 15; // ±15°
 
 export default function CropScreen() {
   const insets = useSafeAreaInsets();
-  const { capturedImageUri, setCapturedImageUri } = useScan();
+  const { capturedImageUri, setCapturedImageUri, detectedCorners } = useScan();
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Fine rotation (±15°) — applied before crop on save
@@ -132,22 +133,29 @@ export default function CropScreen() {
     RNImage.getSize(capturedImageUri, (w, h) => setImgDims({ w, h }), () => {});
   }, [capturedImageUri]);
 
-  // Initialize crop box to the displayed image area (accounts for letterboxing)
+  // Initialize crop box — prefer detected corners, fall back to letterbox bounds
   useEffect(() => {
     if (!imgDims || !wrapLayout.width || !wrapLayout.height || cropReady) return;
     const { x, y, w: dw, h: dh } = displayRect(
       imgDims.w, imgDims.h, wrapLayout.width, wrapLayout.height
     );
     const W = wrapLayout.width, H = wrapLayout.height;
-    const INSET = 0.025;
-    updateBox({
-      left:   (x / W)       + INSET,
-      top:    (y / H)       + INSET,
-      right:  ((x + dw) / W) - INSET,
-      bottom: ((y + dh) / H) - INSET,
-    });
+
+    if (detectedCorners) {
+      // Phase 1/2/3: use AI-detected corners converted to wrapper-space fractions
+      const box = cornersToCropBox(detectedCorners, x, y, dw, dh, W, H);
+      updateBox(box);
+    } else {
+      const INSET = 0.025;
+      updateBox({
+        left:   (x / W)        + INSET,
+        top:    (y / H)        + INSET,
+        right:  ((x + dw) / W) - INSET,
+        bottom: ((y + dh) / H) - INSET,
+      });
+    }
     setCropReady(true);
-  }, [imgDims, wrapLayout, cropReady, updateBox]);
+  }, [imgDims, wrapLayout, cropReady, updateBox, detectedCorners]);
 
   // --- 8 start-position refs (one per handle) ----------------------------
   const tlS = useRef<CropBox>({ ...DEFAULT_BOX });

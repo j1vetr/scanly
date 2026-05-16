@@ -22,7 +22,11 @@
       }
     },
     "android": {
-      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
       "favicon": "./assets/images/icon.png"
@@ -36,9 +40,16 @@
       ],
       "expo-font",
       "expo-web-browser",
-      "expo-camera",
       "expo-image-picker",
-      "expo-file-system"
+      "expo-file-system",
+      "expo-gl",
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "Belge taramak için kamera izni gereklidir.",
+          "enableMicrophonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
