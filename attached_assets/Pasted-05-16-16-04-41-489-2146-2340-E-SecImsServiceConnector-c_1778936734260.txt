@@ -1,0 +1,500 @@
+05-16 16:04:41.489  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:41.491  2146  2340 E #IMSREGI: (0, AVEA Turkey) SEND SIP REGISTER <+0.093s>
+05-16 16:04:41.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936681
+05-16 16:04:41.543  2146  2532 E GlobalSettingsRepoBase: globalgcsettings No matched key : ss_callwaiting_by_network
+05-16 16:04:41.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:41.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:41.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:41.546  2146  2532 E UserAgent[0]: Unexpected event 39. current state is RegisteringState
+05-16 16:04:41.719  1844  2525 E SatelliteController: notifyNtnEligibility: mSatellitePhone is null
+05-16 16:04:41.750  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : separate_vo5g_icon
+05-16 16:04:41.809  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:41.942  2146  2538 E GlobalSettingsRepoBase: globalgcsettings No matched key : use_usim_on_invalid_isim
+05-16 16:04:41.945  2146  2538 E TelephonyManagerWrapper: backup impi: null
+05-16 16:04:41.948  2146  2538 E TelephonyManagerWrapper: backup domain: null
+05-16 16:04:41.952  2146  2538 E ImsUri  : parse: illegal Uri - xxxxx
+05-16 16:04:41.954  2146  2538 E SimManager<0>: isIsimDataValid: IMPU_INVALID
+05-16 16:04:41.954  2146  2538 E SimManager<0>: isIsimDataValid: IMPI_NOT_EXIST
+05-16 16:04:41.954  2146  2538 E SimManager<0>: isIsimDataValid: HOME_DOMAIN_NOT_EXIST
+05-16 16:04:41.955  2146  2538 E #IMSCR  : 05-16 16:04:41 0x10000020:0,REQ ISIM AUTH
+05-16 16:04:42.097  2146  2538 E #IMSCR  : 05-16 16:04:42 0x10000021:0,LEN:72
+05-16 16:04:42.406  2146  2538 E #IMSCR  : 05-16 16:04:42 0x11030002:0,REG EXP:3600
+05-16 16:04:42.442  2146  2340 E #IMSCR  : 05-16 16:04:42 0x11010000:0,REG OK:13:AVEA_TR:ims:0x00000007
+05-16 16:04:42.469  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : show_vowifi_regi_icon
+05-16 16:04:42.469  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : show_volte_regi_icon
+05-16 16:04:42.470  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : remove_icon_nosvc
+05-16 16:04:42.470  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : hide_vowifi_icon_when_cs_call
+05-16 16:04:42.473  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : volte_regi_icon_id
+05-16 16:04:42.480  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : show_rcs_regi_icon
+05-16 16:04:42.480  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : vowifi_operator_label
+05-16 16:04:42.525  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : use_usim_on_invalid_isim
+05-16 16:04:42.526  2146  2340 E TelephonyManagerWrapper: backup impi: null
+05-16 16:04:42.528  2146  2340 E TelephonyManagerWrapper: backup domain: null
+05-16 16:04:42.529  2146  2340 E ImsUri  : parse: illegal Uri - xxxxx
+05-16 16:04:42.529  2146  2340 E SimManager<0>: isIsimDataValid: IMPU_INVALID
+05-16 16:04:42.529  2146  2340 E SimManager<0>: isIsimDataValid: IMPI_NOT_EXIST
+05-16 16:04:42.529  2146  2340 E SimManager<0>: isIsimDataValid: HOME_DOMAIN_NOT_EXIST
+05-16 16:04:42.531  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : sms_write_uicc
+05-16 16:04:42.533  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : voice_domain_pref_utran
+05-16 16:04:42.533  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : ss_domain_setting
+05-16 16:04:42.533  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : use_usim_on_invalid_isim
+05-16 16:04:42.533  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : ussd_domain_setting
+05-16 16:04:42.534  2146  2340 E TelephonyManagerWrapper: backup impi: null
+05-16 16:04:42.535  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : emergency_domain_setting
+05-16 16:04:42.537  2146  2340 E TelephonyManagerWrapper: backup domain: null
+05-16 16:04:42.537  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : srvcc_version
+05-16 16:04:42.538  2146  2340 E ImsUri  : parse: illegal Uri - xxxxx
+05-16 16:04:42.538  2146  2340 E SimManager<0>: isIsimDataValid: IMPU_INVALID
+05-16 16:04:42.538  2146  2340 E SimManager<0>: isIsimDataValid: IMPI_NOT_EXIST
+05-16 16:04:42.538  2146  2340 E SimManager<0>: isIsimDataValid: HOME_DOMAIN_NOT_EXIST
+05-16 16:04:42.539  2146  2146 E RegiMgr<0>: getImsProfile: found [AVEA Turkey] for [VOLTE]
+05-16 16:04:42.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936682
+05-16 16:04:42.544  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:42.544  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:42.544  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:42.544  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:42.545  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:42.547  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:42.551  2146  2340 E #IMSCR  : 05-16 16:04:42 0x13000009:0,EC:0,CNT:0
+05-16 16:04:42.552  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : dual_rcs_policy
+05-16 16:04:42.566  1429  1966 E PhoneRestrictionPolicy: getEmergencyCall >>false
+05-16 16:04:42.568  1429  1966 E PhoneRestrictionPolicy: getEmergencyCall >>false
+05-16 16:04:42.570  2146  2340 E CmcServiceHelper: disallow Call Service
+05-16 16:04:42.570  2146  2340 E CmcServiceHelper: disallow Call Service
+05-16 16:04:42.570  2146  2340 E CmcServiceHelper: disallow Call Service
+05-16 16:04:42.570  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : ss_domain_setting
+05-16 16:04:42.571  2146  2340 E CapabilityUtil<0>: checkModuleReady: mConfig.isAvailable == false
+05-16 16:04:42.571  2146  2340 E CapabilityUtil<0>: checkModuleReady: mConfig.isAvailable == false
+05-16 16:04:42.572  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:42.573  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:42.575  2146  2340 E #IMSCR  : 05-16 16:04:42 0x3000000C:0
+05-16 16:04:42.576  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : allow_release_wfc_before_ho
+05-16 16:04:42.582  2146  2340 E GlobalSettingsRepoBase: globalgcsettings No matched key : ss_domain_setting
+05-16 16:04:42.582  2146  2340 E CapabilityUtil<0>: checkModuleReady: mConfig.isAvailable == false
+05-16 16:04:42.582  2146  2340 E CapabilityUtil<0>: checkModuleReady: mConfig.isAvailable == false
+05-16 16:04:42.582  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:42.583  2146  2340 E SecImsServiceConnector: connect to local SecImsService #1 attempt
+05-16 16:04:42.599  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:42.603  2146  2340 E #IMSREGI: (0, AVEA Turkey) REGISTERED
+05-16 16:04:42.610  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:42.633  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:42.639  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:42.658  1429  1684 E AppOps  : attributionTag VCN not declared in manifest of android
+05-16 16:04:42.683  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:42.691  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:42.705  1844  2525 E SatelliteController: notifyNtnEligibility: mSatellitePhone is null
+05-16 16:04:42.719  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : separate_vo5g_icon
+05-16 16:04:42.754  1429  3754 E PhoneRestrictionPolicy: getEmergencyCall >>false
+05-16 16:04:42.755  1429  3754 E PhoneRestrictionPolicy: getEmergencyCall >>false
+05-16 16:04:42.773  1844  1844 E SatelliteController: registerForSatelliteModemStateChanged: mSatelliteSessionController is not initialized yet
+05-16 16:04:42.778  1844  2525 E SatelliteController: notifyNtnEligibility: mSatellitePhone is null
+05-16 16:04:42.784  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : separate_vo5g_icon
+05-16 16:04:42.810  1429  4491 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+05-16 16:04:42.841  1429  4436 E PhoneRestrictionPolicy: getEmergencyCall >>false
+05-16 16:04:42.841  1429  4436 E PhoneRestrictionPolicy: getEmergencyCall >>false
+05-16 16:04:42.846  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - GoogleDiscoverWindow$_15797#65152
+05-16 16:04:42.864  2357  2430 E AppIconSolution: Couldn't get theme package resources, package is null
+05-16 16:04:42.872  1074  2644 E NativeCustomFrequencyManager: [NativeCFMS] BpCustomFrequencyManager::acquire()
+05-16 16:04:42.896  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=Task=1)/@0x2d6d5dc_transition-leash#65157
+05-16 16:04:42.921  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 1.000 - Surface(name=Task=1)/@0x2d6d5dc_transition-leash#65157
+05-16 16:04:42.954  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=3c1f0fe InputMethod)/@0x75121d6 - animation-leash of insets_animation#65160
+05-16 16:04:42.958  1429  1649 E AppOps  : attributionTag VCN not declared in manifest of android
+05-16 16:04:43.121  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.000375, clamping
+05-16 16:04:43.129  1074  1074 E SurfaceFlinger: alpha changed 0.022 -> 0.000 - Surface(name=Task=1198)/@0x7d825ba_transition-leash#65158
+05-16 16:04:43.129  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.016384, clamping
+05-16 16:04:43.138  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.027246, clamping
+05-16 16:04:43.146  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.037181, clamping
+05-16 16:04:43.148  1017  1031 E BatteryDump: !@new_battery_dump : 4118,-309,2000,3150,77,334,323,388,334,0,342,356,0,Charging,NO_CHARGING,Normal,Good,PDIC,0,Normal,0,0,8996,0x8000,0x10010000,0x0,0,0,0000,0000,00000000,0,0,0,0,655,4095,7721,990,0,
+05-16 16:04:43.154  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.042785, clamping
+05-16 16:04:43.163  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.047539, clamping
+05-16 16:04:43.171  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.049074, clamping
+05-16 16:04:43.179  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.050438, clamping
+05-16 16:04:43.187  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.049232, clamping
+05-16 16:04:43.196  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.046872, clamping
+05-16 16:04:43.204  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.044773, clamping
+05-16 16:04:43.212  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.040076, clamping
+05-16 16:04:43.221  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.034496, clamping
+05-16 16:04:43.229  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.029535, clamping
+05-16 16:04:43.237  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.022974, clamping
+05-16 16:04:43.246  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.014703, clamping
+05-16 16:04:43.254  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.007352, clamping
+05-16 16:04:43.259 23740 23771 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:04:43.450  1844  2525 E SatelliteController: notifyNtnEligibility: mSatellitePhone is null
+05-16 16:04:43.451 23740 23770 E COST    : bootstrap: 27 result: 0
+05-16 16:04:43.456  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : separate_vo5g_icon
+05-16 16:04:43.468  1844  2525 E SatelliteController: notifyNtnEligibility: mSatellitePhone is null
+05-16 16:04:43.477  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : separate_vo5g_icon
+05-16 16:04:43.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936683
+05-16 16:04:43.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:43.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:43.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:43.574 23740 23783 E HxContactChangeEventHelper: Hx contact account data not found for id: 32768
+05-16 16:04:43.577 23740 23778 E NativeCrashManager: register: NativeCrashManager is already enabled. Updating listener
+05-16 16:04:43.598 23740 23785 E AccountStateManager: Ignoring HxAccount handshake state changes for non-iCloud basic account with id: 32768
+05-16 16:04:43.882 23845 23845 E ActivityThread: Failed to find provider info for com.microsoft.yourphonecompanion.contentprovider.featureoverride
+05-16 16:04:43.891 23845 23845 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:04:43.998 23845 23853 E appmanager:auth: hiddenapi: Accessing hidden method Lsun/misc/Unsafe;->getAndAddLong(Ljava/lang/Object;JJ)J (runtime_flags=0, domain=core-platform, api=max-target-r) from Luq/a; (domain=app, TargetSdkVersion=36) using reflection: denied
+05-16 16:04:43.998 23886 23886 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:04:44.007 23898 23921 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:04:44.027 23898 23898 E ActivityThread: Failed to find provider info for com.microsoft.yourphonecompanion.contentprovider.featureoverride
+05-16 16:04:44.216 23926 23957 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:04:44.435  1844  2525 E SatelliteController: notifyNtnEligibility: mSatellitePhone is null
+05-16 16:04:44.443  2146  2146 E GlobalSettingsRepoBase: globalgcsettings No matched key : separate_vo5g_icon
+05-16 16:04:44.506 23926 24010 E Routine@Core[4.9.04.13]: WearNodeManagerImpl: getNodeOfCompanionWatchSupportModeMirror: onFailure - com.google.android.gms.common.api.ApiException: 17: API: Wearable.API is not available on this device. Connection failed with: ConnectionResult{statusCode=API_UNAVAILABLE, resolution=null, message=null}
+05-16 16:04:44.507 23926 24010 E Routine@Core[4.9.04.13]: WearNodeManagerImpl: getNodeOfCompanionWatchSupportModeMirror return null
+05-16 16:04:44.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936684
+05-16 16:04:44.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:44.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:44.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:45.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936685
+05-16 16:04:45.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:45.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:45.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:46.373  1429  4491 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+05-16 16:04:46.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936686
+05-16 16:04:46.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:46.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:46.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:47.060 23740 23771 E AppCenter: Sending logs groupName=group_core id=e7601c8b-f228-4fdc-8a6e-a319e25a8ba8 failed
+05-16 16:04:47.060 23740 23771 E AppCenter: com.microsoft.appcenter.http.HttpException: 401 - {"status":"AppSecretForbiddenListed","validDiagnosticsIds":[],"throttledDiagnosticsIds":[],"correlationId":"cf39ef46-01fe-4f63-ba25-7d6ebac5b531"}
+05-16 16:04:47.060 23740 23771 E AppCenter:     at pi.c.a(Unknown Source:422)
+05-16 16:04:47.060 23740 23771 E AppCenter:     at pi.c.b(Unknown Source:6)
+05-16 16:04:47.060 23740 23771 E AppCenter:     at pi.c.doInBackground(Unknown Source:2)
+05-16 16:04:47.060 23740 23771 E AppCenter:     at android.os.AsyncTask$3.call(AsyncTask.java:394)
+05-16 16:04:47.060 23740 23771 E AppCenter:     at java.util.concurrent.FutureTask.run(FutureTask.java:317)
+05-16 16:04:47.060 23740 23771 E AppCenter:     at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1154)
+05-16 16:04:47.060 23740 23771 E AppCenter:     at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:652)
+05-16 16:04:47.060 23740 23771 E AppCenter:     at java.lang.Thread.run(Thread.java:1564)
+05-16 16:04:47.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936687
+05-16 16:04:47.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:47.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:47.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:48.135  1429  1468 E Watchdog: !@Sync: 6219 heap(MB): 142 / 175 FD: 1243 [2026-05-16 16:04:48.135]
+05-16 16:04:48.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936688
+05-16 16:04:48.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:48.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:48.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:48.785 13159 13177 E KnoxInfoImpl: ERROR | invalid request, isSupportMoveTo
+05-16 16:04:48.809 13159 13177 E KnoxInfoImpl: ERROR | invalid request, isSupportMoveTo
+05-16 16:04:48.837 13159 13177 E KnoxInfoImpl: ERROR | invalid request, isSupportMoveTo
+05-16 16:04:48.870 13159 13177 E KnoxInfoImpl: ERROR | invalid request, isSupportMoveTo
+05-16 16:04:48.937  2822 24083 E pageboostd: alp start : app devbytecodefixturegenerator
+05-16 16:04:48.937  1429  4436 E ActivityTaskManager: Checking for the Active launch getApplicationEnabledSetting
+05-16 16:04:48.940  2822 24083 E pageboostd: devbytecodefixturegenerator, amt 0 scnt 0 fcnt 0
+05-16 16:04:48.940  2822 24083 E pageboostd: devbytecodefixturegenerator, amt 0 scnt 0 fcnt 0
+05-16 16:04:48.940  2822 24083 E pageboostd: alp end : app devbytecodefixturegenerator data_amount 0
+05-16 16:04:49.038  2822  2822 E pageboostd: Received HALT command code 2
+05-16 16:04:49.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936689
+05-16 16:04:49.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:49.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:49.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:50.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936690
+05-16 16:04:50.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:50.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:50.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:51.007  2822 24095 E pageboostd: alp start : app comtoov1scanly
+05-16 16:04:51.087  2822 24095 E pageboostd: aal_prefetch_file alp wrong file name:/data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.art
+05-16 16:04:51.087  2822 24095 E pageboostd: comtoov1scanly, amt 33236088 scnt 2 fcnt 1
+05-16 16:04:51.087  2822 24095 E pageboostd: comtoov1scanly, amt 0 scnt 0 fcnt 0
+05-16 16:04:51.087  2822 24095 E pageboostd: alp end : app comtoov1scanly data_amount 33236088
+05-16 16:04:51.088  2822  2822 E pageboostd: Received HALT command code 2
+05-16 16:04:51.133  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=Task=1199)/@0x6978389_transition-leash#65168
+05-16 16:04:51.158  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.698 - Surface(name=Task=1199)/@0x6978389_transition-leash#65168
+05-16 16:04:51.166  1074  2644 E NativeCustomFrequencyManager: [NativeCFMS] BpCustomFrequencyManager::acquire()
+05-16 16:04:51.195 24096 24096 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:04:51.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936691
+05-16 16:04:51.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:51.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:51.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:51.710  2822  2822 E pageboostd: Received HALT command code 2
+05-16 16:04:51.726  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=3c1f0fe InputMethod)/@0x75121d6 - animation-leash of insets_animation#65178
+05-16 16:04:51.802 24096 24128 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0 in tid 24128 (mqt_v_js), pid 24096 (om.toov1.scanly)
+05-16 16:04:51.844  1429  1978 E WindowManager: win=Window{ec570a3 u0 GoogleDiscoverWindow} destroySurfaces: appStopped=true cleanupOnResume=false win.mWindowRemovalAllowed=false win.mRemoveOnExit=false win.mViewVisibility=8 caller=com.android.server.wm.ActivityRecord.destroySurfaces:25 com.android.server.wm.ActivityRecord.activityStopped:192 com.android.server.wm.ActivityClientController.activityStopped:97 android.app.IActivityClientController$Stub.onTransact:740 com.android.server.wm.ActivityClientController.onTransact:1 android.os.Binder.execTransactInternal:1462 android.os.Binder.execTransact:1401
+05-16 16:04:51.845  1429  1978 E WindowManager: win=Window{44df3f1 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity} destroySurfaces: appStopped=true cleanupOnResume=false win.mWindowRemovalAllowed=false win.mRemoveOnExit=false win.mViewVisibility=8 caller=com.android.server.wm.ActivityRecord.destroySurfaces:25 com.android.server.wm.ActivityRecord.activityStopped:192 com.android.server.wm.ActivityClientController.activityStopped:97 android.app.IActivityClientController$Stub.onTransact:740 com.android.server.wm.ActivityClientController.onTransact:1 android.os.Binder.execTransactInternal:1462 android.os.Binder.execTransact:1401
+05-16 16:04:52.279 24159 24159 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+05-16 16:04:52.279 24159 24159 F DEBUG   : Build fingerprint: 'samsung/r11sxtur/r11s:16/BP2A.250605.031.A3/S711BXXUAFYI6:user/release-keys'
+05-16 16:04:52.279 24159 24159 F DEBUG   : Revision: '7'
+05-16 16:04:52.279 24159 24159 F DEBUG   : ABI: 'arm64'
+05-16 16:04:52.279 24159 24159 F DEBUG   : Processor: '4'
+05-16 16:04:52.279 24159 24159 F DEBUG   : Timestamp: 2026-05-16 16:04:51.906028315+0300
+05-16 16:04:52.279 24159 24159 F DEBUG   : Process uptime: 2s
+05-16 16:04:52.279 24159 24159 F DEBUG   : Cmdline: com.toov1.scanly
+05-16 16:04:52.279 24159 24159 F DEBUG   : pid: 24096, tid: 24128, name: mqt_v_js  >>> com.toov1.scanly <<<
+05-16 16:04:52.279 24159 24159 F DEBUG   : uid: 10486
+05-16 16:04:52.279 24159 24159 F DEBUG   : tagged_addr_ctrl: 0000000000000001 (PR_TAGGED_ADDR_ENABLE)
+05-16 16:04:52.279 24159 24159 F DEBUG   : pac_enabled_keys: 000000000000000f (PR_PAC_APIAKEY, PR_PAC_APIBKEY, PR_PAC_APDAKEY, PR_PAC_APDBKEY)
+05-16 16:04:52.279 24159 24159 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0000000000000000
+05-16 16:04:52.279 24159 24159 F DEBUG   : Cause: null pointer dereference
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x0  b4000072562e9c10  x1  0000000000000000  x2  0000000000000008  x3  0000000000000000
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x4  0000007140927758  x5  0000007140927720  x6  0000007140927688  x7  0000007140927688
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x8  b4000073862cb068  x9  0000000000000001  x10 0000000000000004  x11 9805bc4944910744
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x12 0000000000040004  x13 0000000000000001  x14 0000007140928740  x15 0000000000080100
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x16 00000070ba1dcd60  x17 00000074e58b45c0  x18 00000070bf368000  x19 b4000072562e9c10
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x20 0000000000000000  x21 00000000ba1d5a30  x22 00000005b9c00000  x23 b4000073862cb080
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x24 0000007140928740  x25 00000005b9c00000  x26 0000007140927678  x27 0000007140927688
+05-16 16:04:52.279 24159 24159 F DEBUG   :     x28 0000007140927bf0  x29 0000007140927760
+05-16 16:04:52.279 24159 24159 F DEBUG   :     lr  00000070ba0726ac  sp  0000007140927670  pc  00000070ba0783e4  pst 0000000080001000
+05-16 16:04:52.279 24159 24159 F DEBUG   : 28 total frames
+05-16 16:04:52.279 24159 24159 F DEBUG   : backtrace:
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #00 pc 00000000000a83e4  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libhermes.so (offset 0x1e7c000) (BuildId: 3742cb807f54bf165f89bd93a20345afc069184d)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #01 pc 00000000000a26a8  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libhermes.so (offset 0x1e7c000) (BuildId: 3742cb807f54bf165f89bd93a20345afc069184d)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #02 pc 00000000000a9938  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (expo::gl_cpp::ensurePrototypes(facebook::jsi::Runtime&)+124) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #03 pc 00000000000a9418  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (expo::gl_cpp::createWebGLRenderer(facebook::jsi::Runtime&, expo::gl_cpp::EXGLContext*, expo::gl_cpp::glesContext, facebook::jsi::Object&&)+52) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #04 pc 0000000000073da0  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (expo::gl_cpp::EXGLContext::prepareContext(facebook::jsi::Runtime&, std::__ndk1::function<void ()>)+304) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #05 pc 0000000000064d40  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (EXGLContextPrepare+140) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #06 pc 00000000000bee14  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (Java_expo_modules_gl_cpp_EXGL_EXGLContextPrepare+208) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #07 pc 0000000000de1350  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (art_jni_trampoline+128)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #08 pc 0000000000668b6c  /apex/com.android.art/lib64/libart.so (nterp_helper+1948) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #09 pc 00000000014ec1b6  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (expo.modules.gl.GLContext$1.run+46)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #10 pc 00000000009234b4  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (android.os.Handler.dispatchMessage+68)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #11 pc 0000000000669380  /apex/com.android.art/lib64/libart.so (nterp_helper+4016) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #12 pc 0000000000c0bcfe  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadHandler.dispatchMessage+10)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #13 pc 000000000096fc60  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (android.os.Looper.loopOnce+1952)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #14 pc 000000000096f444  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (android.os.Looper.loop+244)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #15 pc 0000000000668468  /apex/com.android.art/lib64/libart.so (nterp_helper+152) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #16 pc 0000000000c0c06e  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadImpl$Companion.startNewBackgroundThread$lambda$1+74)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #17 pc 0000000000668468  /apex/com.android.art/lib64/libart.so (nterp_helper+152) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #18 pc 0000000000c0bfa4  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadImpl$Companion.$r8$lambda$ldnZnqelhYFctGaUKkOKYj5rxo4+0)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #19 pc 0000000000668468  /apex/com.android.art/lib64/libart.so (nterp_helper+152) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #20 pc 0000000000c0bdcc  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadImpl$Companion$$ExternalSyntheticLambda0.run+4)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #21 pc 000000000034d5f0  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (java.lang.Thread.run+64)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #22 pc 00000000002aad94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #23 pc 00000000002707ac  /apex/com.android.art/lib64/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+220) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #24 pc 00000000004bdc28  /apex/com.android.art/lib64/libart.so (art::Thread::CreateCallback(void*)+1184) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #25 pc 00000000004bd778  /apex/com.android.art/lib64/libart.so (art::Thread::CreateCallbackWithUffdGc(void*)+8) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #26 pc 000000000007e7ac  /apex/com.android.runtime/lib64/bionic/libc.so (__pthread_start(void*)+232) (BuildId: 9bb3e0fb1c4a291ec019c2854b5dcb1e)
+05-16 16:04:52.279 24159 24159 F DEBUG   :       #27 pc 0000000000071adc  /apex/com.android.runtime/lib64/bionic/libc.so (__start_thread+64) (BuildId: 9bb3e0fb1c4a291ec019c2854b5dcb1e)
+05-16 16:04:52.304   792   792 E tombstoned: Tombstone written to: tombstone_31
+05-16 16:04:52.340  1429  1603 E InputDispatcher: channel 'ed421bc com.toov1.scanly/com.toov1.scanly.MainActivity' ~ Channel is unrecoverably broken and will be disposed!
+05-16 16:04:52.349  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - GoogleDiscoverWindow$_15797#65179
+05-16 16:04:52.407  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=Task=1)/@0xb537094_transition-leash#65184
+05-16 16:04:52.432  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 1.000 - Surface(name=Task=1)/@0xb537094_transition-leash#65184
+05-16 16:04:52.438  1429  4412 E ActivityManager: Sending non-protected broadcast com.sec.android.intent.action.APP_HQM_SEND_REQ from system 4423:com.sec.android.diagmonagent/1000 pkg com.sec.android.diagmonagent
+05-16 16:04:52.438  1429  4412 E ActivityManager: java.lang.Throwable
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at com.android.server.am.BroadcastController.checkBroadcastFromSystem(qb/101203193 4f07a848ed7d8faf68a8413e188e5462dc581d052eceeda0e4b161899c8cf6d2:252)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at com.android.server.am.BroadcastController.broadcastIntentLockedTraced(qb/101203193 4f07a848ed7d8faf68a8413e188e5462dc581d052eceeda0e4b161899c8cf6d2:344)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at com.android.server.am.BroadcastController.broadcastIntentLocked(qb/101203193 4f07a848ed7d8faf68a8413e188e5462dc581d052eceeda0e4b161899c8cf6d2:18)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at com.android.server.am.ActivityManagerService.broadcastIntentWithFeature(qb/101203193 4f07a848ed7d8faf68a8413e188e5462dc581d052eceeda0e4b161899c8cf6d2:149)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at android.app.IActivityManager$Stub.onTransact$broadcastIntentWithFeature$(IActivityManager.java:12378)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at android.app.IActivityManager$Stub.onTransact(IActivityManager.java:3197)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at com.android.server.am.ActivityManagerService.onTransact(qb/101203193 4f07a848ed7d8faf68a8413e188e5462dc581d052eceeda0e4b161899c8cf6d2:425)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at android.os.Binder.execTransactInternal(Binder.java:1462)
+05-16 16:04:52.438  1429  4412 E ActivityManager:       at android.os.Binder.execTransact(Binder.java:1401)
+05-16 16:04:52.457  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=3c1f0fe InputMethod)/@0x75121d6 - animation-leash of insets_animation#65187
+05-16 16:04:52.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936692
+05-16 16:04:52.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:52.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:52.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:52.623  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.000375, clamping
+05-16 16:04:52.632  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.016384, clamping
+05-16 16:04:52.640  1074  1074 E SurfaceFlinger: alpha changed 0.022 -> 0.000 - Surface(name=Task=1199)/@0x764b32_transition-leash#65185
+05-16 16:04:52.640  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.027246, clamping
+05-16 16:04:52.648  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.037181, clamping
+05-16 16:04:52.657  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.042785, clamping
+05-16 16:04:52.665  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.047539, clamping
+05-16 16:04:52.667  1074  2644 E NativeCustomFrequencyManager: [NativeCFMS] BpCustomFrequencyManager::acquire()
+05-16 16:04:52.673  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.049074, clamping
+05-16 16:04:52.682  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.050438, clamping
+05-16 16:04:52.690  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.049232, clamping
+05-16 16:04:52.698  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.046872, clamping
+05-16 16:04:52.707  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.044773, clamping
+05-16 16:04:52.715  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.040076, clamping
+05-16 16:04:52.723  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.034496, clamping
+05-16 16:04:52.732  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.029535, clamping
+05-16 16:04:52.740  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.022974, clamping
+05-16 16:04:52.748  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.014703, clamping
+05-16 16:04:52.757  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.007352, clamping
+05-16 16:04:52.782  1074  1074 E BpTransactionCompletedListener: Failed to transact (-32)
+05-16 16:04:53.344  1017  1031 E BatteryDump: !@new_battery_dump : 4209,1626,2000,3150,77,336,323,400,336,0,341,368,0,Charging,NO_CHARGING,Normal,Good,PDIC,0,Normal,0,0,8996,0x8000,0x10010000,0x0,0,0,0000,0000,00000000,0,0,0,0,655,4096,7729,990,0,
+05-16 16:04:53.544  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936693
+05-16 16:04:53.544  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:53.544  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:53.544  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:54.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936694
+05-16 16:04:54.543  1068  1085 E HeatmapThread: !@Entered the read from path function
+05-16 16:04:54.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/extended_heatmap', errno = 13
+05-16 16:04:54.544  1068  1085 E HeatmapThread: !@Extended_heatmap efs Forced Reset
+05-16 16:04:54.544  1068  1085 E HeatmapThread: !@Read Extended_heatmap from efs is:
+05-16 16:04:54.544  1068  1085 E HeatmapThread: !@Write Extended Heatmap to efs is: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+05-16 16:04:54.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/extended_heatmap', errno = 13
+05-16 16:04:54.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:54.545  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:54.546  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:54.612  1429  4491 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+05-16 16:04:54.720  1429  1845 E Pageboost: ioinfo read failed
+05-16 16:04:55.017 24222 24222 E [AUTHFW][TZ]TzAppFactory: the chipName is not added in chipList!
+05-16 16:04:55.544  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936695
+05-16 16:04:55.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:55.545  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:55.545  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:56.106  1429  1845 E Pageboost: StopRecording Failed
+05-16 16:04:56.116  1429  1845 E Pageboost: captureFinished fail
+05-16 16:04:56.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936696
+05-16 16:04:56.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:56.545  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:56.545  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:57.227 23317 23387 E SQLiteLog: (10) POSIX Error : 11 SQLite Error : 3850
+05-16 16:04:57.227 23317 23387 E SQLiteLog: (10) LOCK : Getting lock (4) failed due to (11). The current owner is (23379).
+05-16 16:04:57.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936697
+05-16 16:04:57.544  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:57.544  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:57.544  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:57.980 24263 24290 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:04:58.010 24263 24294 E martitech.marti: No package ID 6a found for resource ID 0x6a0b0013.
+05-16 16:04:58.532  1429  1429 E NotifAttentionHelper: Muting recently noisy 0|com.martitech.marti|-1553760351|null|10375
+05-16 16:04:58.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936698
+05-16 16:04:58.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:58.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:58.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:04:58.872 23740 23827 E HxAvatarDataSource: Null photo path for accountId: 32768
+05-16 16:04:58.889  1429  2134 E ShortcutService: Invalid icon type in shortcut hello@toov.com.tr. Bitmaps are not allowed in long-lived shortcuts. Use Resource icons, or Uri-based icons instead.
+05-16 16:04:59.027  1056  1056 E SecVibrator-HAL-AIDL-EXT: V_5_0: performPrebakedHapticPattern 10 : 10000 : 0
+05-16 16:04:59.028  1056  1056 E SecVibrator-HAL-AIDL-CORE: HW_API: [setRepeatForForceFeedbackAw]repeat: 0
+05-16 16:04:59.028  1056  1056 E SecVibrator-HAL-AIDL-CORE: HW_API: [setForceFeedbackAmplitude]amplitude: 10000
+05-16 16:04:59.028  1056  1056 E SecVibrator-HAL-AIDL-CORE: HW_API: [uploadForceFeedbackeffect]ioctl success ,uploaded effect with ID: 0
+05-16 16:04:59.028  1056  1056 E SecVibrator-HAL-AIDL-CORE: HW_API: do_on for timeoutMs: 1000
+05-16 16:04:59.028  1056  1056 E SecVibrator-HAL-AIDL-CORE: HW_API: [triggerForceFeedbackVibration]on: 1
+05-16 16:04:59.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936699
+05-16 16:04:59.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:04:59.545  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:04:59.545  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:05:00.129  1056  1056 E SecVibrator-HAL-AIDL-CORE: V_2_0: Vibrator off
+05-16 16:05:00.129  1056  1056 E SecVibrator-HAL-AIDL-CORE: HW_API: do_off
+05-16 16:05:00.129  1056  1056 E SecVibrator-HAL-AIDL-CORE: HW_API: [triggerForceFeedbackVibration]on: 0
+05-16 16:05:00.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936700
+05-16 16:05:00.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:05:00.545  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:05:00.545  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:05:01.060  2357  7439 E AppIconSolution: Couldn't get theme package resources, package is null
+05-16 16:05:01.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936701
+05-16 16:05:01.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:05:01.545  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:05:01.545  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:05:02.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936702
+05-16 16:05:02.545  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:05:02.545  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:05:02.545  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:05:03.521  1017  1031 E BatteryDump: !@new_battery_dump : 4206,1448,2000,3150,78,337,323,395,337,0,343,370,0,Charging,NO_CHARGING,Normal,Good,PDIC,0,Normal,0,0,8996,0x8000,0x10010000,0x0,0,0,0000,0000,00000000,0,0,0,0,655,4097,7741,990,0,
+05-16 16:05:03.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936703
+05-16 16:05:03.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:05:03.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:05:03.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:05:04.154  2822 24473 E pageboostd: alp start : app comtoov1scanly
+05-16 16:05:04.159  2822 24473 E pageboostd: aal_prefetch_file alp wrong file name:/data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.art
+05-16 16:05:04.159  2822 24473 E pageboostd: comtoov1scanly, amt 33236088 scnt 2 fcnt 1
+05-16 16:05:04.159  2822 24473 E pageboostd: comtoov1scanly, amt 0 scnt 0 fcnt 0
+05-16 16:05:04.159  2822 24473 E pageboostd: alp end : app comtoov1scanly data_amount 33236088
+05-16 16:05:04.243  2822  2822 E pageboostd: Received HALT command code 2
+05-16 16:05:04.289 24475 24475 E ashmem  : Pinning is deprecated since Android Q. Please use trim or other methods.
+05-16 16:05:04.298  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=Task=1200)/@0x4a218b1_transition-leash#65195
+05-16 16:05:04.323  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.681 - Surface(name=Task=1200)/@0x4a218b1_transition-leash#65195
+05-16 16:05:04.331  1074  2644 E NativeCustomFrequencyManager: [NativeCFMS] BpCustomFrequencyManager::acquire()
+05-16 16:05:04.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936704
+05-16 16:05:04.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:05:04.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:05:04.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:05:04.687  2822  2822 E pageboostd: Received HALT command code 2
+05-16 16:05:04.734  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=3c1f0fe InputMethod)/@0x75121d6 - animation-leash of insets_animation#65205
+05-16 16:05:04.741 24475 24503 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0 in tid 24503 (mqt_v_js), pid 24475 (om.toov1.scanly)
+05-16 16:05:04.978  1429  4412 E WindowManager: win=Window{ec570a3 u0 GoogleDiscoverWindow} destroySurfaces: appStopped=true cleanupOnResume=false win.mWindowRemovalAllowed=false win.mRemoveOnExit=false win.mViewVisibility=8 caller=com.android.server.wm.ActivityRecord.destroySurfaces:25 com.android.server.wm.ActivityRecord.activityStopped:192 com.android.server.wm.ActivityClientController.activityStopped:97 android.app.IActivityClientController$Stub.onTransact:740 com.android.server.wm.ActivityClientController.onTransact:1 android.os.Binder.execTransactInternal:1462 android.os.Binder.execTransact:1401
+05-16 16:05:04.979  1429  4412 E WindowManager: win=Window{44df3f1 u0 com.sec.android.app.launcher/com.sec.android.app.launcher.activities.LauncherActivity} destroySurfaces: appStopped=true cleanupOnResume=false win.mWindowRemovalAllowed=false win.mRemoveOnExit=false win.mViewVisibility=8 caller=com.android.server.wm.ActivityRecord.destroySurfaces:25 com.android.server.wm.ActivityRecord.activityStopped:192 com.android.server.wm.ActivityClientController.activityStopped:97 android.app.IActivityClientController$Stub.onTransact:740 com.android.server.wm.ActivityClientController.onTransact:1 android.os.Binder.execTransactInternal:1462 android.os.Binder.execTransact:1401
+05-16 16:05:04.981 24534 24534 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+05-16 16:05:04.981 24534 24534 F DEBUG   : Build fingerprint: 'samsung/r11sxtur/r11s:16/BP2A.250605.031.A3/S711BXXUAFYI6:user/release-keys'
+05-16 16:05:04.981 24534 24534 F DEBUG   : Revision: '7'
+05-16 16:05:04.981 24534 24534 F DEBUG   : ABI: 'arm64'
+05-16 16:05:04.981 24534 24534 F DEBUG   : Processor: '7'
+05-16 16:05:04.981 24534 24534 F DEBUG   : Timestamp: 2026-05-16 16:05:04.830031713+0300
+05-16 16:05:04.981 24534 24534 F DEBUG   : Process uptime: 2s
+05-16 16:05:04.981 24534 24534 F DEBUG   : Cmdline: com.toov1.scanly
+05-16 16:05:04.981 24534 24534 F DEBUG   : pid: 24475, tid: 24503, name: mqt_v_js  >>> com.toov1.scanly <<<
+05-16 16:05:04.981 24534 24534 F DEBUG   : uid: 10486
+05-16 16:05:04.981 24534 24534 F DEBUG   : tagged_addr_ctrl: 0000000000000001 (PR_TAGGED_ADDR_ENABLE)
+05-16 16:05:04.981 24534 24534 F DEBUG   : pac_enabled_keys: 000000000000000f (PR_PAC_APIAKEY, PR_PAC_APIBKEY, PR_PAC_APDAKEY, PR_PAC_APDBKEY)
+05-16 16:05:04.981 24534 24534 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0000000000000000
+05-16 16:05:04.981 24534 24534 F DEBUG   : Cause: null pointer dereference
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x0  b4000072562e7d70  x1  0000000000000000  x2  0000000000000008  x3  0000000000000000
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x4  00000070bfffa758  x5  00000070bfffa720  x6  00000070bfffa688  x7  00000070bfffa688
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x8  b4000073862de610  x9  0000000000000001  x10 0000000000000004  x11 9e3d85557e212150
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x12 0000000000040004  x13 0000000000000001  x14 00000070bfffb740  x15 0000000000080100
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x16 00000070bbf7bd60  x17 00000074e58b45c0  x18 00000070becdc000  x19 b4000072562e7d70
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x20 0000000000000000  x21 00000000629d3b10  x22 0000002762400000  x23 b4000073862de628
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x24 00000070bfffb740  x25 0000002762400000  x26 00000070bfffa678  x27 00000070bfffa688
+05-16 16:05:04.981 24534 24534 F DEBUG   :     x28 00000070bfffabf0  x29 00000070bfffa760
+05-16 16:05:04.981 24534 24534 F DEBUG   :     lr  00000070bbe116ac  sp  00000070bfffa670  pc  00000070bbe173e4  pst 0000000080001000
+05-16 16:05:04.981 24534 24534 F DEBUG   : 28 total frames
+05-16 16:05:04.981 24534 24534 F DEBUG   : backtrace:
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #00 pc 00000000000a83e4  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libhermes.so (offset 0x1e7c000) (BuildId: 3742cb807f54bf165f89bd93a20345afc069184d)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #01 pc 00000000000a26a8  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libhermes.so (offset 0x1e7c000) (BuildId: 3742cb807f54bf165f89bd93a20345afc069184d)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #02 pc 00000000000a9938  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (expo::gl_cpp::ensurePrototypes(facebook::jsi::Runtime&)+124) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #03 pc 00000000000a9418  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (expo::gl_cpp::createWebGLRenderer(facebook::jsi::Runtime&, expo::gl_cpp::EXGLContext*, expo::gl_cpp::glesContext, facebook::jsi::Object&&)+52) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #04 pc 0000000000073da0  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (expo::gl_cpp::EXGLContext::prepareContext(facebook::jsi::Runtime&, std::__ndk1::function<void ()>)+304) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #05 pc 0000000000064d40  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (EXGLContextPrepare+140) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #06 pc 00000000000bee14  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/base.apk!libexpo-gl.so (offset 0x1bdc000) (Java_expo_modules_gl_cpp_EXGL_EXGLContextPrepare+208) (BuildId: 14538bda44a4e66a2ffef260c1350a16505faaf4)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #07 pc 0000000000de1350  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (art_jni_trampoline+128)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #08 pc 0000000000668b6c  /apex/com.android.art/lib64/libart.so (nterp_helper+1948) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #09 pc 00000000014ec1b6  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (expo.modules.gl.GLContext$1.run+46)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #10 pc 00000000009234b4  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (android.os.Handler.dispatchMessage+68)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #11 pc 0000000000669380  /apex/com.android.art/lib64/libart.so (nterp_helper+4016) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #12 pc 0000000000c0bcfe  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadHandler.dispatchMessage+10)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #13 pc 000000000096fc60  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (android.os.Looper.loopOnce+1952)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #14 pc 000000000096f444  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (android.os.Looper.loop+244)
+05-16 16:05:04.981 24534 24534 F DEBUG   :       #15 pc 0000000000668468  /apex/com.android.art/lib64/libart.so (nterp_helper+152) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #16 pc 0000000000c0c06e  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadImpl$Companion.startNewBackgroundThread$lambda$1+74)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #17 pc 0000000000668468  /apex/com.android.art/lib64/libart.so (nterp_helper+152) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #18 pc 0000000000c0bfa4  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadImpl$Companion.$r8$lambda$ldnZnqelhYFctGaUKkOKYj5rxo4+0)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #19 pc 0000000000668468  /apex/com.android.art/lib64/libart.so (nterp_helper+152) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #20 pc 0000000000c0bdcc  /data/app/~~eoryPL49uNBBEXwxFuEuTA==/com.toov1.scanly-cWQJ3PkW55W6_rYUSYCJFw==/oat/arm64/base.vdex (com.facebook.react.bridge.queue.MessageQueueThreadImpl$Companion$$ExternalSyntheticLambda0.run+4)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #21 pc 000000000034d5f0  /data/misc/apexdata/com.android.art/dalvik-cache/arm64/boot.oat (java.lang.Thread.run+64)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #22 pc 00000000002aad94  /apex/com.android.art/lib64/libart.so (art_quick_invoke_stub+612) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #23 pc 00000000002707ac  /apex/com.android.art/lib64/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+220) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #24 pc 00000000004bdc28  /apex/com.android.art/lib64/libart.so (art::Thread::CreateCallback(void*)+1184) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #25 pc 00000000004bd778  /apex/com.android.art/lib64/libart.so (art::Thread::CreateCallbackWithUffdGc(void*)+8) (BuildId: 7087b2f2160bfbf3335d54ba9779e325)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #26 pc 000000000007e7ac  /apex/com.android.runtime/lib64/bionic/libc.so (__pthread_start(void*)+232) (BuildId: 9bb3e0fb1c4a291ec019c2854b5dcb1e)
+05-16 16:05:04.982 24534 24534 F DEBUG   :       #27 pc 0000000000071adc  /apex/com.android.runtime/lib64/bionic/libc.so (__start_thread+64) (BuildId: 9bb3e0fb1c4a291ec019c2854b5dcb1e)
+05-16 16:05:05.004   792   792 E tombstoned: Tombstone written to: tombstone_00
+05-16 16:05:05.015  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - GoogleDiscoverWindow$_15797#65206
+05-16 16:05:05.015  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.000 - GoogleDiscoverWindow$_15797#65206
+05-16 16:05:05.073  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=Task=1)/@0x103edae_transition-leash#65211
+05-16 16:05:05.078  2822  2822 E pageboostd: Received HALT command code 2
+05-16 16:05:05.114  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 1.000 - Surface(name=Task=1)/@0x103edae_transition-leash#65211
+05-16 16:05:05.151  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=3c1f0fe InputMethod)/@0x75121d6 - animation-leash of insets_animation#65216
+05-16 16:05:05.225  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Surface(name=b0cf565 com.samsung.android.lool/com.samsung.android.sm.iafd.dialog.AppErrorDialogActivity)/@0x27105c1 - animation-leash of window_animation#65223
+05-16 16:05:05.233  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.081 - Surface(name=b0cf565 com.samsung.android.lool/com.samsung.android.sm.iafd.dialog.AppErrorDialogActivity)/@0x27105c1 - animation-leash of window_animation#65223
+05-16 16:05:05.233  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Dim Layer for - Task=1201#65226
+05-16 16:05:05.233  2822  2822 E pageboostd: Received HALT command code 2
+05-16 16:05:05.242  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.005 - Dim Layer for - Task=1201#65226
+05-16 16:05:05.256  1074  1074 E SurfaceFlinger: alpha changed 0.341 -> 0.000 - Surface(name=b0cf565 com.samsung.android.lool/com.samsung.android.sm.iafd.dialog.AppErrorDialogActivity)/@0x27105c1 - animation-leash of window_animation#65223
+05-16 16:05:05.256  1074  1074 E SurfaceFlinger: alpha changed 1.000 -> 0.000 - Task=1201#65213
+05-16 16:05:05.256  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.000 - Task=1201#65213
+05-16 16:05:05.266  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.479 - Surface(name=b0cf565 com.samsung.android.lool/com.samsung.android.sm.iafd.dialog.AppErrorDialogActivity)/@0x27105c1 - animation-leash of window_animation#65223
+05-16 16:05:05.266  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.016 - Task=1201#65213
+05-16 16:05:05.266  1074  1074 E SurfaceFlinger: alpha changed 0.020 -> 0.000 - Dim Layer for - Task=1201#65226
+05-16 16:05:05.266  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.000 - Dim Layer for - Task=1201#65226
+05-16 16:05:05.268  1074  1074 E BpTransactionCompletedListener: Failed to transact (-32)
+05-16 16:05:05.278  1074  1074 E SurfaceFlinger: alpha changed 0.000 -> 0.025 - Dim Layer for - Task=1201#65226
+05-16 16:05:05.318  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.015027, clamping
+05-16 16:05:05.326  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.025888, clamping
+05-16 16:05:05.335  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.036481, clamping
+05-16 16:05:05.343  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.042084, clamping
+05-16 16:05:05.348  1074  1074 E SurfaceFlinger: alpha changed 0.002 -> 0.000 - Surface(name=Task=1200)/@0xf8f3edc_transition-leash#65212
+05-16 16:05:05.351  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.047368, clamping
+05-16 16:05:05.359  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.048903, clamping
+05-16 16:05:05.367  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.050268, clamping
+05-16 16:05:05.377  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.049494, clamping
+05-16 16:05:05.385  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.047134, clamping
+05-16 16:05:05.393  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.045035, clamping
+05-16 16:05:05.402  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.040696, clamping
+05-16 16:05:05.410  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.035116, clamping
+05-16 16:05:05.418  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.030155, clamping
+05-16 16:05:05.425  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.023893, clamping
+05-16 16:05:05.433  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.015622, clamping
+05-16 16:05:05.443  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.008271, clamping
+05-16 16:05:05.451  2357  2357 E SurfaceComposerClient: SurfaceComposerClient::Transaction::setAlpha: invalid alpha -0.000919, clamping
+05-16 16:05:05.542  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936705
+05-16 16:05:05.543  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:05:05.543  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:05:05.543  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0
+05-16 16:05:06.543  1068  1085 E HeatmapThread: ECT Thread time in milliseconds: 1778936706
+05-16 16:05:06.544  1068  1085 E HeatmapThread: !@Could not open '/efs/FactoryApp/bsoh', errno = 13
+05-16 16:05:06.544  1068  1085 E HeatmapThread: !@ CAM Could not access BSOH EFS
+05-16 16:05:06.544  1068  1085 E HeatmapThread: !@ CAM New BSOH: 0

@@ -34,7 +34,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from '@/constants/colors';
 import { useScan } from '@/context/ScanContext';
 import { detectDocumentCorners, type DocumentCorners } from '@/utils/documentDetector';
-import { detectDocumentCornersWithTF, useTFStatus } from '@/utils/tfDocumentDetector';
 
 const C = colors.light;
 
@@ -64,7 +63,6 @@ export default function CameraScreen() {
   const [isAnalyzing, setIsAnalyzing]   = useState(false);
   const [analysisStep, setAnalysisStep] = useState<string>('');
   const [detected,  setDetected]        = useState(false);
-  const tfStatus = useTFStatus();
   const [isTilted,  setIsTilted]      = useState(false);
   const [cycleKey,  setCycleKey]      = useState(0);
   const [liveCorners, setLiveCorners] = useState<DocumentCorners | null>(null);
@@ -296,19 +294,6 @@ export default function CameraScreen() {
     setAnalysisStep('Hızlı analiz...');
     const phase1 = await detectDocumentCorners(uri);
     if (phase1) setDetectedCorners(phase1);
-
-    // Phase 3: TF.js GPU tespiti — Phase 1 sonucunu iyileştirir
-    if (tfStatus === 'ready') {
-      try {
-        setAnalysisStep('GPU ile doğrulanıyor...');
-        const phase3 = await detectDocumentCornersWithTF(uri);
-        if (phase3) {
-          setDetectedCorners(phase3);
-          setAnalysisStep('');
-          return { corners: phase3, phase: 3 };
-        }
-      } catch { /* TF.js hatası → Phase 1 sonucunu koru */ }
-    }
 
     setAnalysisStep('');
     return { corners: phase1, phase: 1 };

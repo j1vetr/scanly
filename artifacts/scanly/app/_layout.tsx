@@ -17,8 +17,6 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { DocumentsProvider } from "@/context/DocumentsContext";
 import { ScanProvider } from "@/context/ScanContext";
 import { SettingsProvider } from "@/context/SettingsContext";
-import { initTF } from "@/utils/tfDocumentDetector";
-
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
@@ -50,8 +48,6 @@ export default function RootLayout() {
   useEffect(() => {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
-      // Phase 3: TF.js GPU backend'ini arka planda başlat (non-blocking)
-      initTF().catch(() => {});
     }
   }, [fontsLoaded, fontError]);
 
