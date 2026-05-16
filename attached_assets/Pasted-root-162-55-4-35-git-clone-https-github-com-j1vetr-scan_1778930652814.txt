@@ -1,0 +1,86 @@
+root@162-55-4-35:~# git clone https://github.com/j1vetr/scanly.git
+Cloning into 'scanly'...
+remote: Enumerating objects: 477, done.
+remote: Counting objects: 100% (477/477), done.
+remote: Compressing objects: 100% (246/246), done.
+remote: Total 477 (delta 207), reused 476 (delta 206), pack-reused 0 (from 0)
+Receiving objects: 100% (477/477), 9.65 MiB | 36.07 MiB/s, done.
+Resolving deltas: 100% (207/207), done.
+root@162-55-4-35:~# cd scanly
+root@162-55-4-35:~/scanly# pnpm install
+Scope: all 9 workspace projects
+Lockfile is up to date, resolution step is skipped
+Packages: +1129
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+   ╭──────────────────────────────────────────────╮
+   │                                              │
+   │     Update available! 10.33.2 → 11.1.2.      │
+   │     Changelog: https://pnpm.io/v/11.1.2      │
+   │   To update, run: corepack use pnpm@11.1.2   │
+   │                                              │
+   ╰──────────────────────────────────────────────╯
+
+Downloading @tensorflow/tfjs-core@4.22.0: 6.96 MB/6.96 MB, done
+Downloading @tensorflow/tfjs-layers@4.22.0: 6.34 MB/6.34 MB, done
+Downloading @tensorflow/tfjs@4.22.0: 30.57 MB/30.57 MB, done
+Progress: resolved 1129, reused 969, downloaded 134, added 1129, done
+
+devDependencies:
++ prettier 3.8.3
++ typescript 5.9.3
+
+. preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_use…
+└─ Done in 41ms
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: core-js@3.29.1.                                     │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Done in 6.6s using pnpm v10.33.2
+root@162-55-4-35:~/scanly# cd artifacts/scanly
+root@162-55-4-35:~/scanly/artifacts/scanly# eas login
+★ eas-cli@18.10.0 is now available.
+To upgrade, run:
+npm install -g eas-cli
+Proceeding with outdated version.
+
+(node:3948047) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+You are already logged in as toov1.
+✔ Do you want to continue? … yes
+Log in to EAS with email or username (exit and run eas login --help to see other login options)
+✔ Email or username … toov1
+✔ Password … ************
+Your username, email, or password was incorrect.
+    Error: account:login command failed.
+root@162-55-4-35:~/scanly/artifacts/scanly# eas login
+★ eas-cli@18.13.0 is now available.
+To upgrade, run:
+npm install -g eas-cli
+Proceeding with outdated version.
+
+(node:3948913) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+You are already logged in as toov1.
+✔ Do you want to continue? … yes
+Log in to EAS with email or username (exit and run eas login --help to see other login options)
+✔ Email or username … toov1
+✔ Password … **********
+Logged in
+root@162-55-4-35:~/scanly/artifacts/scanly# eas init
+★ eas-cli@18.13.0 is now available.
+To upgrade, run:
+npm install -g eas-cli
+Proceeding with outdated version.
+
+(node:3949184) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Unable to resolve a valid config plugin for expo-gl.
+• No "app.plugin.js" file found in expo-gl: config plugins are typically exported from an "app.plugin.js" file in the package root.
+• main export of expo-gl does not appear to be a config plugin: the following error was thrown when importing /root/scanly/node_modules/.pnpm/expo-gl@55.0.14_expo@54.0.34_react-dom@19.1.0_react@19.1.0__react-native-reanimated@4.1_787beeff1bcd4b885f333c17d1d0579e/node_modules/expo-gl/build/index.js: Cannot find module '/root/scanly/node_modules/.pnpm/expo-gl@55.0.14_expo@54.0.34_react-dom@19.1.0_react@19.1.0__react-native-reanimated@4.1_787beeff1bcd4b885f333c17d1d0579e/node_modules/expo-gl/build/GLView' imported from /root/scanly/node_modules/.pnpm/expo-gl@55.0.14_expo@54.0.34_react-dom@19.1.0_react@19.1.0__react-native-reanimated@4.1_787beeff1bcd4b885f333c17d1d0579e/node_modules/expo-gl/build/index.js ERR_MODULE_NOT_FOUND
+Verify that expo-gl includes a config plugin. If it does not, then remove the entry from plugins in your app config file. Learn more: https://docs.expo.dev/guides/config-plugins/
+    Error: project:init command failed.
+root@162-55-4-35:~/scanly/artifacts/scanly#

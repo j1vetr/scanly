@@ -32,17 +32,11 @@
       "favicon": "./assets/images/icon.png"
     },
     "plugins": [
-      [
-        "expo-router",
-        {
-          "origin": "https://replit.com/"
-        }
-      ],
+      "expo-router",
       "expo-font",
       "expo-web-browser",
       "expo-image-picker",
       "expo-file-system",
-      "expo-gl",
       [
         "react-native-vision-camera",
         {
