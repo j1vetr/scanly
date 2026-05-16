@@ -106,7 +106,7 @@ export default function EnhanceScreen() {
                   Platform.OS === 'web' && { filter: getWebFilterStyle(selectedFilter) } as any,
                   isGrayscaleFilter && Platform.OS !== 'web' && styles.grayscaleOverlayContainer,
                 ]}
-                contentFit="cover"
+                contentFit="contain"
               />
               {isGrayscaleFilter && Platform.OS !== 'web' && (
                 <View

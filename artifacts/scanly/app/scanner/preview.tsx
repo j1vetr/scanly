@@ -189,7 +189,7 @@ export default function PreviewScreen() {
                 <Image
                   source={{ uri: previewUri }}
                   style={[styles.pdfImage, Platform.OS === 'web' && { filter: filterCss } as any]}
-                  contentFit="cover"
+                  contentFit="contain"
                 />
                 {(selectedFilter === 'Gri Tonlama' || selectedFilter === 'Siyah & Beyaz') && Platform.OS !== 'web' && (
                   <View style={[StyleSheet.absoluteFill, styles.grayscaleLayer]} />
