@@ -495,34 +495,6 @@ export default function CameraScreen() {
           />
         </Pressable>
       </View>
-      {/* GPU durum rozeti — TF.js hazır olduğunda göster */}
-      {tfStatus !== 'uninitialized' && (
-        <View style={styles.gpuBadgeRow}>
-          <View style={[
-            styles.gpuBadge,
-            tfStatus === 'ready'        && styles.gpuBadgeReady,
-            tfStatus === 'initializing' && styles.gpuBadgeLoading,
-            tfStatus === 'error'        && styles.gpuBadgeError,
-          ]}>
-            {tfStatus === 'initializing'
-              ? <ActivityIndicator size={9} color="rgba(255,255,255,0.7)" style={{ marginRight: 3 }} />
-              : <Feather
-                  name={tfStatus === 'ready' ? 'cpu' : 'alert-circle'}
-                  size={10}
-                  color={tfStatus === 'ready' ? '#34d399' : 'rgba(255,255,255,0.45)'}
-                />
-            }
-            <Text style={[
-              styles.gpuBadgeText,
-              tfStatus === 'ready' && { color: '#34d399' },
-            ]}>
-              {tfStatus === 'ready'        ? 'GPU hazır'
-               : tfStatus === 'initializing' ? 'GPU yükleniyor'
-               : 'GPU hata'}
-            </Text>
-          </View>
-        </View>
-      )}
     </View>
   );
 
@@ -865,29 +837,6 @@ const styles = StyleSheet.create({
     borderRadius: 20, paddingHorizontal: 12, paddingVertical: 4,
   },
   pageCountText: { fontSize: 12, color: '#fff', fontWeight: '600', fontFamily: 'Inter_600SemiBold' },
-
-  // GPU rozeti
-  gpuBadgeRow: { alignItems: 'center', marginTop: 4 },
-  gpuBadge: {
-    flexDirection: 'row', alignItems: 'center', gap: 4,
-    backgroundColor: 'rgba(0,0,0,0.45)',
-    borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4,
-    borderWidth: 1, borderColor: 'rgba(255,255,255,0.15)',
-  },
-  gpuBadgeReady: {
-    borderColor: 'rgba(52,211,153,0.5)',
-    backgroundColor: 'rgba(0,105,72,0.35)',
-  },
-  gpuBadgeLoading: {
-    borderColor: 'rgba(255,255,255,0.2)',
-  },
-  gpuBadgeError: {
-    borderColor: 'rgba(239,68,68,0.4)',
-  },
-  gpuBadgeText: {
-    fontSize: 10, fontFamily: 'Inter_500Medium',
-    color: 'rgba(255,255,255,0.5)',
-  },
 
   tiltPill: {
     flexDirection: 'row', alignItems: 'center', gap: 8,
