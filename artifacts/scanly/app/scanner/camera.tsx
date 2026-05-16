@@ -1,14 +1,16 @@
 import { Feather } from '@expo/vector-icons';
 import { CameraView, CameraType, useCameraPermissions, FlashMode } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
+import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   ActivityIndicator,
   Animated,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -31,7 +33,9 @@ export default function CameraScreen() {
   const [isCapturing, setIsCapturing] = useState(false);
   const [detected, setDetected] = useState(false);
   const [frameHeight, setFrameHeight] = useState(280);
+  const [pageAddedFlash, setPageAddedFlash] = useState(false);
   const cameraRef = useRef<CameraView>(null);
+  const flashTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const scanY = useRef(new Animated.Value(0)).current;
   const glowOpacity = useRef(new Animated.Value(0)).current;
@@ -111,6 +115,19 @@ export default function CameraScreen() {
     }
   }, [mode]);
 
+  const triggerPageAddedFeedback = useCallback(() => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setPageAddedFlash(true);
+    if (flashTimeoutRef.current) clearTimeout(flashTimeoutRef.current);
+    flashTimeoutRef.current = setTimeout(() => setPageAddedFlash(false), 600);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (flashTimeoutRef.current) clearTimeout(flashTimeoutRef.current);
+    };
+  }, []);
+
   const handleCapture = async () => {
     if (isCapturing) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
@@ -125,7 +142,7 @@ export default function CameraScreen() {
         if (!result.canceled && result.assets[0]) {
           if (isMultiPage) {
             addCapturedImage(result.assets[0].uri);
-            router.replace('/scanner/preview');
+            triggerPageAddedFeedback();
           } else {
             setCapturedImageUri(result.assets[0].uri);
             router.push('/scanner/crop');
@@ -140,7 +157,7 @@ export default function CameraScreen() {
         if (photo?.uri) {
           if (isMultiPage) {
             addCapturedImage(photo.uri);
-            router.replace('/scanner/preview');
+            triggerPageAddedFeedback();
           } else {
             setCapturedImageUri(photo.uri);
             router.push('/scanner/crop');
@@ -164,7 +181,7 @@ export default function CameraScreen() {
     if (!result.canceled && result.assets[0]) {
       if (isMultiPage) {
         addCapturedImage(result.assets[0].uri);
-        router.replace('/scanner/preview');
+        triggerPageAddedFeedback();
       } else {
         setCapturedImageUri(result.assets[0].uri);
         router.push('/scanner/crop');
@@ -312,6 +329,36 @@ export default function CameraScreen() {
     </View>
   );
 
+  const renderThumbnails = () => {
+    if (!isMultiPage) return null;
+    return (
+      <View style={styles.thumbnailStrip}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.thumbnailScrollContent}
+        >
+          {capturedImages.map((uri, index) => (
+            <View key={`thumb-${index}`} style={styles.thumbnailWrapper}>
+              <Image
+                source={{ uri }}
+                style={styles.thumbnailImage}
+                contentFit="cover"
+              />
+              <View style={styles.thumbnailBadge}>
+                <Text style={styles.thumbnailBadgeText}>{index + 1}</Text>
+              </View>
+            </View>
+          ))}
+          <View style={styles.thumbnailNextSlot}>
+            <Feather name="plus" size={20} color="rgba(255,255,255,0.6)" />
+            <Text style={styles.thumbnailNextText}>{capturedImages.length + 1}. Sayfa</Text>
+          </View>
+        </ScrollView>
+      </View>
+    );
+  };
+
   const renderBottom = (webMode: boolean) => (
     <View style={[styles.bottomControls, { paddingBottom: insets.bottom + 16 }]}>
       <Pressable style={styles.galleryBtn} onPress={handleGallery}>
@@ -319,24 +366,47 @@ export default function CameraScreen() {
         {!webMode && <Text style={styles.galleryLabel}>Galeri</Text>}
       </Pressable>
 
-      <Pressable
-        style={({ pressed }) => [
-          styles.captureBtn,
-          isAutoNative && detected && styles.captureBtnReady,
-          { transform: [{ scale: isCapturing ? 0.9 : pressed ? 0.93 : 1 }] },
-        ]}
-        onPress={handleCapture}
-        disabled={isCapturing}
-      >
-        {isCapturing
-          ? <ActivityIndicator color="#ffffff" size="large" />
-          : (
-            <View style={[styles.captureInner, isAutoNative && detected && styles.captureInnerReady]} />
-          )
-        }
-      </Pressable>
+      <View style={styles.captureGroup}>
+        <Pressable
+          style={({ pressed }) => [
+            styles.captureBtn,
+            isMultiPage && styles.captureBtnMulti,
+            isAutoNative && detected && !isMultiPage && styles.captureBtnReady,
+            { transform: [{ scale: isCapturing ? 0.9 : pressed ? 0.93 : 1 }] },
+          ]}
+          onPress={handleCapture}
+          disabled={isCapturing}
+        >
+          {isCapturing
+            ? <ActivityIndicator color="#ffffff" size="large" />
+            : isMultiPage
+              ? (
+                <View style={styles.captureInnerMulti}>
+                  <Feather name="plus" size={28} color="#ffffff" />
+                </View>
+              )
+              : (
+                <View style={[styles.captureInner, isAutoNative && detected && styles.captureInnerReady]} />
+              )
+          }
+        </Pressable>
+        {isMultiPage && (
+          <Text style={styles.captureMultiLabel}>Sayfa Ekle</Text>
+        )}
+      </View>
 
-      {webMode ? (
+      {webMode && isMultiPage ? (
+        <Pressable
+          style={[styles.galleryBtn, styles.doneBtnActive]}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            router.replace('/scanner/preview');
+          }}
+        >
+          <Feather name="check" size={22} color="#34d399" />
+          <Text style={[styles.galleryLabel, { color: '#34d399' }]}>Bitti</Text>
+        </Pressable>
+      ) : webMode ? (
         <View style={styles.galleryBtn} />
       ) : (
         <Pressable
@@ -414,8 +484,10 @@ export default function CameraScreen() {
         <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
           {renderTopBar()}
           {renderCenter(true)}
+          {renderThumbnails()}
           {renderBottom(true)}
         </View>
+        {pageAddedFlash && <View style={styles.pageAddedFlash} pointerEvents="none" />}
       </View>
     );
   }
@@ -432,8 +504,10 @@ export default function CameraScreen() {
       <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
         {renderTopBar()}
         {renderCenter(false)}
+        {renderThumbnails()}
         {renderBottom(false)}
       </View>
+      {pageAddedFlash && <View style={styles.pageAddedFlash} pointerEvents="none" />}
     </View>
   );
 }
@@ -492,12 +566,27 @@ const styles = StyleSheet.create({
   detectedHint: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   detectedHintText: { fontSize: 12, color: '#34d399', fontFamily: 'Inter_500Medium' },
 
+  thumbnailStrip: { paddingVertical: 10, backgroundColor: 'rgba(0,0,0,0.5)', borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
+  thumbnailScrollContent: { paddingHorizontal: 16, gap: 10, flexDirection: 'row', alignItems: 'center' },
+  thumbnailWrapper: { position: 'relative', width: 52, height: 68, borderRadius: 6, overflow: 'hidden', borderWidth: 2, borderColor: 'rgba(52,211,153,0.6)' },
+  thumbnailImage: { width: '100%', height: '100%' },
+  thumbnailBadge: { position: 'absolute', bottom: 3, right: 3, backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: 8, paddingHorizontal: 5, paddingVertical: 1 },
+  thumbnailBadgeText: { fontSize: 9, color: '#ffffff', fontWeight: '700', fontFamily: 'Inter_700Bold' },
+  thumbnailNextSlot: { width: 52, height: 68, borderRadius: 6, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.2)', borderStyle: 'dashed', alignItems: 'center', justifyContent: 'center', gap: 3 },
+  thumbnailNextText: { fontSize: 8, color: 'rgba(255,255,255,0.5)', fontFamily: 'Inter_500Medium', textAlign: 'center' },
+
+  pageAddedFlash: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(52,211,153,0.22)', zIndex: 99 },
+
   bottomControls: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 44, paddingTop: 20, backgroundColor: 'rgba(0,0,0,0.65)', borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.06)' },
   galleryBtn: { width: 56, height: 56, borderRadius: 28, backgroundColor: 'rgba(255,255,255,0.1)', alignItems: 'center', justifyContent: 'center', gap: 3 },
   doneBtnActive: { backgroundColor: 'rgba(52,211,153,0.15)', borderWidth: 1, borderColor: 'rgba(52,211,153,0.4)' },
   galleryLabel: { fontSize: 9, color: 'rgba(255,255,255,0.6)', fontFamily: 'Inter_500Medium' },
+  captureGroup: { alignItems: 'center', gap: 6 },
   captureBtn: { width: 80, height: 80, borderRadius: 40, borderWidth: 4, borderColor: 'rgba(255,255,255,0.9)', alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' },
   captureBtnReady: { borderColor: '#34d399' },
+  captureBtnMulti: { borderColor: '#34d399', backgroundColor: 'rgba(0,105,72,0.25)' },
   captureInner: { width: 62, height: 62, borderRadius: 31, backgroundColor: '#ffffff' },
   captureInnerReady: { backgroundColor: '#34d399' },
+  captureInnerMulti: { width: 62, height: 62, borderRadius: 31, backgroundColor: '#006948', alignItems: 'center', justifyContent: 'center' },
+  captureMultiLabel: { fontSize: 11, color: '#34d399', fontFamily: 'Inter_600SemiBold', fontWeight: '600', letterSpacing: 0.3 },
 });
