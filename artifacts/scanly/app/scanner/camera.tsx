@@ -20,92 +20,138 @@ import colors from '@/constants/colors';
 import { useScan } from '@/context/ScanContext';
 
 const C = colors.light;
-const SEARCH_MS  = 3000;
-const DETECTED_MS = 4500;
-const AUTO_CROP_MARGIN = 0.07;
 
+const SEARCH_MS   = 3000;
+const DETECTED_MS = 5000;
+const SNAP_SCALE  = 0.88; // frame contracts to this scale on detection
+
+// ----- measureInWindow wrapper --------------------------------------------
+function measureInWindow(
+  ref: React.RefObject<View | null>,
+): Promise<{ x: number; y: number; width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    if (!ref.current) { reject('no-ref'); return; }
+    (ref.current as unknown as { measureInWindow: Function }).measureInWindow(
+      (x: number, y: number, width: number, height: number) =>
+        resolve({ x, y, width, height }),
+    );
+  });
+}
+
+// ==========================================================================
 export default function CameraScreen() {
   const insets = useSafeAreaInsets();
   const { setCapturedImageUri, addCapturedImage, capturedImages, resetScan } = useScan();
   const [permission, requestPermission] = useCameraPermissions();
   const [flashMode, setFlashMode] = useState<FlashMode>('off');
-  const [facing] = useState<CameraType>('back');
+  const [facing]    = useState<CameraType>('back');
   const [mode, setMode] = useState<'OTOMATİK' | 'MANUEL'>('OTOMATİK');
   const [isCapturing, setIsCapturing] = useState(false);
   const [detected, setDetected] = useState(false);
-  const [frameHeight, setFrameHeight] = useState(280);
-  const cameraRef = useRef<CameraView>(null);
 
-  const scanY         = useRef(new Animated.Value(0)).current;
-  const glowOpacity   = useRef(new Animated.Value(0)).current;
-  const cornerOpacity = useRef(new Animated.Value(1)).current;
-  const cornerScale   = useRef(new Animated.Value(1)).current;
+  // refs for coordinate mapping
+  const cameraRef  = useRef<CameraView>(null);
+  const overlayRef = useRef<View>(null);
+  const frameRef   = useRef<View>(null);
 
-  const isMultiPage = capturedImages.length > 0;
+  // ---- animations ----
+  const scanY           = useRef(new Animated.Value(0)).current;
+  const glowOpacity     = useRef(new Animated.Value(0)).current;
+  const cornerOpacity   = useRef(new Animated.Value(1)).current;
+  const cornerScale     = useRef(new Animated.Value(1)).current;
+  // Frame container scale: animates to SNAP_SCALE on detection then settles
+  const frameScale      = useRef(new Animated.Value(1)).current;
+  // Per-corner inward offset animations (translateX / translateY)
+  const tlAnim = useRef(new Animated.ValueXY({ x:  0, y:  0 })).current;
+  const trAnim = useRef(new Animated.ValueXY({ x:  0, y:  0 })).current;
+  const blAnim = useRef(new Animated.ValueXY({ x:  0, y:  0 })).current;
+  const brAnim = useRef(new Animated.ValueXY({ x:  0, y:  0 })).current;
+
+  const isMultiPage  = capturedImages.length > 0;
   const isAutoNative = mode === 'OTOMATİK' && Platform.OS !== 'web';
 
-  // Continuous detection loop: SEARCH → DETECTED → SEARCH → …
+  // -----------------------------------------------------------------------
+  // Continuous detection loop
+  // -----------------------------------------------------------------------
   useEffect(() => {
-    if (!isAutoNative) {
-      setDetected(false);
-      return;
-    }
+    if (!isAutoNative) { setDetected(false); return; }
 
     let cancelled = false;
     const timers: ReturnType<typeof setTimeout>[] = [];
-    const clearTimers = () => timers.forEach(clearTimeout);
+
+    const reset = () => {
+      cancelled = true;
+      timers.forEach(clearTimeout);
+      [scanY, glowOpacity, cornerOpacity, cornerScale, frameScale].forEach(a => a.stopAnimation());
+      [tlAnim, trAnim, blAnim, brAnim].forEach(a => a.stopAnimation());
+    };
+
+    const INSET = 18; // px each corner moves inward on snap
 
     const runCycle = () => {
       if (cancelled) return;
       setDetected(false);
+
+      // Reset all animation values
       scanY.setValue(0);
       glowOpacity.setValue(0);
       cornerOpacity.setValue(1);
       cornerScale.setValue(1);
+      Animated.spring(frameScale, { toValue: 1, friction: 5, tension: 60, useNativeDriver: true }).start();
+      [tlAnim, trAnim, blAnim, brAnim].forEach(a => a.setValue({ x: 0, y: 0 }));
 
       const scanLoop = Animated.loop(
         Animated.sequence([
-          Animated.timing(scanY, { toValue: 1, duration: 1600, useNativeDriver: true }),
-          Animated.timing(scanY, { toValue: 0, duration: 200,  useNativeDriver: true }),
-        ])
+          Animated.timing(scanY, { toValue: 1, duration: 1700, useNativeDriver: true }),
+          Animated.timing(scanY, { toValue: 0, duration: 200, useNativeDriver: true }),
+        ]),
       );
-      const cornerPulse = Animated.loop(
+      const pulsLoop = Animated.loop(
         Animated.sequence([
-          Animated.timing(cornerOpacity, { toValue: 0.25, duration: 500, useNativeDriver: true }),
-          Animated.timing(cornerOpacity, { toValue: 1,    duration: 500, useNativeDriver: true }),
-        ])
+          Animated.timing(cornerOpacity, { toValue: 0.2, duration: 520, useNativeDriver: true }),
+          Animated.timing(cornerOpacity, { toValue: 1,   duration: 520, useNativeDriver: true }),
+        ]),
       );
       scanLoop.start();
-      cornerPulse.start();
+      pulsLoop.start();
 
       const t1 = setTimeout(() => {
         if (cancelled) return;
         scanLoop.stop();
-        cornerPulse.stop();
+        pulsLoop.stop();
         cornerOpacity.setValue(1);
         setDetected(true);
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-        Animated.parallel([
-          Animated.spring(cornerScale, {
-            toValue: 1.22, friction: 3, tension: 140, useNativeDriver: true,
-          }),
-          Animated.sequence([
-            Animated.timing(glowOpacity, { toValue: 1,    duration: 160, useNativeDriver: true }),
-            Animated.timing(glowOpacity, { toValue: 0.22, duration: 260, useNativeDriver: true }),
-            Animated.timing(glowOpacity, { toValue: 0.9,  duration: 160, useNativeDriver: true }),
-            Animated.timing(glowOpacity, { toValue: 0.28, duration: 260, useNativeDriver: true }),
-            Animated.timing(glowOpacity, { toValue: 0.5,  duration: 500, useNativeDriver: true }),
-          ]),
-        ]).start(() => {
-          if (!cancelled) {
-            Animated.spring(cornerScale, {
-              toValue: 1, friction: 5, tension: 60, useNativeDriver: true,
-            }).start();
-          }
-        });
+        // 1. Frame contracts (simulates fitting around document)
+        Animated.sequence([
+          Animated.spring(frameScale, { toValue: SNAP_SCALE, friction: 3, tension: 160, useNativeDriver: true }),
+          Animated.spring(frameScale, { toValue: SNAP_SCALE + 0.04, friction: 7, tension: 50, useNativeDriver: true }),
+        ]).start();
 
-        // After DETECTED_MS: loop back to searching
+        // 2. Each corner snaps inward with slight offset to feel organic
+        Animated.parallel([
+          Animated.spring(tlAnim, { toValue: { x: +INSET,    y: +INSET    }, friction: 3, tension: 160, useNativeDriver: true }),
+          Animated.spring(trAnim, { toValue: { x: -INSET,    y: +INSET    }, friction: 3.5, tension: 150, useNativeDriver: true }),
+          Animated.spring(blAnim, { toValue: { x: +INSET,    y: -INSET    }, friction: 3.2, tension: 155, useNativeDriver: true }),
+          Animated.spring(brAnim, { toValue: { x: -INSET,    y: -INSET    }, friction: 3.8, tension: 145, useNativeDriver: true }),
+        ]).start();
+
+        // 3. Corner scale snap
+        Animated.sequence([
+          Animated.spring(cornerScale, { toValue: 1.25, friction: 3, tension: 150, useNativeDriver: true }),
+          Animated.spring(cornerScale, { toValue: 1,    friction: 6, tension: 60,  useNativeDriver: true }),
+        ]).start();
+
+        // 4. Glow pulse
+        Animated.sequence([
+          Animated.timing(glowOpacity, { toValue: 1,    duration: 150, useNativeDriver: true }),
+          Animated.timing(glowOpacity, { toValue: 0.2,  duration: 250, useNativeDriver: true }),
+          Animated.timing(glowOpacity, { toValue: 0.85, duration: 150, useNativeDriver: true }),
+          Animated.timing(glowOpacity, { toValue: 0.3,  duration: 250, useNativeDriver: true }),
+          Animated.timing(glowOpacity, { toValue: 0.45, duration: 800, useNativeDriver: true }),
+        ]).start();
+
         const t2 = setTimeout(runCycle, DETECTED_MS);
         timers.push(t2);
       }, SEARCH_MS);
@@ -113,44 +159,99 @@ export default function CameraScreen() {
     };
 
     runCycle();
-
-    return () => {
-      cancelled = true;
-      clearTimers();
-      scanY.stopAnimation();
-      cornerOpacity.stopAnimation();
-      cornerScale.stopAnimation();
-      glowOpacity.stopAnimation();
-    };
+    return reset;
   }, [isAutoNative]);
 
-  // Navigate after capture
-  const afterCapture = async (uri: string, imgWidth: number, imgHeight: number) => {
+  // -----------------------------------------------------------------------
+  // frameHeight for scan line
+  // -----------------------------------------------------------------------
+  const [frameH, setFrameH] = useState(280);
+  const scanTranslateY = scanY.interpolate({
+    inputRange: [0, 1], outputRange: [0, frameH - 2],
+  });
+
+  // -----------------------------------------------------------------------
+  // Capture logic
+  // -----------------------------------------------------------------------
+
+  /**
+   * Compute the crop region that corresponds to the detection frame,
+   * accounting for CameraView "cover" fill mode (image is scaled to fill
+   * the screen; parts that don't fit are cropped).
+   */
+  const computeAutoCrop = async (
+    imgUri: string,
+    imgW: number,
+    imgH: number,
+  ): Promise<string> => {
+    try {
+      const [framePos, overlayPos] = await Promise.all([
+        measureInWindow(frameRef  as React.RefObject<View>),
+        measureInWindow(overlayRef as React.RefObject<View>),
+      ]);
+
+      // Frame position relative to overlay (= camera view origin)
+      const fLeft = framePos.x   - overlayPos.x;
+      const fTop  = framePos.y   - overlayPos.y;
+      const fW    = framePos.width;
+      const fH    = framePos.height;
+
+      // The frame has been scale-animated to ~SNAP_SCALE + 0.04 by now.
+      // Apply that same factor to get the tight "detected" box.
+      const ds = SNAP_SCALE + 0.04; // settled scale
+      const fw = fW * ds;
+      const fh = fH * ds;
+      const fl = fLeft + (fW - fw) / 2;
+      const ft = fTop  + (fH - fh) / 2;
+
+      const scrW = overlayPos.width;
+      const scrH = overlayPos.height;
+
+      // CameraView fills screen using "cover":
+      // Scale by whichever axis needs to fill more.
+      const imgAspect = imgW / imgH;
+      const scrAspect = scrW / scrH;
+      let imgScale: number, xOff: number, yOff: number;
+      if (imgAspect > scrAspect) {
+        // Image wider than screen → scale to fill height, crop L/R
+        imgScale = scrH / imgH;
+        xOff = (imgW * imgScale - scrW) / 2;
+        yOff = 0;
+      } else {
+        // Image taller than screen → scale to fill width, crop T/B
+        imgScale = scrW / imgW;
+        xOff = 0;
+        yOff = (imgH * imgScale - scrH) / 2;
+      }
+
+      // Map frame pixel position → image pixel position
+      const originX = Math.max(0, Math.round((fl + xOff) / imgScale));
+      const originY = Math.max(0, Math.round((ft + yOff) / imgScale));
+      const cropW   = Math.max(20, Math.min(imgW - originX, Math.round(fw / imgScale)));
+      const cropH   = Math.max(20, Math.min(imgH - originY, Math.round(fh / imgScale)));
+
+      if (cropW < 50 || cropH < 50) return imgUri; // safety fallback
+
+      const result = await manipulateAsync(
+        imgUri,
+        [{ crop: { originX, originY, width: cropW, height: cropH } }],
+        { compress: 0.92, format: SaveFormat.JPEG },
+      );
+      return result.uri;
+    } catch {
+      return imgUri;
+    }
+  };
+
+  const afterCapture = async (uri: string, imgW: number, imgH: number) => {
     if (isMultiPage) {
       addCapturedImage(uri);
       router.replace('/scanner/preview');
       return;
     }
-    // AUTO + detected → auto-crop then skip to enhance
     if (isAutoNative && detected) {
-      try {
-        const m = AUTO_CROP_MARGIN;
-        const cropped = await manipulateAsync(
-          uri,
-          [{
-            crop: {
-              originX: Math.round(m * imgWidth),
-              originY: Math.round(m * imgHeight),
-              width:   Math.max(1, Math.round((1 - 2 * m) * imgWidth)),
-              height:  Math.max(1, Math.round((1 - 2 * m) * imgHeight)),
-            },
-          }],
-          { compress: 0.92, format: SaveFormat.JPEG }
-        );
-        setCapturedImageUri(cropped.uri);
-      } catch {
-        setCapturedImageUri(uri);
-      }
+      const cropped = await computeAutoCrop(uri, imgW, imgH);
+      setCapturedImageUri(cropped);
       router.push('/scanner/enhance');
     } else {
       setCapturedImageUri(uri);
@@ -165,7 +266,7 @@ export default function CameraScreen() {
     try {
       if (Platform.OS === 'web' || !cameraRef.current) {
         const result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: 'images', quality: 0.9, allowsEditing: false,
+          mediaTypes: 'images', quality: 0.9,
         });
         if (!result.canceled && result.assets[0]) {
           const a = result.assets[0];
@@ -189,7 +290,7 @@ export default function CameraScreen() {
   const handleGallery = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: 'images', quality: 0.9, allowsEditing: false,
+      mediaTypes: 'images', quality: 0.9,
     });
     if (!result.canceled && result.assets[0]) {
       const a = result.assets[0];
@@ -203,16 +304,9 @@ export default function CameraScreen() {
     }
   };
 
-  const toggleFlash = () => {
-    setFlashMode(f => (f === 'off' ? 'on' : 'off'));
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-  };
-
-  const scanTranslateY = scanY.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, frameHeight - 2],
-  });
-
+  // -----------------------------------------------------------------------
+  // Render helpers
+  // -----------------------------------------------------------------------
   const renderTopBar = () => (
     <View style={styles.topControls}>
       <Pressable
@@ -234,7 +328,13 @@ export default function CameraScreen() {
         ))}
       </View>
 
-      <Pressable style={styles.iconBtn} onPress={toggleFlash}>
+      <Pressable
+        style={styles.iconBtn}
+        onPress={() => {
+          setFlashMode(f => (f === 'off' ? 'on' : 'off'));
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        }}
+      >
         <Feather
           name={flashMode === 'on' ? 'zap' : 'zap-off'}
           size={22}
@@ -275,61 +375,75 @@ export default function CameraScreen() {
           <>
             <Feather name="file-text" size={14} color="#68dba9" />
             <Text style={styles.statusText}>
-              {webMode
-                ? (isMultiPage ? `Sayfa ${capturedImages.length + 1} — Galeriden Seçin` : 'Galeriden Belge Seçin')
-                : `Manuel — Belgeyi Çerçeveye Yerleştirin`
-              }
+              {webMode ? 'Galeriden Belge Seçin' : 'Manuel — Belgeyi Çerçeveye Yerleştirin'}
             </Text>
           </>
         )}
       </View>
 
-      {/* Detection frame */}
-      <View
-        style={[styles.docFrame, isAutoNative && detected && styles.docFrameDetected]}
-        onLayout={e => setFrameHeight(e.nativeEvent.layout.height)}
-      >
-        {/* Animated corners */}
-        {(['TL','TR','BL','BR'] as const).map(c => (
-          <Animated.View
-            key={c}
-            style={[
-              styles.corner,
-              c === 'TL' && styles.cornerTL,
-              c === 'TR' && styles.cornerTR,
-              c === 'BL' && styles.cornerBL,
-              c === 'BR' && styles.cornerBR,
-              isAutoNative && detected && styles.cornerDetected,
-              {
-                opacity: isAutoNative && !detected ? cornerOpacity : 1,
-                transform: [{ scale: isAutoNative && detected ? cornerScale : 1 }],
-              },
-            ]}
-          />
-        ))}
+      {/* Detection frame — wrapped in Animated.View for the contract scale */}
+      <Animated.View style={{ transform: [{ scale: frameScale }] }}>
+        <View
+          ref={frameRef}
+          style={[styles.docFrame, isAutoNative && detected && styles.docFrameDetected]}
+          onLayout={e => setFrameH(e.nativeEvent.layout.height)}
+        >
+          {/* TL corner */}
+          <Animated.View style={[
+            styles.corner, styles.cornerTL,
+            isAutoNative && detected && styles.cornerDetected,
+            {
+              opacity: isAutoNative && !detected ? cornerOpacity : 1,
+              transform: [{ scale: cornerScale }, { translateX: tlAnim.x }, { translateY: tlAnim.y }],
+            },
+          ]} />
+          {/* TR corner */}
+          <Animated.View style={[
+            styles.corner, styles.cornerTR,
+            isAutoNative && detected && styles.cornerDetected,
+            {
+              opacity: isAutoNative && !detected ? cornerOpacity : 1,
+              transform: [{ scale: cornerScale }, { translateX: trAnim.x }, { translateY: trAnim.y }],
+            },
+          ]} />
+          {/* BL corner */}
+          <Animated.View style={[
+            styles.corner, styles.cornerBL,
+            isAutoNative && detected && styles.cornerDetected,
+            {
+              opacity: isAutoNative && !detected ? cornerOpacity : 1,
+              transform: [{ scale: cornerScale }, { translateX: blAnim.x }, { translateY: blAnim.y }],
+            },
+          ]} />
+          {/* BR corner */}
+          <Animated.View style={[
+            styles.corner, styles.cornerBR,
+            isAutoNative && detected && styles.cornerDetected,
+            {
+              opacity: isAutoNative && !detected ? cornerOpacity : 1,
+              transform: [{ scale: cornerScale }, { translateX: brAnim.x }, { translateY: brAnim.y }],
+            },
+          ]} />
 
-        {/* Scan line */}
-        {isAutoNative && !detected && (
-          <Animated.View
-            style={[styles.scanLine, { transform: [{ translateY: scanTranslateY }] }]}
-          />
-        )}
+          {/* Animated scan line (searching) */}
+          {isAutoNative && !detected && (
+            <Animated.View
+              style={[styles.scanLine, { transform: [{ translateY: scanTranslateY }] }]}
+            />
+          )}
 
-        {/* Detected glow */}
-        {isAutoNative && detected && (
-          <Animated.View style={[styles.detectedGlow, { opacity: glowOpacity }]} />
-        )}
+          {/* Detected glow overlay */}
+          {isAutoNative && detected && (
+            <Animated.View style={[styles.detectedGlow, { opacity: glowOpacity }]} />
+          )}
+        </View>
+      </Animated.View>
 
-        <View style={styles.frameOverlay} />
-      </View>
-
-      {/* Detected hint */}
+      {/* Hint text under frame */}
       {isAutoNative && detected && (
         <View style={styles.detectedHint}>
-          <Feather name="zap" size={12} color="#34d399" />
-          <Text style={styles.detectedHintText}>
-            Otomatik kırpılacak — kırpma ekranı atlanıyor
-          </Text>
+          <Feather name="zap" size={11} color="#34d399" />
+          <Text style={styles.detectedHintText}>Otomatik kırpılacak — kırpma ekranı atlanıyor</Text>
         </View>
       )}
     </View>
@@ -353,22 +467,17 @@ export default function CameraScreen() {
       >
         {isCapturing
           ? <ActivityIndicator color="#fff" size="large" />
-          : <View style={[styles.captureInner, isAutoNative && detected && styles.captureInnerReady]} />
-        }
+          : <View style={[styles.captureInner, isAutoNative && detected && styles.captureInnerReady]} />}
       </Pressable>
 
-      {(webMode && !isMultiPage) ? (
+      {webMode && !isMultiPage ? (
         <View style={styles.sideBtn} />
       ) : (
         <Pressable
           style={[styles.sideBtn, isMultiPage && styles.sideBtnGreen]}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-            if (isMultiPage) {
-              router.replace('/scanner/preview');
-            } else {
-              router.push('/scanner/crop');
-            }
+            isMultiPage ? router.replace('/scanner/preview') : router.push('/scanner/crop');
           }}
         >
           <Feather
@@ -384,6 +493,9 @@ export default function CameraScreen() {
     </View>
   );
 
+  // -----------------------------------------------------------------------
+  // Permission screens
+  // -----------------------------------------------------------------------
   if (Platform.OS !== 'web' && !permission) {
     return <View style={styles.permContainer}><ActivityIndicator color={C.primary} /></View>;
   }
@@ -418,6 +530,9 @@ export default function CameraScreen() {
     );
   }
 
+  // -----------------------------------------------------------------------
+  // Web fallback
+  // -----------------------------------------------------------------------
   if (Platform.OS === 'web') {
     return (
       <View style={styles.container}>
@@ -426,7 +541,10 @@ export default function CameraScreen() {
             <View key={i} style={styles.cameraGridCell} />
           ))}
         </View>
-        <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
+        <View
+          ref={overlayRef}
+          style={[styles.overlay, { paddingTop: insets.top + 8 }]}
+        >
           {renderTopBar()}
           {renderCenter(true)}
           {renderBottom(true)}
@@ -435,6 +553,9 @@ export default function CameraScreen() {
     );
   }
 
+  // -----------------------------------------------------------------------
+  // Native camera
+  // -----------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <CameraView
@@ -444,7 +565,10 @@ export default function CameraScreen() {
         flash={flashMode}
         autofocus="on"
       />
-      <View style={[styles.overlay, { paddingTop: insets.top + 8 }]}>
+      <View
+        ref={overlayRef}
+        style={[styles.overlay, { paddingTop: insets.top + 8 }]}
+      >
         {renderTopBar()}
         {renderCenter(false)}
         {renderBottom(false)}
@@ -453,6 +577,7 @@ export default function CameraScreen() {
   );
 }
 
+// ==========================================================================
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#000' },
 
@@ -480,7 +605,7 @@ const styles = StyleSheet.create({
   modeBtnText: { fontSize: 11, fontWeight: '600', color: 'rgba(255,255,255,0.65)', fontFamily: 'Inter_600SemiBold' },
   modeBtnTextActive: { color: '#000' },
 
-  centerArea: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24, gap: 16 },
+  centerArea: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 16, gap: 16 },
   pageCountBadge: { flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: 'rgba(0,105,72,0.75)', borderRadius: 20, paddingHorizontal: 12, paddingVertical: 4 },
   pageCountText: { fontSize: 12, color: '#fff', fontWeight: '600', fontFamily: 'Inter_600SemiBold' },
 
@@ -491,16 +616,15 @@ const styles = StyleSheet.create({
   docFrame: { width: '84%', aspectRatio: 3 / 4, position: 'relative' },
   docFrameDetected: {},
 
-  corner: { position: 'absolute', width: 26, height: 26, borderColor: '#68dba9', borderWidth: 3 },
+  corner: { position: 'absolute', width: 28, height: 28, borderColor: '#68dba9', borderWidth: 3 },
   cornerDetected: { borderColor: '#34d399', borderWidth: 3.5 },
-  cornerTL: { top: 0, left: 0, borderRightWidth: 0, borderBottomWidth: 0, borderTopLeftRadius: 5 },
-  cornerTR: { top: 0, right: 0, borderLeftWidth: 0, borderBottomWidth: 0, borderTopRightRadius: 5 },
-  cornerBL: { bottom: 0, left: 0, borderRightWidth: 0, borderTopWidth: 0, borderBottomLeftRadius: 5 },
-  cornerBR: { bottom: 0, right: 0, borderLeftWidth: 0, borderTopWidth: 0, borderBottomRightRadius: 5 },
+  cornerTL: { top: 0,  left: 0,  borderRightWidth: 0, borderBottomWidth: 0, borderTopLeftRadius: 6 },
+  cornerTR: { top: 0,  right: 0, borderLeftWidth: 0,  borderBottomWidth: 0, borderTopRightRadius: 6 },
+  cornerBL: { bottom: 0, left: 0,  borderRightWidth: 0, borderTopWidth: 0,    borderBottomLeftRadius: 6 },
+  cornerBR: { bottom: 0, right: 0, borderLeftWidth: 0,  borderTopWidth: 0,    borderBottomRightRadius: 6 },
 
-  scanLine: { position: 'absolute', left: 6, right: 6, height: 2, backgroundColor: 'rgba(52,211,153,0.85)', shadowColor: '#34d399', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 1, shadowRadius: 8, elevation: 3 },
+  scanLine: { position: 'absolute', left: 6, right: 6, height: 2, backgroundColor: 'rgba(52,211,153,0.85)', shadowColor: '#34d399', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 1, shadowRadius: 8 },
   detectedGlow: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(52,211,153,0.1)', borderRadius: 4, borderWidth: 2, borderColor: '#34d399' },
-  frameOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(104,219,169,0.03)' },
 
   detectedHint: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   detectedHintText: { fontSize: 11, color: '#34d399', fontFamily: 'Inter_500Medium' },
