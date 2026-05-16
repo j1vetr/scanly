@@ -8,6 +8,7 @@
     "scheme": "scanly",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "owner": "toov1",
     "splash": {
       "image": "./assets/images/icon.png",
       "resizeMode": "contain",
@@ -22,14 +23,17 @@
       }
     },
     "android": {
+      "package": "com.toov1.scanly",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "CAMERA",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.INTERNET"
       ]
     },
     "web": {
@@ -46,6 +50,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5dbffdd9-fb06-4c99-a0b6-a2df7d63323c"
+      }
     }
   }
 }
