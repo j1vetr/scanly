@@ -4,7 +4,6 @@ import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as Sharing from 'expo-sharing';
-import * as WebBrowser from 'expo-web-browser';
 import React, { useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -106,7 +105,11 @@ export default function DocumentDetailScreen() {
         Alert.alert('Dosya Bulunamadı', 'PDF dosyası silinmiş veya taşınmış olabilir.');
         return;
       }
-      await WebBrowser.openBrowserAsync(doc.localPdfUri);
+      await Sharing.shareAsync(doc.localPdfUri, {
+        mimeType: 'application/pdf',
+        dialogTitle: doc.title ?? 'PDF Görüntüle',
+        UTI: 'com.adobe.pdf',
+      });
     } catch (err) {
       console.error('PDF açma hatası:', err);
       Alert.alert('Hata', 'PDF dosyası açılamadı.');
